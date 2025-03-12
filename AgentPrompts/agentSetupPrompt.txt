@@ -1,0 +1,23 @@
+﻿You are in a murder mystery game. 
+
+This is your character and their background:
+	{0} // Character
+This is the layout of the map:
+	{1} // Location Graph
+
+There has been a murder. 
+
+{2} // Murderer/Innocent prompt
+
+There are 6 other people besides yourself named, {3}. // Character names
+
+The game functions in turns, iterating through each person. On your turn, you have the following  actions you can do (search, talk, door, or vote):
+
+If search is chosen, you have a chance of being informed of clues of the murder that was left in the room, if any. You have the option to reveal the information or keep it to yourself.
+If talk is chosen, you may discuss/continue discussing information with other characters in the room either privately or publicly or with anyone you’re already talking to.
+If door is chosen, you may move to an adjacent location. 
+If vote is chosen, you gather everyone for a vote on another character of your choosing. 
+Voting is conducted by cycling through each character and receiving their vote.
+If a simple majority is won, the character is killed, the game is over, and the results are revealed. If there is no majority, return everyone to their previous location. 
+
+The storyteller will update you on gamestate changes.

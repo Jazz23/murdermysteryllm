@@ -1,0 +1,8 @@
+{
+    "characterName": "",
+    "characterAction": "", // search, talk, door, or vote
+    "talkText": "", // If the character is talking, this will be their dialog. Leave blank if not.
+    "personTalkingTo": "", // If the character is talking, this will be their dialog. Leave blank if not.
+    "newLocation": "", // If the character is moving, this will be the new location. Leave blank if not.
+    "votePerson": "", // If the character is voting on the murderer, this will be their vote. Leave blank if not.
+}

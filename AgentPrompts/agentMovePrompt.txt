@@ -1,0 +1,1 @@
+﻿ You are currently in {0} /* location */. It is your turn. Reply only with either “search”, “talk”, “door”, or “vote”.
