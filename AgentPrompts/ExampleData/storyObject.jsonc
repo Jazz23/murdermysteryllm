@@ -1,0 +1,34 @@
+﻿{
+  "chosenLocations": ["Bedroom", "Grand Library", "Ballroom", "Hidden Study", "Wine Cellar", "Master Bedroom"],
+  "characterNames": ["Elias Vexley", "Raul Alvaros", "Clarissa Winters", "Graham Locke", "Isla Harrow", "Dorian Greaves", "Sylvia Renfield"],
+  "locationGraph": [
+    {
+      "locationName": "Grand Library",
+      "connectingLocations": ["Ballroom", "Hidden Study"]
+    },
+    {
+      "locationName": "Ballroom",
+      "connectingLocations": ["Grand Library", "Servants' Quarters"]
+    },
+    {
+      "locationName": "Wine Cellar",
+      "connectingLocations": ["Conservatory", "Master Bedroom"]
+    },
+    {
+      "locationName": "Conservatory",
+      "connectingLocations": ["Wine Cellar", "Servants' Quarters"]
+    },
+    {
+      "locationName": "Hidden Study",
+      "connectingLocations": ["Grand Library", "Master Bedroom"]
+    },
+    {
+      "locationName": "Master Bedroom",
+      "connectingLocations": ["Hidden Study", "Wine Cellar"]
+    },
+    {
+      "locationName": "Servants' Quarters",
+      "connectingLocations": ["Ballroom", "Conservatory"]
+    }
+  ]
+}
