@@ -10,8 +10,10 @@ DotEnv.Load(options: new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 4
 
 var chatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
-var agent1 = await Helpers.CreateAgentFromJsonFile("AgentPrompts/ExampleData/character.jsonc", chatClient, "Grand Library");
+var testingStoryContext = await Helpers.CreateStoryContextFromJsonFile("StorytellerPrompts/storyObject.eg.jsonc");
+var agent1 = await Helpers.CreateAgentFromJsonFile("AgentPrompts/ExampleData/character.jsonc", chatClient, "Grand Library", testingStoryContext);
 
+Console.WriteLine(await agent1.BuildChatGPTContext());
 // var agent1 = new AIAgent(chatClient, "Brenda");
 // var agent2 = new AIAgent(chatClient, "Chungus");
 // var storyteller = new Storyteller(chatClient);

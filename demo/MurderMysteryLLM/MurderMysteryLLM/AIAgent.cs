@@ -5,9 +5,10 @@ using OpenAI.Chat;
 
 namespace MurderMysteryLLM;
 
-public class AIAgent(ChatClient chatClient, CharacterInformation characterInformation, string currentLocation)
+public class AIAgent(ChatClient chatClient, CharacterInformation characterInformation, string currentLocation, StoryContext storyContext)
 {
     public CharacterInformation CharacterInformation { get; } = characterInformation;
+    public string CurrentLocation { get; } = currentLocation;
     
     /// <summary>
     /// If the agent is actively talking with someone, this stores (in chronological order) the statements made by the agent and the other party.
@@ -60,12 +61,21 @@ public class AIAgent(ChatClient chatClient, CharacterInformation characterInform
     /// <summary>
     /// Appends necessary information to chat log, such as the setup prompt and game state.
     /// </summary>
-    private async Task<List<ChatMessage>> BuildContext()
+    /*private*/public async Task<List<ChatMessage>> BuildChatGPTContext()
     {
         var context = new List<ChatMessage>();
 
-        var rawPrompt = await Helpers.ReadFileFromRoot("AgentPrompts/agentSetup");
-        // TODO
+        var rawCharacterInfo = JsonSerializer.Serialize(CharacterInformation);
+        var rawMurderInnocentInstructions =
+            CharacterInformation.Murderer ? Helpers.MurdererPrompt : Helpers.InnocentPrompt;
+        var rawStoryContext = JsonSerializer.Serialize(storyContext);
+
+        var setupPrompt = string.Format(Helpers.AgentSetupPrompt,
+            rawCharacterInfo,
+            rawMurderInnocentInstructions,
+            rawStoryContext);
+        
+        context.Add(new SystemChatMessage(setupPrompt));
         return context;
     }
 }
@@ -75,7 +85,7 @@ public record Statement(string Speaker, string Text)
     public override string ToString() => $"{Speaker}: {Text}";
 }
 
-public record CharacterInformation(string Name, string Description, uint Age, string Occupation, string[] Traits);
+public record CharacterInformation(string Name, string Description, uint Age, string Occupation, string[] Traits, bool Murderer);
 
 public enum AgentActions
 {

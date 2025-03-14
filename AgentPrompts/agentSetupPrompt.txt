@@ -2,14 +2,14 @@
 
 This is your character and their background:
 	{0} // Character
-This is the layout of the map:
-	{1} // Location Graph
 
 There has been a murder. 
 
-{2} // Murderer/Innocent prompt
+{1} // Murderer/Innocent prompt
 
-There are 6 other people besides yourself named, {3}. // Character names
+The full context of the story including location and character names are
+
+{2}
 
 The game functions in turns, iterating through each person. On your turn, you have the following  actions you can do (search, talk, door, or vote):
 

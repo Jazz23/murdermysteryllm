@@ -54,31 +54,31 @@
  ],
  "locationGraph": [
      {
-         "locationName": "Grand Library",
+         "name": "Grand Library",
          "connectingLocations": ["Ballroom", "Hidden Study"]
      },
      {
-         "locationName": "Ballroom",
+         "name": "Ballroom",
          "connectingLocations": ["Grand Library", "Servants' Quarters"]
      },
      {
-         "locationName": "Wine Cellar",
+         "name": "Wine Cellar",
          "connectingLocations": ["Conservatory", "Master Bedroom"]
      },
      {
-         "locationName": "Conservatory",
+         "name": "Conservatory",
          "connectingLocations": ["Wine Cellar", "Servants' Quarters"]
      },
      {
-         "locationName": "Hidden Study",
+         "name": "Hidden Study",
          "connectingLocations": ["Grand Library", "Master Bedroom"]
      },
      {
-         "locationName": "Master Bedroom",
+         "name": "Master Bedroom",
          "connectingLocations": ["Hidden Study", "Wine Cellar"]
      },
      {
-         "locationName": "Servants' Quarters",
+         "name": "Servants' Quarters",
          "connectingLocations": ["Ballroom", "Conservatory"]
      }
  ]
