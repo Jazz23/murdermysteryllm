@@ -1,0 +1,3 @@
+﻿You are currently in a conversation. You are trying to decide if it has naturally come to a close. If the conversation has come to a close, reply only with "ENDED".
+
+Otherwise, make another statement to contribute to the conversation that would bring it closer to stopping. You are speaking to {0}.

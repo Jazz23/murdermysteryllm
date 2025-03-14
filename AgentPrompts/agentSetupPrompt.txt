@@ -11,6 +11,8 @@ The full context of the story including location and character names are
 
 {2}
 
+You are currently in the {3} // location
+
 The game functions in turns, iterating through each person. On your turn, you have the following  actions you can do (search, talk, door, or vote):
 
 If search is chosen, you have a chance of being informed of clues of the murder that was left in the room, if any. You have the option to reveal the information or keep it to yourself.
