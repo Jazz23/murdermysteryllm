@@ -14,6 +14,10 @@ var testingStoryContext = await Helpers.CreateStoryContextFromJsonFile("Storytel
 var agent1 = await Helpers.CreateAgentFromJsonFile("AgentPrompts/ExampleData/character.jsonc", chatClient, "Grand Library", testingStoryContext);
 var agent2 = await Helpers.CreateAgentFromJsonFile("AgentPrompts/ExampleData/character2.jsonc", chatClient, "Grand Library", testingStoryContext);
 
+var testStatement = new Statement(agent1.CharacterInformation.Name, $"Hello {agent2.CharacterInformation.Name}. Did you also see the bloody knife?");
+agent1.InjectTestConversation([testStatement]);
+agent2.InjectTestConversation([testStatement]);
+
 var counter = 0;
 while (true)
 {

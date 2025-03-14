@@ -15,12 +15,11 @@ public partial class AIAgent(ChatClient chatClient, CharacterInformation charact
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
     /// </summary>
     /// <returns>The assistant reply from ChatGPT</returns>
-    public /*private*/ async Task<string> ChatGPT(string userPrompt)
+    private async Task<ChatCompletion> ChatGPT(string userPrompt, ChatCompletionOptions chatCompletionOptions)
     {
         var context = await BuildChatGPTContext();
         context.Add(new UserChatMessage(userPrompt));
-        var response = await chatClient.CompleteChatAsync(context);
-        return response.Value.Content.First().Text;
+        return await chatClient.CompleteChatAsync(context, chatCompletionOptions);
     }
 
     /// <summary>
@@ -67,7 +66,7 @@ public partial class AIAgent(ChatClient chatClient, CharacterInformation charact
     }
 }
 
-public record Statement(string Speaker, string Text, ConversationSignals? signal = null)
+public record Statement(string Speaker, string Text)
 {
     public override string ToString() => $"{Speaker}: {Text}";
 }

@@ -11,6 +11,8 @@ public partial class AIAgent
     /// If the agent is not actively talking with someone, this is null.
     /// </summary>
     public List<Statement>? CurrentConversation { get; private set; }
+    
+    public void InjectTestConversation(List<Statement> conversation) => CurrentConversation = conversation;
 
     /// <summary>
     /// If the AIAgent is currently in an active conversation, this will append that conversation as context to subsequent ChatGPT prompts.
@@ -38,28 +40,26 @@ public partial class AIAgent
         
         // Speak to the agent and append the statement to the respective conversations
         var prompt = string.Format(Prompt.AgentTalk, agent.CharacterInformation.Name);
-        var words = await ChatGPT(prompt);
-        
-        // If ChatGPT gave a signal instead of words, append that to the statement instance
-        Enum.TryParse(typeof(ConversationSignals), words, true, out var signal);
-        var newStatement = new Statement(CharacterInformation.Name, words, (ConversationSignals?)signal);
-        
-        // If ChatGPT gave us a signal instead of words, handle that signal
-        if (newStatement.signal != null)
+        var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
+        var completion = await ChatGPT(prompt, new ChatCompletionOptions()
         {
-            switch (newStatement.signal)
-            {
-                case ConversationSignals.ENDED:
-                    StopSpeaking();
-                    agent.StopSpeaking();
-                    break;
-            }
-        }
-        else // Otherwise, add the statement to the conversation
+            ToolChoice = ChatToolChoice.CreateAutoChoice(),
+            Tools = { endSignalTool }
+        });
+        
+        // If ChatGPT called our end_conversation function, stop speaking
+        if (completion.FinishReason == ChatFinishReason.ToolCalls)
         {
-            CurrentConversation.Add(newStatement);
-            agent.CurrentConversation.Add(newStatement);
+            StopSpeaking();
+            return new Statement(CharacterInformation.Name, "end_conversation");
         }
+
+        // The conversation continues, append the new goodies to our conversation history
+        var words = completion.Content.First().Text;
+        var newStatement = new Statement(CharacterInformation.Name, words);
+        
+        CurrentConversation.Add(newStatement);
+        agent.CurrentConversation.Add(newStatement);
         
         return newStatement;
     }
@@ -68,9 +68,4 @@ public partial class AIAgent
     /// Resets the current conversation to null. TODO: Previous messages should already summarized and stored and added for future context.
     /// </summary>
     public void StopSpeaking() => CurrentConversation = null;
-}
-
-public enum ConversationSignals
-{
-    ENDED
 }
