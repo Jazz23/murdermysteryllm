@@ -1,6 +1,8 @@
 */Plugins/*
 .idea/*
 Assets/ArtificialIntelligence/Dependencies
+Assets/ArtificialIntelligence/obj/
+Assets/ArtificialIntelligence/bin/
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #
