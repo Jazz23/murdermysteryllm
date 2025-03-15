@@ -1,16 +1,16 @@
 ﻿using System.Text.Json;using ArtificialIntelligence;
+using ArtificialIntelligence.Agent;
 using dotenv.net;
-using MurderMysteryLLM;
 using OpenAI.Chat;
 
-// Load openai api key from .env file at the root of the project
-DotEnv.Load(options: new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 4));
+// Place .env file at the root of the project
+DotEnv.Load(options: new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 5));
 
 // Path to the root of the project containing prompt data
 
-Console.WriteLine(new Class1().Test());
-
-return;
+// Console.WriteLine(new Class1().Test());
+//
+// return;
 
 var chatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 

@@ -576,7 +576,8 @@ PlayerSettings:
   webWasm2023: 0
   scriptingDefineSymbols:
     Standalone: FISHNET;FISHNET_V4;FISHNET_PRO;EDGEGAP_PLUGIN_SERVERS
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    Standalone: []
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
