@@ -1,0 +1,11 @@
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\bin\Debug\netstandard2.1\ArtificialIntelligence.deps.json
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\bin\Debug\netstandard2.1\ArtificialIntelligence.dll
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\bin\Debug\netstandard2.1\ArtificialIntelligence.pdb
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.csproj.AssemblyReference.cache
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.GeneratedMSBuildEditorConfig.editorconfig
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.AssemblyInfoInputs.cache
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.AssemblyInfo.cs
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.csproj.CoreCompileInputs.cache
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.sourcelink.json
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.dll
+G:\GitHub\murdermysteryllm\Unity\MurderMysteryLLM\Assets\ArtificialIntelligence\obj\Debug\netstandard2.1\ArtificialIntelligence.pdb
