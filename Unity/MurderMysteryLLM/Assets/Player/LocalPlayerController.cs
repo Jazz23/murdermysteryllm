@@ -1,12 +1,16 @@
+using ArtificialIntelligence;
 using FishNet.Object;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : NetworkBehaviour
 {
+    public float speed;
+    
     private InputAction _moveAction;
-    private CharacterController _characterController;
-    private float _speed = 5f;
+    private Rigidbody2D _rigidBody;
 
     public override void OnStartClient()
     {
@@ -15,16 +19,12 @@ public class PlayerController : NetworkBehaviour
 
         enabled = true;
         _moveAction = InputSystem.actions.FindAction("Move");
-        _characterController = GetComponent<CharacterController>();
+        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        var moveVec = _moveAction.ReadValue<Vector2>();
-        if (moveVec.sqrMagnitude <= 0.01f)
-            return;
-
-        _characterController.Move(new Vector2(moveVec.x, moveVec.y) * (Time.deltaTime * _speed));
-        // transform.position += new Vector3(moveVec.x, 0, moveVec.y) * Time.deltaTime;
+        _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>() * (Time.deltaTime * speed * 100);
+    // transform.position += new Vector3(moveVec.x, 0, moveVec.y) * Time.deltaTime;
     }
 }

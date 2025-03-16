@@ -13,6 +13,8 @@ DotEnv.Load(options: new DotEnvOptions(probeForEnv: true, probeLevelsToSearch: 5
 // return;
 
 var chatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
+await Prompt.LoadPrompts(promptPathPrefix);
 
 var testingStoryContext = await Helpers.CreateStoryContextFromJsonFile("StorytellerPrompts/storyObject.eg.jsonc");
 var agent1 = await Helpers.CreateAgentFromJsonFile("AgentPrompts/ExampleData/character.jsonc", chatClient, "Grand Library", testingStoryContext);
