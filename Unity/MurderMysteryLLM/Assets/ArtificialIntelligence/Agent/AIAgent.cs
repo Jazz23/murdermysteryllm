@@ -13,18 +13,14 @@ namespace ArtificialIntelligence.Agent;
 
 public partial class AIAgent
 {
-    public CharacterInformation CharacterInformation { get; private set; }
-    public string CurrentLocation { get; }
-    
+    public PlayerInfo PlayerInfo;
     private readonly ChatClient _chatClient;
-    private readonly StoryContext _storyContext;
+    private PlayerInfo _playerInfo;
 
-    public AIAgent(ChatClient chatClient, CharacterInformation characterInformation, string currentLocation, StoryContext storyContext)
+    public AIAgent(ChatClient chatClient, PlayerInfo playerInfo)
     {
         _chatClient = chatClient;
-        CharacterInformation = characterInformation;
-        CurrentLocation = currentLocation;
-        _storyContext = storyContext;
+        PlayerInfo = playerInfo;
     }
     
     /// <summary>
@@ -45,16 +41,16 @@ public partial class AIAgent
     {
         var context = new List<ChatMessage>();
 
-        var rawCharacterInfo = JsonSerializer.Serialize(CharacterInformation);
+        var rawCharacterInfo = JsonSerializer.Serialize(_playerInfo.CharacterInformation);
         var rawMurderInnocentInstructions =
-            CharacterInformation.Murderer ? Prompt.Murderer : Prompt.Innocent;
-        var rawStoryContext = JsonSerializer.Serialize(_storyContext);
+            _playerInfo.CharacterInformation.Murderer ? Prompt.Murderer : Prompt.Innocent;
+        var rawStoryContext = JsonSerializer.Serialize(_playerInfo.StoryContext);
 
         var setupPrompt = string.Format(Prompt.AgentSetup,
             rawCharacterInfo,
             rawMurderInnocentInstructions,
             rawStoryContext,
-            CurrentLocation);
+            _playerInfo.CurrentLocation);
         
         context.Add(new SystemChatMessage(setupPrompt));
         
@@ -80,49 +76,4 @@ public partial class AIAgent
             return contextMethods.SelectMany(x => (List<ChatMessage>) x.Invoke(agent, null)!).ToList();
         }
     }
-}
-
-// public record Statement(string Speaker, string Text)
-public class Statement
-{
-    public string Speaker { get; }
-    public string Text { get; }
-
-    public Statement(string speaker, string text)
-    {
-        Speaker = speaker;
-        Text = text;
-    }
-
-    public override string ToString() => $"{Speaker}: {Text}";
-}
-
-// public record CharacterInformation(string Name, string Description, uint Age, string Occupation, string[] Traits, bool Murderer);
-public class CharacterInformation
-{
-    public string Name { get; }
-    public string Description { get; }
-    public uint Age { get; }
-    public string Occupation { get; }
-    public string[] Traits { get; }
-    public bool Murderer { get; }
-
-    public CharacterInformation(string name, string description, uint age, string occupation, string[] traits,
-        bool murderer)
-    {
-        Name = name;
-        Description = description;
-        Age = age;
-        Occupation = occupation;
-        Traits = traits;
-        Murderer = murderer;
-    }
-}
-
-public enum AgentActions
-{
-    SEARCH,
-    TALK,
-    DOOR,
-    VOTE
 }

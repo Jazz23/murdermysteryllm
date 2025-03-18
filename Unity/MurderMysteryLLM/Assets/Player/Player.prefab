@@ -326,9 +326,9 @@ GameObject:
   - component: {fileID: 2189463966249315581}
   - component: {fileID: 5298883865674213168}
   - component: {fileID: 2101142155320000500}
-  - component: {fileID: 9071758127819699226}
   - component: {fileID: 3904122633138261777}
   - component: {fileID: 1460243304779183128}
+  - component: {fileID: 9071758127819699226}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -502,22 +502,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 1, y: 1, z: 1}
     IsValid: 1
---- !u!114 &9071758127819699226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6083891258600081425}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0244c51f749c97b4ba027d67a667c0b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 2101142155320000500}
-  _networkObjectCache: {fileID: 2101142155320000500}
-  speed: 25
 --- !u!50 &3904122633138261777
 Rigidbody2D:
   serializedVersion: 5
@@ -591,3 +575,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &9071758127819699226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6083891258600081425}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0244c51f749c97b4ba027d67a667c0b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 2101142155320000500}
+  _networkObjectCache: {fileID: 2101142155320000500}
+  speed: 25

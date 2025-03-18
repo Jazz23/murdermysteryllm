@@ -12,11 +12,18 @@ public static class Helpers
 {
     public static async Task<AIAgent> CreateAgentFromJsonFile(string fileName, ChatClient chatClient, string currentLocation, StoryContext storyContext)
     {
+        var playerInfo = await GetPlayerInfoFromJsonFile(fileName, currentLocation, storyContext);
+        
+        return new AIAgent(chatClient, playerInfo);
+    }
+    
+    public static async Task<PlayerInfo> GetPlayerInfoFromJsonFile(string fileName, string currentLocation, StoryContext storyContext)
+    {
         var jsonData = await File.ReadAllTextAsync(fileName);
         var characterInformation = JsonSerializer.Deserialize<CharacterInformation>(jsonData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         Debug.Assert(characterInformation != null, "Failed to deserialize agent JSON.");
         
-        return new AIAgent(chatClient, characterInformation, currentLocation, storyContext);
+        return new PlayerInfo(storyContext, characterInformation, currentLocation);
     }
     
     public static async Task<StoryContext> CreateStoryContextFromJsonFile(string fileName)
