@@ -6,6 +6,7 @@ using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using dotenv.net;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using OpenAI.Chat;
 using UnityEngine;
 
@@ -14,13 +15,26 @@ using UnityEngine;
 /// </summary>
 public class AIInterface : NetworkBehaviour
 {
-    public static StoryContext StoryContext;
+    // Synchronize the server's StoryContext to the rest of the clients
+    public static StoryContext StoryContext
+    {
+        get => _instance?._syncedStoryContext?.Value;
+        private set => _instance._syncedStoryContext.Value = value;
+    }
     public static ChatClient ChatClient;
 
     public bool MockStoryContext = true;
     public bool MockPlayerInfo = true;
 
     private Storyteller _storyteller;
+    private readonly SyncVar<StoryContext> _syncedStoryContext = new();
+    private static AIInterface _instance;
+
+    public override void OnStartNetwork()
+    {
+        // This singleton is only attached to one empty (AIInterface) object at the root of the scene
+        _instance = this;
+    }
     
     public override async void OnStartServer()
     {
@@ -29,6 +43,7 @@ public class AIInterface : NetworkBehaviour
     }
     
     // Loads prompts and any testing data
+    [Server]
     private async Awaitable InitAILibrary()
     {
         // Place .env in root of unity project
@@ -43,10 +58,8 @@ public class AIInterface : NetworkBehaviour
         if (MockStoryContext)
         {
             // If we're mocking story context, load from a file instead of generating it
-            var loadStoryContextTask = Helpers.CreateStoryContextFromJsonFile(
-                Path.Combine(promptPathPrefix, "StorytellerPrompts/storyObject.eg.jsonc"));
-            await loadStoryContextTask;
-            StoryContext = loadStoryContextTask.Result; // Temporary: This will be generated via ChatGPT in the future
+            StoryContext = await Helpers.CreateStoryContextFromJsonFile(
+                Path.Combine(promptPathPrefix, "StorytellerPrompts/storyObject.eg.jsonc")); // Temporary: This will be generated via ChatGPT in the future
         }
 
         _storyteller = new Storyteller();
@@ -54,25 +67,30 @@ public class AIInterface : NetworkBehaviour
         await PlayLoop();
     }
 
+    [Server]
     public static async Awaitable<PlayerInfo> GetPlayerInfo()
     {
-        var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
-        return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + "AgentPrompts/ExampleData/character.jsonc", "Grand Library",
-            StoryContext);
+        // if (_instance.MockPlayerInfo)
+        // {
+            var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
+            return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + "AgentPrompts/ExampleData/character.jsonc", "Grand Library",
+                StoryContext);
+        // }
     }
 
     /// <summary>
     /// Loops between players and takes their turn via the storyteller.
     /// </summary>
     /// <returns></returns>
+    [Server]
     private async Awaitable PlayLoop()
     {
         // For now we're just gonna loop connected clients (aka humans)
         while (true)
         {
-            await Task.Delay(100);
+            await Task.Delay(100); // I hate magic numbers, but this stops a deadlock
             
-            foreach (var networkConnection in ServerManager.Clients.Values.Where(x => x.FirstObject != null))
+            foreach (var networkConnection in ServerManager.Clients.Values.Where(x => x.FirstObject != null).ToList())
             {
                 // Grab the player controller from the network connection and take it's turn
                 var playerInstance = networkConnection.FirstObject.GetComponent<LocalPlayerController>();

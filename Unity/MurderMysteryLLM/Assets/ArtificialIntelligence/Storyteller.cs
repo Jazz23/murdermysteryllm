@@ -43,14 +43,8 @@ public class Storyteller
 
 public class Location
 {
-    public string Name { get; }
-    public string[] ConnectingLocations { get; }
-
-    public Location(string name, string[] connectingLocations)
-    {
-        Name = name;
-        ConnectingLocations = connectingLocations;
-    }
+    public string Name { get; init; }
+    public string[] ConnectingLocations { get; init; }
 }
 
 /// <summary>
@@ -58,12 +52,6 @@ public class Location
 /// </summary>
 public class StoryContext
 {
-    public Location[] LocationGraph { get; }
-    public string[] CharacterNames { get; }
-    
-    public StoryContext(Location[] locationGraph, string[] characterNames)
-    {
-        LocationGraph = locationGraph;
-        CharacterNames = characterNames;
-    }
+    public Location[] LocationGraph { get; init; }
+    public string[] CharacterNames { get; init; }
 }

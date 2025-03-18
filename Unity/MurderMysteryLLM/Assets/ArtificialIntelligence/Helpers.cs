@@ -23,7 +23,12 @@ public static class Helpers
         var characterInformation = JsonSerializer.Deserialize<CharacterInformation>(jsonData, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
         Debug.Assert(characterInformation != null, "Failed to deserialize agent JSON.");
         
-        return new PlayerInfo(storyContext, characterInformation, currentLocation);
+        return new PlayerInfo
+        {
+            StoryContext = storyContext,
+            CharacterInformation = characterInformation,
+            CurrentLocation = currentLocation
+        };
     }
     
     public static async Task<StoryContext> CreateStoryContextFromJsonFile(string fileName)

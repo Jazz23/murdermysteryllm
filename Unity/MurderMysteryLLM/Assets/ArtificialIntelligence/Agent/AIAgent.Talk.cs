@@ -58,12 +58,20 @@ public partial class AIAgent
         if (completion.FinishReason == ChatFinishReason.ToolCalls)
         {
             StopSpeaking();
-            return new Statement(_playerInfo.CharacterInformation.Name, "end_conversation");
+            return new Statement
+            {
+                Speaker = _playerInfo.CharacterInformation.Name,
+                Text = "end_conversation"
+            };
         }
 
         // The conversation continues, append the new goodies to our conversation history
         var words = completion.Content.First().Text;
-        var newStatement = new Statement(_playerInfo.CharacterInformation.Name, words);
+        var newStatement = new Statement
+        {
+            Speaker = _playerInfo.CharacterInformation.Name,
+            Text = words
+        };
         
         CurrentConversation.Add(newStatement);
         agent.CurrentConversation.Add(newStatement);
