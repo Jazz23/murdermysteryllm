@@ -93,6 +93,7 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     public void TakeDoor(string doorName, string message)
     {
         TextCommunication.DisplayStorytellerText(Owner, message);
+        PlayerInfo.CurrentLocation = doorName;
         TakeDoorLocal(Owner, doorName);
     }
 
@@ -102,7 +103,6 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         // Move the player to the new location
         var location = locations.First(x => x.name.ToLower() == doorName.ToLower());
         transform.position = location.position;
-        PlayerInfo.CurrentLocation = doorName;
         
         // Move the camera to the new location but back it up to its original z location
         var newCameraPos = transform.position;

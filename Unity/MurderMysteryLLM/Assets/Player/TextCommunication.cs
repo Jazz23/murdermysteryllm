@@ -69,7 +69,7 @@ public class TextCommunication : NetworkBehaviour
         {
             text = await (textboxInputRequest = new TaskCompletionSource<string>()).Task;
             if (!validOptions.Contains(text))
-                _storytellerText.text = "Invalid input!";
+                _storytellerText.text = $"Invalid input {text}";
         } while (!validOptions.Contains(text));
 
         _storytellerText.text = "";
