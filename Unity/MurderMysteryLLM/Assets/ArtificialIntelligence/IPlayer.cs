@@ -3,6 +3,10 @@ using ArtificialIntelligence.Agent;
 
 namespace ArtificialIntelligence;
 
+/// <summary>
+/// The interface between the AI Library and whatever application is using it. Inherit from this class to play a character
+/// in the game. Both AI and players inherit from this interface.
+/// </summary>
 public interface IPlayer
 {
     public PlayerInfo PlayerInfo { get; }

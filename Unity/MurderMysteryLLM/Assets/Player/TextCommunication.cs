@@ -64,18 +64,22 @@ public class TextCommunication : NetworkBehaviour
     {
         await Awaitable.MainThreadAsync(); // Since we're manipulating UI
         
+        // Continuously poll the user until a valid input is typed into the textbox
         string text;
         do
         {
+            // We get the text from the user by assigning a new textboxInputRequest, then awaiting for it's value.
+            // The OnTextInput event will set the value (result) of this new TaskCompletionSource.
             text = await (textboxInputRequest = new TaskCompletionSource<string>()).Task;
             if (!validOptions.Contains(text))
-                _storytellerText.text = $"Invalid input {text}";
+                _storytellerText.text = $"Invalid input {text}. Must be one of {string.Join(", ", validOptions)}";
         } while (!validOptions.Contains(text));
 
         _storytellerText.text = "";
         ReplyWithText(text);
     }
 
+    // No ownership stuff since this is a scene object
     [ServerRpc(RequireOwnership = false)]
     private void ReplyWithText(string text)
     {

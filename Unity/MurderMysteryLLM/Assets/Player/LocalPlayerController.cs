@@ -25,9 +25,14 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     private Rigidbody2D _rigidBody;
 
     // I gotta stop with the async stuff
-    public override async void OnStartServer()
+    public override void OnStartServer()
     {
-        PlayerInfo = await AIInterface.GetPlayerInfo();
+        Task.Run(async () =>
+        {
+            // SyncVars must be on the main thread
+            await Awaitable.MainThreadAsync();
+            PlayerInfo = await AIInterface.GetPlayerInfo();
+        });
     }
 
     public override void OnStartClient()

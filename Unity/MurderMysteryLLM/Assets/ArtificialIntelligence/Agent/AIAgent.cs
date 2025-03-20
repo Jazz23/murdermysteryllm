@@ -14,7 +14,6 @@ namespace ArtificialIntelligence.Agent;
 public partial class AIAgent : IPlayer
 {
     public PlayerInfo PlayerInfo { get; }
-    private readonly ChatClient _chatClient;
     
     # region Events
 
@@ -25,6 +24,8 @@ public partial class AIAgent : IPlayer
     
     #endregion
 
+    private readonly ChatClient _chatClient;
+    
     public AIAgent(ChatClient chatClient, PlayerInfo playerInfo)
     {
         _chatClient = chatClient;
@@ -37,15 +38,15 @@ public partial class AIAgent : IPlayer
     /// <returns>The assistant reply from ChatGPT</returns>
     private async Task<ChatCompletion> ChatGPT(string userPrompt, ChatCompletionOptions chatCompletionOptions)
     {
-        var context = await BuildChatGPTContext();
+        var context = BuildChatGPTContext();
         context.Add(new UserChatMessage(userPrompt));
         return await _chatClient.CompleteChatAsync(context, chatCompletionOptions);
     }
 
     /// <summary>
-    /// Appends necessary information to chat log, such as the setup prompt and game state.
+    /// Prepends necessary information to chat log, such as the setup prompt and game state.
     /// </summary>
-    /*private*/public async Task<List<ChatMessage>> BuildChatGPTContext()
+    private List<ChatMessage> BuildChatGPTContext()
     {
         var context = new List<ChatMessage>();
 
@@ -74,21 +75,6 @@ public partial class AIAgent : IPlayer
         OnTakeTurn?.Invoke(chosenAction);
         return PlayerActions.DOOR;
     }
-    
-    public async Task<string> AskDoor(string[] adjacentLocations, string prompt)
-    {
-        // TODO: Use ChatGPT tooling to choose a location
-        var chosenDoor = adjacentLocations.First();
-        OnAskDoor?.Invoke(chosenDoor);
-        return chosenDoor;
-    }
-
-    public void TakeDoor(string doorName, string message)
-    {
-        OnTakeDoor?.Invoke(doorName);
-        PlayerInfo.CurrentLocation = doorName;
-        // TODO: Append the message to some type of context object to be used
-    }
 
     /// <summary>
     /// When attached to a method, that method will be invoked during context generation before any chatGPT prompts are made. The return value
@@ -103,7 +89,11 @@ public partial class AIAgent : IPlayer
         /// </summary>
         public static List<ChatMessage> GatherContext(AIAgent agent)
         {
-            var contextMethods = agent.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Where(x => x.GetCustomAttribute<AppendContext>() != null);
+            var contextMethods = agent
+                .GetType()
+                .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                .Where(x => x.GetCustomAttribute<AppendContext>() != null);
+            
             return contextMethods.SelectMany(x => (List<ChatMessage>) x.Invoke(agent, null)!).ToList();
         }
     }
