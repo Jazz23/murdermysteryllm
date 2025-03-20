@@ -46,7 +46,7 @@ public partial class AIAgent
         agent.CurrentConversation ??= new List<Statement>();
         
         // Speak to the agent and append the statement to the respective conversations
-        var prompt = string.Format(Prompt.AgentTalk, agent._playerInfo.CharacterInformation.Name);
+        var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
         var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
         var completion = await ChatGPT(prompt, new ChatCompletionOptions()
         {
@@ -60,7 +60,7 @@ public partial class AIAgent
             StopSpeaking();
             return new Statement
             {
-                Speaker = _playerInfo.CharacterInformation.Name,
+                Speaker = PlayerInfo.CharacterInformation.Name,
                 Text = "end_conversation"
             };
         }
@@ -69,7 +69,7 @@ public partial class AIAgent
         var words = completion.Content.First().Text;
         var newStatement = new Statement
         {
-            Speaker = _playerInfo.CharacterInformation.Name,
+            Speaker = PlayerInfo.CharacterInformation.Name,
             Text = words
         };
         

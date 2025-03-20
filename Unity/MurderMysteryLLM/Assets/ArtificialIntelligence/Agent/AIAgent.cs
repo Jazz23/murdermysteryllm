@@ -11,11 +11,19 @@ using OpenAI.Chat;
 
 namespace ArtificialIntelligence.Agent;
 
-public partial class AIAgent
+public partial class AIAgent : IPlayer
 {
-    public PlayerInfo PlayerInfo;
+    public PlayerInfo PlayerInfo { get; }
     private readonly ChatClient _chatClient;
-    private PlayerInfo _playerInfo;
+    
+    # region Events
+
+    public event Action<PlayerActions> OnTakeTurn;
+    // String is which door was chosen
+    public event Action<string> OnAskDoor;
+    public event Action<string> OnTakeDoor;
+    
+    #endregion
 
     public AIAgent(ChatClient chatClient, PlayerInfo playerInfo)
     {
@@ -41,22 +49,45 @@ public partial class AIAgent
     {
         var context = new List<ChatMessage>();
 
-        var rawCharacterInfo = JsonSerializer.Serialize(_playerInfo.CharacterInformation);
+        var rawCharacterInfo = JsonSerializer.Serialize(PlayerInfo.CharacterInformation);
         var rawMurderInnocentInstructions =
-            _playerInfo.CharacterInformation.Murderer ? Prompt.Murderer : Prompt.Innocent;
-        var rawStoryContext = JsonSerializer.Serialize(_playerInfo.StoryContext);
+            PlayerInfo.CharacterInformation.Murderer ? Prompt.Murderer : Prompt.Innocent;
+        var rawStoryContext = JsonSerializer.Serialize(PlayerInfo.StoryContext);
 
         var setupPrompt = string.Format(Prompt.AgentSetup,
             rawCharacterInfo,
             rawMurderInnocentInstructions,
             rawStoryContext,
-            _playerInfo.CurrentLocation);
+            PlayerInfo.CurrentLocation);
         
         context.Add(new SystemChatMessage(setupPrompt));
         
         // All other custom context methods found in this class
         context.AddRange(AppendContext.GatherContext(this));
         return context;
+    }
+    
+    public async Task<PlayerActions> TakeTurn(string prompt)
+    {
+        // TODO: Use ChatGPT tooling to choose an action https://platform.openai.com/docs/guides/function-calling?api-mode=chat
+        var chosenAction = PlayerActions.DOOR;
+        OnTakeTurn?.Invoke(chosenAction);
+        return PlayerActions.DOOR;
+    }
+    
+    public async Task<string> AskDoor(string[] adjacentLocations, string prompt)
+    {
+        // TODO: Use ChatGPT tooling to choose a location
+        var chosenDoor = adjacentLocations.First();
+        OnAskDoor?.Invoke(chosenDoor);
+        return chosenDoor;
+    }
+
+    public void TakeDoor(string doorName, string message)
+    {
+        OnTakeDoor?.Invoke(doorName);
+        PlayerInfo.CurrentLocation = doorName;
+        // TODO: Append the message to some type of context object to be used
     }
 
     /// <summary>

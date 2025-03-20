@@ -11,10 +11,6 @@ using UnityEngine;
 public class LocalPlayerController : NetworkBehaviour, IPlayer
 {
     public static LocalPlayerController LocalPlayer { get; private set; }
-    /// <summary>
-    /// List of references to the locations the player can move to via the door action.
-    /// </summary>
-    public static List<Transform> locations;
     
     public float speed;
 
@@ -28,12 +24,13 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     private InputAction _moveAction;
     private Rigidbody2D _rigidBody;
 
+    // I gotta stop with the async stuff
     public override async void OnStartServer()
     {
         PlayerInfo = await AIInterface.GetPlayerInfo();
     }
 
-    public override async void OnStartClient()
+    public override void OnStartClient()
     {
         if (!IsOwner)
             return; // This script is attached to someone else in the lobby, don't control them.
@@ -44,26 +41,11 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         LocalPlayer = this;
         _moveAction = InputSystem.actions.FindAction("Move");
         _rigidBody = GetComponent<Rigidbody2D>();
-        await LoadLocations();
     }
 
-    private static async Awaitable LoadLocations()
-    {
-        // Scene objects are synced over the network *after* players spawn in, so we have to wait for the
-        // AIInterface empty from our scene before we can continue using it.
-        while (AIInterface.StoryContext == null)
-            await Task.Delay(100);
-        
-        // Load the locations from the scene by name
-        locations = new List<Transform>();
-        foreach (var location in AIInterface.StoryContext.LocationGraph)
-        {
-            var locationObject = GameObject.Find(location.Name);
-            if (locationObject)
-                locations.Add(locationObject.transform);
-        }
-    }
 
+
+    [Client]
     private void Update()
     {
         _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>() * (Time.deltaTime * speed * 100);
@@ -100,9 +82,7 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     [TargetRpc]
     private void TakeDoorLocal(NetworkConnection conn, string doorName)
     {
-        // Move the player to the new location
-        var location = locations.First(x => x.name.ToLower() == doorName.ToLower());
-        transform.position = location.position;
+        transform.MoveToLocation(doorName);
         
         // Move the camera to the new location but back it up to its original z location
         var newCameraPos = transform.position;

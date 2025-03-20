@@ -169,6 +169,7 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 0}
   MockStoryContext: 1
   MockPlayerInfo: 1
+  _agentPrefab: {fileID: 9045705968601418648, guid: c23f53152b3810d46b8ec677ed940c8b, type: 3}
 --- !u!114 &262817490
 MonoBehaviour:
   m_ObjectHideFlags: 0
