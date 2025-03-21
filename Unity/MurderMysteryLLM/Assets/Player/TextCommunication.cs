@@ -9,7 +9,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // A singleton class attached to the textbox at the bottom of the screen. This handles text user input and sends
-// the data to the server
+// the data to the server.
+// Video documentation: https://gist.github.com/Jazz23/1d9b8b2468f504c80f874ff3155e9569
 [RequireComponent(typeof(TMP_InputField))]
 public class TextCommunication : NetworkBehaviour
 {
@@ -19,10 +20,10 @@ public class TextCommunication : NetworkBehaviour
     private static TextCommunication _instance;
     
     // Use TaskCompletionSource to asynchronously wait until the user enters text
-    private static TaskCompletionSource<string> textboxInputRequest;
+    private static AwaitableCompletionSource<string> textboxInputRequest;
     private string[] _validOptions;
     // Wait until the server receives the text from the RPC
-    private static TaskCompletionSource<string> serverInputRequest;
+    private static AwaitableCompletionSource<string> serverInputRequest;
     
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class TextCommunication : NetworkBehaviour
         _instance = this;
     }
 
+    [Client]
     public void OnTextInput()
     {
         // For some reason this triggers after tabbing in and out
@@ -46,11 +48,11 @@ public class TextCommunication : NetworkBehaviour
     /// Send the user a message and waits for a valid response.
     /// </summary>
     [Server]
-    public static async Task<string> PollUser(NetworkConnection conn, string[] validOptions, string message)
+    public static async Awaitable<string> PollUser(NetworkConnection conn, string[] validOptions, string message)
     {
-        serverInputRequest = new TaskCompletionSource<string>();
+        serverInputRequest = new AwaitableCompletionSource<string>();
         _instance.PostMessageAndRequestTextRpc(conn, validOptions, message);
-        return await serverInputRequest.Task;
+        return await serverInputRequest.Awaitable;
     }
 
     [TargetRpc]
@@ -70,7 +72,7 @@ public class TextCommunication : NetworkBehaviour
         {
             // We get the text from the user by assigning a new textboxInputRequest, then awaiting for it's value.
             // The OnTextInput event will set the value (result) of this new TaskCompletionSource.
-            text = await (textboxInputRequest = new TaskCompletionSource<string>()).Task;
+            text = await (textboxInputRequest = new AwaitableCompletionSource<string>()).Awaitable;
             if (!validOptions.Contains(text))
                 _storytellerText.text = $"Invalid input {text}. Must be one of {string.Join(", ", validOptions)}";
         } while (!validOptions.Contains(text));
