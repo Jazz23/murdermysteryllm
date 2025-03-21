@@ -8,6 +8,8 @@ using OpenAI.Chat;
 namespace ArtificialIntelligence.Agent;
 
 // This partial handles all aspects of the agent talking to other agents and or the player
+// TODO: Add these to the IPlayer interface and make them comptable with the story teller and add events for the Unity team to subscribe to
+// https://github.com/Jazz23/murdermysteryllm/issues/16
 public partial class AIAgent
 {
     /// <summary>

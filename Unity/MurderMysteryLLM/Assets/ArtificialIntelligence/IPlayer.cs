@@ -25,6 +25,9 @@ public interface IPlayer
     /// Invoked by the storyteller after finalizing a new location to be at. This method should move the player.
     /// </summary>
     public void TakeDoor(string doorName, string message);
+    
+    // TODO: Add the rest of actions and their logic
+    // https://github.com/Jazz23/murdermysteryllm/issues/12
 }
 
 public enum PlayerActions
