@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
+using ArtificialIntelligence.StateMachine;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -13,13 +14,13 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     public static LocalPlayerController LocalPlayer { get; private set; }
     
     public float speed;
-
+    public StateMachine StateMachine { get; set; }
     public PlayerInfo PlayerInfo
     {
         get => _syncedPlayerInfo.Value;
         private set => _syncedPlayerInfo.Value = value;
     }
-
+    
     private readonly SyncVar<PlayerInfo> _syncedPlayerInfo = new();
     private InputAction _moveAction;
     private Rigidbody2D _rigidBody;

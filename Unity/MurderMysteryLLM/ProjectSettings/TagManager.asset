@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - TextInput
+  - Location
   layers:
   - Default
   - TransparentFX

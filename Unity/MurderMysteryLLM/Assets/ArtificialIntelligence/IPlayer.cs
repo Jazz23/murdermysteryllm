@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ArtificialIntelligence.Agent;
+using ArtificialIntelligence.StateMachine;
 
 namespace ArtificialIntelligence;
 
@@ -10,6 +11,7 @@ namespace ArtificialIntelligence;
 public interface IPlayer
 {
     public PlayerInfo PlayerInfo { get; }
+    public StateMachine.StateMachine StateMachine { get; set; }
     
     /// <summary>
     /// Given a string message, returns an action to be taken.

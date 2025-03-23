@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8849529931439600874}
   - component: {fileID: 8492710779744241584}
   - component: {fileID: 2181406827357430458}
-  - component: {fileID: 5123882014342580347}
+  - component: {fileID: 294004218418356379}
   m_Layer: 6
   m_Name: Door
   m_TagString: Untagged
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 6.51, y: 13.55}
   m_EdgeRadius: 0
---- !u!114 &5123882014342580347
+--- !u!114 &294004218418356379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,7 +144,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8024364769738781914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61ef1c07e54341128c4d574293ae52e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f60c36abcb6486c91be6ce97e9607b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactMessage: Open Door
+  interactMessage: 
+  location: {fileID: 0}

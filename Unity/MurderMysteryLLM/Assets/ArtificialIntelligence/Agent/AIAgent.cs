@@ -14,7 +14,9 @@ namespace ArtificialIntelligence.Agent;
 public partial class AIAgent : IPlayer
 {
     public PlayerInfo PlayerInfo { get; }
-    
+
+    public StateMachine.StateMachine StateMachine { get; set; }
+
     # region Events
 
     public event Action<PlayerActions> OnTakeTurn;

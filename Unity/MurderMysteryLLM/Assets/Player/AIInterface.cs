@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections;
+using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
+using ArtificialIntelligence.StateMachine;
 using dotenv.net;
+using FishNet.Component.Spawning;
+using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
+using FishNet.Transporting;
 using OpenAI.Chat;
 using UnityEngine;
 
@@ -27,15 +32,19 @@ public class AIInterface : NetworkBehaviour
     /// </summary>
     public static List<Transform> Locations;
 
-    public bool MockStoryContext = true;
-    public bool MockPlayerInfo = true;
-    public int AgentCount = 1;
+    public bool mockStoryContext = true;
+    public bool mockPlayerInfo = true;
+    public int agentCount = 1;
+    public GameObject defaultLocation;
 
     [SerializeField] private NetworkObject _agentPrefab;
     private List<Agent> _agents;
     private Storyteller _storyteller;
     private readonly SyncVar<StoryContext> _syncedStoryContext = new();
     private static AIInterface _instance;
+
+    // We don't want anything to trigger until after initializing our AI Library
+    public void Awake() => enabled = false;
 
     public override void OnStartNetwork()
     {
@@ -45,20 +54,46 @@ public class AIInterface : NetworkBehaviour
     
     public override void OnStartServer()
     {
+        NetworkManager.GetComponent<PlayerSpawner>().OnSpawned += OnPlayerSpawned;
         Task.Run(async () =>
         {
-            await Awaitable.MainThreadAsync();
-            // Only the server should mess around with the AI library
-            await InitAI();
-            LoadLocations();
-            await SpawnAI();
-            await PlayLoop();
+            try
+            {
+                await Awaitable.MainThreadAsync();
+                // Only the server should mess around with the AI library
+                await InitAILibrary();
+                LoadLocations();
+                await SpawnAI();
+                await PlayLoop();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex);
+            }
         });
     }
 
     public override void OnStartClient()
     {
         LoadLocations();
+    }
+
+    [Server]
+    private void OnPlayerSpawned(NetworkObject obj)
+    {
+        var player = obj.GetComponent<IPlayer>();
+        var defaultStateMachine = StateMachine.LocationStateMachines.First(x => x.Location == defaultLocation);
+        
+        defaultStateMachine.AddPlayer(player);
+        player.StateMachine = defaultStateMachine;
+    }
+
+    private void FixedUpdate()
+    {
+        foreach (var sm in StateMachine.LocationStateMachines)
+        {
+            sm.Update();
+        }
     }
     
     private static void LoadLocations()
@@ -68,7 +103,7 @@ public class AIInterface : NetworkBehaviour
         
         // Load the locations from the scene by name
         Locations = new List<Transform>();
-        foreach (var location in AIInterface.StoryContext.LocationGraph)
+        foreach (var location in StoryContext.LocationGraph)
         {
             var locationObject = GameObject.Find(location.Name);
             if (locationObject)
@@ -78,7 +113,7 @@ public class AIInterface : NetworkBehaviour
     
     // Loads prompts and any testing data
     [Server]
-    private async Awaitable InitAI()
+    private async Awaitable InitAILibrary()
     {
         // Place .env in root of unity project
         DotEnv.Load();
@@ -89,7 +124,7 @@ public class AIInterface : NetworkBehaviour
         var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
         await Prompt.LoadPrompts(promptPathPrefix);
 
-        if (MockStoryContext)
+        if (mockStoryContext)
         {
             // If we're mocking story context, load from a file instead of generating it
             StoryContext = await Helpers.CreateStoryContextFromJsonFile(
@@ -97,12 +132,14 @@ public class AIInterface : NetworkBehaviour
         }
 
         _storyteller = new Storyteller();
+        StateMachine.LocationStateMachines =
+            GameObject.FindGameObjectsWithTag("Location").Select(x => new StateMachine { Location = x }).ToArray();
     }
 
     [Server]
     private async Awaitable SpawnAI()
     {
-        _agents = (await InstantiateAsync(_agentPrefab, AgentCount)).Select(x => x.GetComponent<Agent>()).ToList();
+        _agents = (await InstantiateAsync(_agentPrefab, agentCount)).Select(x => x.GetComponent<Agent>()).ToList();
         foreach (var agent in _agents)
         {
             agent.AIAgent = new AIAgent(ChatClient, await GetPlayerInfo());
@@ -128,22 +165,24 @@ public class AIInterface : NetworkBehaviour
     [Server]
     private async Awaitable PlayLoop()
     {
-        // For now we're just gonna loop connected clients (aka humans)
-        while (true)
-        {
-            await Task.Delay(100); // I hate magic numbers, but this stops a deadlock
-            
-            foreach (var networkConnection in ServerManager.Clients.Values.Where(x => x.FirstObject != null).ToList())
-            {
-                // Grab the player controller from the network connection and take it's turn
-                var playerInstance = networkConnection.FirstObject.GetComponent<LocalPlayerController>();
-                await _storyteller.PromptTurn(playerInstance);
-            }
-
-            foreach (var agent in _agents)
-            {
-                await _storyteller.PromptTurn(agent.AIAgent);
-            }
-        }
+        enabled = true;
+        
+        // // For now we're just gonna loop connected clients (aka humans)
+        // while (true)
+        // {
+        //     await Task.Delay(100); // I hate magic numbers, but this stops a deadlock
+        //     
+        //     foreach (var networkConnection in ServerManager.Clients.Values.Where(x => x.FirstObject != null).ToList())
+        //     {
+        //         // Grab the player controller from the network connection and take it's turn
+        //         var playerInstance = networkConnection.FirstObject.GetComponent<LocalPlayerController>();
+        //         await _storyteller.PromptTurn(playerInstance);
+        //     }
+        //
+        //     foreach (var agent in _agents)
+        //     {
+        //         await _storyteller.PromptTurn(agent.AIAgent);
+        //     }
+        // }
     }
 }
