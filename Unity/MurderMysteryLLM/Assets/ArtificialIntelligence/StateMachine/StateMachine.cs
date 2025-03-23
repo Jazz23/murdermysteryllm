@@ -32,7 +32,10 @@ public class StateMachine
         _currentState.Enter();
     }
 
-    public void QueueAction(ActionState action) => QueuedActions.Add(action);
+    public void QueueAction(ActionState action)
+    {
+        QueuedActions.Add(action);
+    }
     
     public void AddPlayer(IPlayer player) => Players.Add(player);
 
@@ -44,6 +47,7 @@ public class StateMachine
         player.StateMachine = other;
         if (CurrentPlayer == player)
             CurrentPlayer = null;
+        QueuedActions.RemoveAll(x => x.Player == player);
     }
 }
 

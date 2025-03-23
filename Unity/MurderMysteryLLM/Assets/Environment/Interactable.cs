@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using FishNet.Object;
+using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public abstract class Interactable : NetworkBehaviour
 {
     public string interactMessage;
 

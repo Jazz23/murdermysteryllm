@@ -88,6 +88,7 @@ public class AIInterface : NetworkBehaviour
         player.StateMachine = defaultStateMachine;
     }
 
+    [Server]
     private void FixedUpdate()
     {
         foreach (var sm in StateMachine.LocationStateMachines)
