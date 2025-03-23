@@ -32,7 +32,7 @@ public class Storyteller
         // Find adjacent locations to the player and format them into a comma separated string
         var adjacentLocations = player.PlayerInfo.StoryContext.LocationGraph
             .Where(x => x.ConnectingLocations.Contains(player.PlayerInfo.CurrentLocation))
-            .Select(x => x.Name)
+            .Select(x => x.Name.ToLower())
             .ToArray();
         var formatted = string.Join(", ", adjacentLocations);
         

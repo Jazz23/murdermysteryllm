@@ -59,10 +59,10 @@ public class TextCommunication : NetworkBehaviour
     private void PostMessageAndRequestTextRpc(NetworkConnection conn, string[] validOptions, string message)
     {
         _storytellerText.text = message;
-        Task.Run(() => RequestText(validOptions, message));
+        Task.Run(() => RequestText(validOptions));
     }
 
-    private async Awaitable RequestText(string[] validOptions, string message)
+    private async Awaitable RequestText(string[] validOptions)
     {
         await Awaitable.MainThreadAsync(); // Since we're manipulating UI
         
@@ -73,9 +73,9 @@ public class TextCommunication : NetworkBehaviour
             // We get the text from the user by assigning a new textboxInputRequest, then awaiting for it's value.
             // The OnTextInput event will set the value (result) of this new TaskCompletionSource.
             text = await (textboxInputRequest = new AwaitableCompletionSource<string>()).Awaitable;
-            if (!validOptions.Contains(text))
+            if (!validOptions.Contains(text.ToLower()))
                 _storytellerText.text = $"Invalid input {text}. Must be one of {string.Join(", ", validOptions)}";
-        } while (!validOptions.Contains(text));
+        } while (!validOptions.Contains(text.ToLower()));
 
         _storytellerText.text = "";
         ReplyWithText(text);
@@ -88,9 +88,20 @@ public class TextCommunication : NetworkBehaviour
         serverInputRequest.SetResult(text);
     }
 
+    /// <summary>
+    /// Send an RPC to the owner to display text
+    /// </summary>
     public static void DisplayStorytellerText(NetworkConnection conn, string message)
     {
         _instance.DisplayTextRpc(conn, message);
+    }
+
+    /// <summary>
+    /// Display text on screen for the local player
+    /// </summary>
+    public static void DisplayStorytellerText(string message)
+    {
+        _instance._storytellerText.text = message;
     }
     
     [TargetRpc]

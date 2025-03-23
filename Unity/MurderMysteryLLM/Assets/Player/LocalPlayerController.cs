@@ -47,9 +47,7 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         _moveAction = InputSystem.actions.FindAction("Move");
         _rigidBody = GetComponent<Rigidbody2D>();
     }
-
-
-
+    
     [Client]
     private void Update()
     {
