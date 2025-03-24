@@ -68,6 +68,11 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         // Cast the response back into the enum
         return Enum.Parse<PlayerActions>(action.ToUpper());
     }
+    
+    public void TurnStart()
+    {
+        
+    }
 
     [Server]
     public async Task<string> AskDoor(string[] adjacentLocations, string prompt)
@@ -86,7 +91,8 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     [TargetRpc]
     private void TakeDoorLocal(NetworkConnection conn, string doorName)
     {
-        transform.MoveToLocation(doorName);
+        var location = AIInterface.Locations.First(x => x.name.ToLower() == doorName.ToLower());
+        transform.position = location.position;
         
         // Move the camera to the new location but back it up to its original z location
         var newCameraPos = transform.position;

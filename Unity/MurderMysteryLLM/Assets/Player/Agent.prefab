@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3437249712277285452}
   - component: {fileID: 9045705968601418648}
   - component: {fileID: 7321504995071337402}
+  - component: {fileID: 3231038141794708593}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -102,9 +103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20008661124b4a0aad004594223cdb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 9045705968601418648}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 9045705968601418648}
 --- !u!114 &9045705968601418648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +122,9 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   <PredictedOwner>k__BackingField: {fileID: 0}
-  NetworkBehaviours: []
+  NetworkBehaviours:
+  - {fileID: 3437249712277285452}
+  - {fileID: 7321504995071337402}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -146,15 +149,15 @@ MonoBehaviour:
   _spectatorInterpolation: 2
   _enableTeleport: 0
   _teleportThreshold: 1
-  <PrefabId>k__BackingField: 65535
+  <PrefabId>k__BackingField: 9
   <SpawnableCollectionId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 14054552784491827775
   <SceneId>k__BackingField: 0
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 0}
-    Scale: {x: 0, y: 0, z: 0}
-    IsValid: 0
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Scale: {x: 1, y: 1, z: 1}
+    IsValid: 1
 --- !u!114 &7321504995071337402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,9 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 9045705968601418648}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 9045705968601418648}
   _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:
@@ -198,3 +201,25 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+--- !u!195 &3231038141794708593
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182942811539460375}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

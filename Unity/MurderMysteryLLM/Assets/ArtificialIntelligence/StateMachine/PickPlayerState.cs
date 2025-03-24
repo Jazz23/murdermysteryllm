@@ -14,6 +14,7 @@ public class PickPlayerState : State
         StateMachine.Players.Add(player);
         
         StateMachine.CurrentPlayer = player;
+        player.TurnStart();
         StateMachine.SetState(new WaitForTurnState());
     }
 

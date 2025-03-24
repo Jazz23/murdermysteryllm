@@ -43,6 +43,9 @@ public class AIInterface : NetworkBehaviour
     private readonly SyncVar<StoryContext> _syncedStoryContext = new();
     private static AIInterface _instance;
 
+    private StateMachine DefaultStateMachine =>
+        StateMachine.LocationStateMachines.First(x => x.Location == defaultLocation);
+
     // We don't want anything to trigger until after initializing our AI Library
     public void Awake() => enabled = false;
 
@@ -82,10 +85,9 @@ public class AIInterface : NetworkBehaviour
     private void OnPlayerSpawned(NetworkObject obj)
     {
         var player = obj.GetComponent<IPlayer>();
-        var defaultStateMachine = StateMachine.LocationStateMachines.First(x => x.Location == defaultLocation);
         
-        defaultStateMachine.AddPlayer(player);
-        player.StateMachine = defaultStateMachine;
+        player.StateMachine = DefaultStateMachine;
+        DefaultStateMachine.AddPlayer(player);
     }
 
     [Server]
@@ -144,6 +146,9 @@ public class AIInterface : NetworkBehaviour
         foreach (var agent in _agents)
         {
             agent.AIAgent = new AIAgent(ChatClient, await GetPlayerInfo());
+            agent.AIAgent.StateMachine = DefaultStateMachine;
+            DefaultStateMachine.AddPlayer(agent.AIAgent);
+            
             ServerManager.Spawn(agent.NetworkObject);
         }
     }

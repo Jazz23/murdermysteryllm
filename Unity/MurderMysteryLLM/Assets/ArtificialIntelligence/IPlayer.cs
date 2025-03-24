@@ -17,6 +17,8 @@ public interface IPlayer
     /// Given a string message, returns an action to be taken.
     /// </summary>
     public Task<PlayerActions> TakeTurn(string prompt);
+
+    public void TurnStart();
     
     /// <summary>
     /// "Which door would you like to enter?" Returns the name of the desired location.

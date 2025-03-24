@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
+using ArtificialIntelligence.StateMachine;
 using OpenAI.Chat;
 
 namespace ArtificialIntelligence.Agent;
@@ -23,6 +24,7 @@ public partial class AIAgent : IPlayer
     // String is which door was chosen
     public event Action<string> OnAskDoor;
     public event Action<string> OnTakeDoor;
+    public event Action OnTurnStart;
     
     #endregion
 
@@ -76,6 +78,11 @@ public partial class AIAgent : IPlayer
         var chosenAction = PlayerActions.DOOR;
         OnTakeTurn?.Invoke(chosenAction);
         return PlayerActions.DOOR;
+    }
+
+    public void TurnStart()
+    {
+        OnTurnStart?.Invoke();
     }
 
     /// <summary>
