@@ -20,9 +20,7 @@ public partial class AIAgent : IPlayer
 
     # region Events
 
-    public event Action<PlayerActions> OnTakeTurn;
     // String is which door was chosen
-    public event Action<string> OnAskDoor;
     public event Action<string> OnTakeDoor;
     public event Action OnTurnStart;
     
@@ -70,14 +68,6 @@ public partial class AIAgent : IPlayer
         // All other custom context methods found in this class
         context.AddRange(AppendContext.GatherContext(this));
         return context;
-    }
-    
-    public async Task<PlayerActions> TakeTurn(string prompt)
-    {
-        // TODO: Use ChatGPT tooling to choose an action https://platform.openai.com/docs/guides/function-calling?api-mode=chat
-        var chosenAction = PlayerActions.DOOR;
-        OnTakeTurn?.Invoke(chosenAction);
-        return PlayerActions.DOOR;
     }
 
     public void TurnStart()

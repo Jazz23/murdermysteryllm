@@ -54,30 +54,10 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     {
         _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>() * (Time.deltaTime * speed * 100);
     }
-
-    [Server]
-    public async Task<PlayerActions> TakeTurn(string prompt)
-    {
-        // TODO: Have actual UI for storyteller. Replace all these Debug.Logs.
-
-        // Convert the action enum to a list of strings
-        var actionList = Enum.GetNames(typeof(PlayerActions)).Select(x => x.ToLower()).ToArray();
-        var actionListCommaSeparated = string.Join(", ", actionList);
-        // Ask the user TODO: Use real prompts here
-        var action = await TextCommunication.PollUser(Owner, actionList, $"Reply with either {actionListCommaSeparated}");
-        // Cast the response back into the enum
-        return Enum.Parse<PlayerActions>(action.ToUpper());
-    }
     
     public void TurnStart()
     {
         
-    }
-
-    [Server]
-    public async Task<string> AskDoor(string[] adjacentLocations, string prompt)
-    {
-        return await TextCommunication.PollUser(Owner, adjacentLocations, prompt);
     }
 
     [Server]

@@ -13,18 +13,8 @@ public interface IPlayer
     public PlayerInfo PlayerInfo { get; }
     public StateMachine.StateMachine StateMachine { get; set; }
     
-    /// <summary>
-    /// Given a string message, returns an action to be taken.
-    /// </summary>
-    public Task<PlayerActions> TakeTurn(string prompt);
-
     public void TurnStart();
     
-    /// <summary>
-    /// "Which door would you like to enter?" Returns the name of the desired location.
-    /// </summary>
-    public Task<string> AskDoor(string[] adjacentLocations, string prompt);
-
     /// <summary>
     /// Invoked by the storyteller after finalizing a new location to be at. This method should move the player.
     /// </summary>

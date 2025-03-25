@@ -4,15 +4,6 @@ namespace ArtificialIntelligence.Agent;
 
 public partial class AIAgent
 {
-    public async Task<string> AskDoor(string[] adjacentLocations, string prompt)
-    {
-        // TODO: Use ChatGPT tooling to choose a location
-        // https://github.com/Jazz23/murdermysteryllm/issues/11
-        var chosenDoor = adjacentLocations.First();
-        OnAskDoor?.Invoke(chosenDoor);
-        return chosenDoor;
-    }
-
     public void TakeDoor(string doorName, string message)
     {
         PlayerInfo.CurrentLocation = doorName;
