@@ -67,7 +67,7 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         var clue = obj.GetComponent<Searchable>().Search();
         CluesFound.Add(clue);
         
-        // Do animation here
+        Clue.UpdateClueStickys(CluesFound);
         Clue.DisplayClue(clue);
     }
 
