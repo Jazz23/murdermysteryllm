@@ -46,7 +46,7 @@ public class InteractableManager : NetworkBehaviour
             if (_activelyHovered) return;
             
             _activelyHovered = interactable;
-            TextCommunication.DisplayStorytellerText(interactable.interactMessage);
+            TextCommunication.DisplayStorytellerText(interactable.hoverMessage);
             interactable.OnHoverNear();
 
             return;

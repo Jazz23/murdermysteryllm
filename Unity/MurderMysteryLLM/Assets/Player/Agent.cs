@@ -1,4 +1,5 @@
 ﻿
+using System.Runtime.CompilerServices;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using FishNet.Object;
@@ -14,9 +15,15 @@ public class Agent : NetworkBehaviour
     {
         AIAgent.OnTakeDoor += OnTakeDoor;
         AIAgent.OnTurnStart += OnTurnStart;
+        AIAgent.OnSearch += OnSearch;
         _navAgent = GetComponent<NavMeshAgent>();
         _navAgent.updateRotation = false;
         _navAgent.updateUpAxis = false;
+    }
+
+    private void OnSearch(NetworkObject obj)
+    {
+        AIAgent.CluesFound.Add(obj.GetComponent<Searchable>().Search());
     }
 
     private void OnTurnStart()

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
+using FishNet.Object;
 
 namespace ArtificialIntelligence;
 
@@ -11,9 +12,12 @@ namespace ArtificialIntelligence;
 public interface IPlayer
 {
     public PlayerInfo PlayerInfo { get; }
+    public HashSet<string> CluesFound { get; }
     public StateMachine.StateMachine StateMachine { get; set; }
     
     public void TurnStart();
+    
+    public void Search(NetworkObject obj);
     
     /// <summary>
     /// Invoked by the storyteller after finalizing a new location to be at. This method should move the player.

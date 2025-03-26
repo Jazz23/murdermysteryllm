@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
@@ -15,6 +16,7 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     
     public float speed;
     public StateMachine StateMachine { get; set; }
+    public HashSet<string> CluesFound { get; } = new();
     public PlayerInfo PlayerInfo
     {
         get => _syncedPlayerInfo.Value;
@@ -58,6 +60,15 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     public void TurnStart()
     {
         
+    }
+
+    public void Search(NetworkObject obj)
+    {
+        var clue = obj.GetComponent<Searchable>().Search();
+        CluesFound.Add(clue);
+        
+        // Do animation here
+        Clue.DisplayClue(clue);
     }
 
     [Server]

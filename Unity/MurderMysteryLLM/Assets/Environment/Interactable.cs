@@ -1,14 +1,36 @@
-﻿using FishNet.Object;
+﻿using FishNet.Connection;
+using FishNet.Object;
 using UnityEngine;
 
+/// <summary>
+/// Must add a collider and set the layer to interactable on the gameobject.
+/// </summary>
+[RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : NetworkBehaviour
 {
-    public string interactMessage;
+    public string hoverMessage;
 
     /// <summary>
-    /// Invoked by InteractionManager when the local player interacts with this object
+    /// Local player interacts with this object
     /// </summary>
-    public virtual void OnInteraction() { }
+    public virtual void OnInteractionLocal() { }
+    /// <summary>
+    /// Client has sent an RPC to the server letting the server know about it's interaction
+    /// </summary>
+    /// <param name="conn"></param>
+    public virtual void OnInteractionServer(NetworkConnection conn) { }
     public virtual void OnHoverNear() { }
     public virtual void OnHoverLeave() { }
+
+    public void OnInteraction()
+    {
+        OnInteractionLocal();
+        ClientInteracted();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ClientInteracted(NetworkConnection conn = null)
+    {
+        OnInteractionServer(conn);
+    }
 }

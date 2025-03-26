@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.StateMachine;
+using FishNet.Object;
 using OpenAI.Chat;
 
 namespace ArtificialIntelligence.Agent;
@@ -22,6 +23,7 @@ public partial class AIAgent : IPlayer
 
     // String is which door was chosen
     public event Action<string> OnTakeDoor;
+    public event Action<NetworkObject> OnSearch;
     public event Action OnTurnStart;
     
     #endregion
