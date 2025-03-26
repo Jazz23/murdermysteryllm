@@ -62,11 +62,17 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
         
     }
 
+    [Server]
     public void Search(NetworkObject obj)
     {
         var clue = obj.GetComponent<Searchable>().Search();
+        AddClueLocal(Owner, clue);
+    }
+
+    [TargetRpc]
+    private void AddClueLocal(NetworkConnection conn, string clue)
+    {
         CluesFound.Add(clue);
-        
         Clue.UpdateClueStickys(CluesFound);
         Clue.DisplayClue(clue);
     }

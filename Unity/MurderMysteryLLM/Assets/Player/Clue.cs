@@ -36,7 +36,6 @@ public class Clue : MonoBehaviour
             await Awaitable.WaitForSecondsAsync(clueDisplaySeconds);
             cluePanel.SetActive(false);
         });
-
     }
 
     /// <summary>
