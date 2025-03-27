@@ -11,13 +11,6 @@ namespace ArtificialIntelligence;
 
 public static class Helpers
 {
-    public static async Task<AIAgent> CreateAgentFromJsonFile(string fileName, ChatClient chatClient, string currentLocation, StoryContext storyContext)
-    {
-        var playerInfo = await GetPlayerInfoFromJsonFile(fileName, currentLocation, storyContext);
-        
-        return new AIAgent(chatClient, playerInfo);
-    }
-
     public static StateMachine.StateMachine GetStateMachine(this NetworkConnection conn) =>
         conn.FirstObject.GetComponent<LocalPlayerController>().StateMachine;
 

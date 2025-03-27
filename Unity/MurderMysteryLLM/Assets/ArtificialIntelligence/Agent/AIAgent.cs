@@ -7,33 +7,28 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
+using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using FishNet.Object;
 using OpenAI.Chat;
+using UnityEngine;
+using UnityEngine.AI;
 
-namespace ArtificialIntelligence.Agent;
-
-public partial class AIAgent : IPlayer
+public partial class AIAgent : NetworkBehaviour, IPlayer
 {
-    public PlayerInfo PlayerInfo { get; }
+    public PlayerInfo PlayerInfo { get; set; }
+    public ChatClient ChatClient { get; set; }
 
-    public StateMachine.StateMachine StateMachine { get; set; }
-
-    # region Events
-
-    // String is which door was chosen
-    public event Action<string> OnTakeDoor;
-    public event Action<NetworkObject> OnSearch;
-    public event Action OnTurnStart;
-    
-    #endregion
+    public StateMachine StateMachine { get; set; }
 
     private readonly ChatClient _chatClient;
-    
-    public AIAgent(ChatClient chatClient, PlayerInfo playerInfo)
+    private NavMeshAgent _navAgent;
+
+    public void Start()
     {
-        _chatClient = chatClient;
-        PlayerInfo = playerInfo;
+        _navAgent = GetComponent<NavMeshAgent>();
+        _navAgent.updateRotation = false;
+        _navAgent.updateUpAxis = false;
     }
     
     /// <summary>
@@ -74,7 +69,22 @@ public partial class AIAgent : IPlayer
 
     public void TurnStart()
     {
-        OnTurnStart?.Invoke();
+        
+        // For now, just pick the nearest door and go to it
+        var targetDoor = gameObject.GetCurrentLocation().GetComponentsInChildren<Door>()
+            .First();
+        
+        _navAgent.destination = targetDoor.transform.position;
+        
+        Task.Run(async () =>
+        {
+            await Awaitable.MainThreadAsync();
+            await Awaitable.NextFrameAsync(); // Make sure we start moving
+            while (_navAgent.velocity != Vector3.zero)
+                await Awaitable.NextFrameAsync();
+            
+            StateMachine.QueueAction(new DoorAction { Location = targetDoor.location, Player = this });
+        });
     }
 
     /// <summary>

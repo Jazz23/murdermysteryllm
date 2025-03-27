@@ -10,7 +10,7 @@ using FishNet.Object.Synchronizing;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class LocalPlayerController : NetworkBehaviour, IPlayer
+public partial class LocalPlayerController : NetworkBehaviour, IPlayer
 {
     public static LocalPlayerController LocalPlayer { get; private set; }
     
@@ -60,40 +60,5 @@ public class LocalPlayerController : NetworkBehaviour, IPlayer
     public void TurnStart()
     {
         
-    }
-
-    [Server]
-    public void Search(NetworkObject obj)
-    {
-        var clue = obj.GetComponent<Searchable>().Search();
-        AddClueLocal(Owner, clue);
-    }
-
-    [TargetRpc]
-    private void AddClueLocal(NetworkConnection conn, string clue)
-    {
-        CluesFound.Add(clue);
-        Clue.UpdateClueStickys(CluesFound);
-        Clue.DisplayClue(clue);
-    }
-
-    [Server]
-    public void TakeDoor(string doorName, string message)
-    {
-        TextCommunication.DisplayStorytellerText(Owner, message);
-        PlayerInfo.CurrentLocation = doorName;
-        TakeDoorLocal(Owner, doorName);
-    }
-
-    [TargetRpc]
-    private void TakeDoorLocal(NetworkConnection conn, string doorName)
-    {
-        var location = AIInterface.Locations.First(x => x.name.ToLower() == doorName.ToLower());
-        transform.position = location.position;
-        
-        // Move the camera to the new location but back it up to its original z location
-        var newCameraPos = transform.position;
-        newCameraPos.z = Camera.main!.transform.position.z;
-        Camera.main!.transform.position = newCameraPos;
     }
 }

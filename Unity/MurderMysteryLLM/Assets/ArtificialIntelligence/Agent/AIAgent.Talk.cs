@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
+using ArtificialIntelligence.Agent;
 using OpenAI.Chat;
-
-namespace ArtificialIntelligence.Agent;
 
 // This partial handles all aspects of the agent talking to other agents and or the player
 // TODO: Add these to the IPlayer interface and make them comptable with the story teller and add events for the Unity team to subscribe to

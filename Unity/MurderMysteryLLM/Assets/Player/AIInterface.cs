@@ -36,15 +36,15 @@ public class AIInterface : NetworkBehaviour
     public bool mockPlayerInfo = true;
     public int agentCount = 1;
     public GameObject defaultLocation;
+    private static StateMachine DefaultStateMachine =>
+        StateMachine.LocationStateMachines.First(x => x.Location == _instance.defaultLocation);
 
     [SerializeField] private NetworkObject _agentPrefab;
-    private List<Agent> _agents;
+    private List<AIAgent> _agents;
     private Storyteller _storyteller;
     private readonly SyncVar<StoryContext> _syncedStoryContext = new();
     private static AIInterface _instance;
 
-    private StateMachine DefaultStateMachine =>
-        StateMachine.LocationStateMachines.First(x => x.Location == defaultLocation);
 
     // We don't want anything to trigger until after initializing our AI Library
     public void Awake() => enabled = false;
@@ -142,14 +142,16 @@ public class AIInterface : NetworkBehaviour
     [Server]
     private async Awaitable SpawnAI()
     {
-        _agents = (await InstantiateAsync(_agentPrefab, agentCount)).Select(x => x.GetComponent<Agent>()).ToList();
+        _agents = (await InstantiateAsync(_agentPrefab, agentCount)).Select(x => x.GetComponent<AIAgent>()).ToList();
+        
         foreach (var agent in _agents)
         {
-            agent.AIAgent = new AIAgent(ChatClient, await GetPlayerInfo());
-            agent.AIAgent.StateMachine = DefaultStateMachine;
-            DefaultStateMachine.AddPlayer(agent.AIAgent);
-            
             ServerManager.Spawn(agent.NetworkObject);
+            
+            agent.ChatClient = ChatClient;
+            agent.PlayerInfo = await GetPlayerInfo();
+            agent.StateMachine = DefaultStateMachine;
+            DefaultStateMachine.AddPlayer(agent);
         }
     }
 

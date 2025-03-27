@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 172221160341522139}
   - component: {fileID: 6995566203346143929}
-  - component: {fileID: 3437249712277285452}
   - component: {fileID: 9045705968601418648}
   - component: {fileID: 7321504995071337402}
   - component: {fileID: 3231038141794708593}
+  - component: {fileID: 1415290296900795250}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -91,21 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3437249712277285452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9182942811539460375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20008661124b4a0aad004594223cdb9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 9045705968601418648}
-  _networkObjectCache: {fileID: 9045705968601418648}
 --- !u!114 &9045705968601418648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +108,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   <PredictedOwner>k__BackingField: {fileID: 0}
   NetworkBehaviours:
-  - {fileID: 3437249712277285452}
+  - {fileID: 0}
   - {fileID: 7321504995071337402}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
@@ -223,3 +208,18 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1415290296900795250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182942811539460375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4578e307c6d513143a1eef5956ba6fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 9045705968601418648}
+  _networkObjectCache: {fileID: 0}
