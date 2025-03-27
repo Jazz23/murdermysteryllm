@@ -6,9 +6,10 @@ public class Searchable : Interactable
 {
     public string clue = "This is an example clue.";
 
-    public override void OnInteractionServer(NetworkConnection conn)
+    public override void OnInteraction()
     {
-        conn.GetStateMachine().QueueAction(new SearchAction { Item = NetworkObject, Player = conn.GetPlayer()});
+        var player = LocalPlayerController.LocalPlayer;
+        player.StateMachine.QueueAction(new SearchAction { Item = NetworkObject, Player = player });
     }
     
     public string Search()

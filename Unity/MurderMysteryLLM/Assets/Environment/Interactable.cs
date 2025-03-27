@@ -9,28 +9,11 @@ using UnityEngine;
 public abstract class Interactable : NetworkBehaviour
 {
     public string hoverMessage;
-
-    /// <summary>
-    /// Local player interacts with this object
-    /// </summary>
-    public virtual void OnInteractionLocal() { }
     /// <summary>
     /// Client has sent an RPC to the server letting the server know about it's interaction
     /// </summary>
     /// <param name="conn"></param>
-    public virtual void OnInteractionServer(NetworkConnection conn) { }
+    public virtual void OnInteraction() { }
     public virtual void OnHoverNear() { }
     public virtual void OnHoverLeave() { }
-
-    public void OnInteraction()
-    {
-        OnInteractionLocal();
-        ClientInteracted();
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void ClientInteracted(NetworkConnection conn = null)
-    {
-        OnInteractionServer(conn);
-    }
 }

@@ -8,9 +8,9 @@ public class Door : Interactable
 {
     public GameObject location;
     
-    public override void OnInteractionServer(NetworkConnection conn)
+    public override void OnInteraction()
     {
-        var player = conn!.FirstObject.GetComponentInChildren<IPlayer>();
+        var player = LocalPlayerController.LocalPlayer;
         player.StateMachine.QueueAction(new DoorAction { Location = location, Player = player });
     }
 }
