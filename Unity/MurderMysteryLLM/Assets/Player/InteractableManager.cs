@@ -37,7 +37,8 @@ public class InteractableManager : NetworkBehaviour
         Array.Clear(colliderResults, 0, colliderResults.Length);
         Physics2D.OverlapCircleNonAlloc(transform.position, searchRadius, colliderResults, LayerMask.GetMask("Interactable"));
         
-        foreach (var hit in colliderResults)
+        // Iterate each collider in order of closest to farthest
+        foreach (var hit in colliderResults.Where(x => x).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)))
         {
             if (!hit || !hit.TryGetComponent<Interactable>(out var interactable))
                 continue;
