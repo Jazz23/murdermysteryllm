@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
-using FishNet.Object;
+using UnityEngine;
 
 namespace ArtificialIntelligence;
 
@@ -17,13 +17,15 @@ public interface IPlayer
     
     public void TurnStart();
     
-    public void Search(NetworkObject obj);
+    public void Search(GameObject obj);
     
     /// <summary>
     /// Invoked by the storyteller after finalizing a new location to be at. This method should move the player.
     /// </summary>
     public void TakeDoor(string doorName, string message);
-    
+
+    public void TalkTo(IPlayer other);
+
     // TODO: Add the rest of actions and their logic
     // https://github.com/Jazz23/murdermysteryllm/issues/12
 }

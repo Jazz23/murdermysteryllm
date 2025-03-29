@@ -84,4 +84,8 @@ public partial class AIAgent
     /// Resets the current conversation to null. TODO: Previous messages should already summarized and stored and added for future context.
     /// </summary>
     public void StopSpeaking() => CurrentConversation = null;
+    
+    public void TalkTo(IPlayer other)
+    {
+    }
 }

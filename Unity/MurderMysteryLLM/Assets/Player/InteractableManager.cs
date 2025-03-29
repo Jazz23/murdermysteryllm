@@ -1,31 +1,22 @@
 ﻿using System;
-using FishNet.Object;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class InteractableManager : NetworkBehaviour
+public class InteractableManager : MonoBehaviour
 {
     public float searchRadius = 1.5f;
     private Interactable _activelyHovered;
     private Collider2D[] colliderResults = new Collider2D[10];
     
-    public override void OnStartClient()
+    public void Start()
     {
-        // We only manage the local player's interactables, not others
-        if (!IsOwner)
-            return;
-
-        enabled = true;
         InputSystem.actions.FindAction("Interact").started += OnInteractKey;
     }
 
     private void OnInteractKey(InputAction.CallbackContext obj)
     {
-        if (!_activelyHovered)
-            return;
-        
-        _activelyHovered.OnInteraction();
+        _activelyHovered?.OnInteraction();
     }
 
     void Update()
@@ -44,7 +35,7 @@ public class InteractableManager : NetworkBehaviour
                 continue;
 
             // If we've already hit this interactable, no further action is needed.
-            if (_activelyHovered) return;
+            if (_activelyHovered != null) return;
             
             _activelyHovered = interactable;
             TextCommunication.DisplayStorytellerText(interactable.hoverMessage);
@@ -54,7 +45,7 @@ public class InteractableManager : NetworkBehaviour
         }
         
         // If we previously were interacting with something but we are no longer, reset the text
-        if (_activelyHovered)
+        if (_activelyHovered != null)
         {
             TextCommunication.DisplayStorytellerText("");
             _activelyHovered.OnHoverLeave();

@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
-using FishNet.Object;
 using OpenAI.Chat;
 using UnityEngine;
 using UnityEngine.AI;
 
-public partial class AIAgent : NetworkBehaviour, IPlayer
+public partial class AIAgent : MonoBehaviour, IPlayer
 {
     public PlayerInfo PlayerInfo { get; set; }
     public ChatClient ChatClient { get; set; }

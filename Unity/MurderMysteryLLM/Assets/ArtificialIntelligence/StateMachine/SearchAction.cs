@@ -1,10 +1,10 @@
-﻿using FishNet.Object;
+﻿using UnityEngine;
 
 namespace ArtificialIntelligence.StateMachine;
 
 public class SearchAction : ActionState
 {
-    public NetworkObject Item;
+    public GameObject Item;
     
     public override void Enter()
     {

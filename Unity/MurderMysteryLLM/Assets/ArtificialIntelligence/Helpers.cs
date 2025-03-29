@@ -4,19 +4,12 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ArtificialIntelligence.Agent;
-using FishNet.Connection;
 using OpenAI.Chat;
 
 namespace ArtificialIntelligence;
 
 public static class Helpers
 {
-    public static StateMachine.StateMachine GetStateMachine(this NetworkConnection conn) =>
-        conn.FirstObject.GetComponent<LocalPlayerController>().StateMachine;
-
-    public static IPlayer GetPlayer(this NetworkConnection conn) =>
-        conn.FirstObject.GetComponent<LocalPlayerController>();
-    
     public static async Task<PlayerInfo> GetPlayerInfoFromJsonFile(string fileName, string currentLocation, StoryContext storyContext)
     {
         var jsonData = await File.ReadAllTextAsync(fileName);

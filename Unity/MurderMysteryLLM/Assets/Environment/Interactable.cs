@@ -1,12 +1,10 @@
-﻿using FishNet.Connection;
-using FishNet.Object;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Must add a collider and set the layer to interactable on the gameobject.
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
-public abstract class Interactable : NetworkBehaviour
+public abstract class Interactable : MonoBehaviour
 {
     public string hoverMessage;
     /// <summary>

@@ -4,7 +4,7 @@ public partial class LocalPlayerController
 {
     public void TakeDoor(string doorName, string message)
     {
-        TextCommunication.DisplayStorytellerText(Owner, message);
+        // TextCommunication.DisplayStorytellerText(Owner, message);
         PlayerInfo.CurrentLocation = doorName;
         var location = AIInterface.Locations.First(x => x.name.ToLower() == doorName.ToLower());
         transform.position = location.position;

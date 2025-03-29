@@ -1,9 +1,8 @@
-﻿using FishNet.Object;
-using UnityEngine;
+﻿using UnityEngine;
 
 public partial class LocalPlayerController
 {
-    public void Search(NetworkObject obj)
+    public void Search(GameObject obj)
     {
         var clue = obj.GetComponent<Searchable>().Search();
         CluesFound.Add(clue);

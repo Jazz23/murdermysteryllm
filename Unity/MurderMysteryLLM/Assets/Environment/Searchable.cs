@@ -1,6 +1,5 @@
 ﻿using ArtificialIntelligence;
 using ArtificialIntelligence.StateMachine;
-using FishNet.Connection;
 
 public class Searchable : Interactable
 {
@@ -9,7 +8,7 @@ public class Searchable : Interactable
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
-        player.StateMachine.QueueAction(new SearchAction { Item = NetworkObject, Player = player });
+        player.StateMachine.QueueAction(new SearchAction { Item = gameObject, Player = player });
     }
     
     public string Search()

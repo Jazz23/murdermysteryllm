@@ -1,7 +1,5 @@
 ﻿using ArtificialIntelligence;
 using ArtificialIntelligence.StateMachine;
-using FishNet.Connection;
-using FishNet.Object;
 using UnityEngine;
 
 public class Door : Interactable
