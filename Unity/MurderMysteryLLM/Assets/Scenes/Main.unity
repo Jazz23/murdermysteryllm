@@ -2224,7 +2224,7 @@ GameObject:
   - component: {fileID: 1702154961}
   - component: {fileID: 1702154960}
   - component: {fileID: 1702154958}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WoodCrate (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2373,7 +2373,7 @@ GameObject:
   - component: {fileID: 1768183238}
   - component: {fileID: 1768183237}
   - component: {fileID: 1768183240}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WoodCrate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

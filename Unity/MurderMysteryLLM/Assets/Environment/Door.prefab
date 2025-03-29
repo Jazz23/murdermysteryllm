@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8492710779744241584}
   - component: {fileID: 2181406827357430458}
   - component: {fileID: 294004218418356379}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,8 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f60c36abcb6486c91be6ce97e9607b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 0}
   hoverMessage: 
   location: {fileID: 0}
