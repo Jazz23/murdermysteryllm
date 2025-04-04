@@ -1,7 +1,7 @@
 ﻿public partial class LocalPlayerController
 {
-    public void TalkTo(IPlayer other)
+    public void TalkTo()
     {
-        
+        return;
     }
 }

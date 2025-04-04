@@ -43,4 +43,9 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     {
         
     }
+
+    public void TalkTo(IPlayer other)
+    {
+        throw new System.NotImplementedException();
+    }
 }
