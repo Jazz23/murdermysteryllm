@@ -82,7 +82,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             while (_navAgent.velocity != Vector3.zero)
                 await Awaitable.NextFrameAsync();
             
-            StateMachine.QueueAction(new DoorAction { Location = targetDoor.location, Player = this });
+            StateMachine.QueueAction(new DoorAction { Location = targetDoor.Location, Player = this });
         });
     }
 

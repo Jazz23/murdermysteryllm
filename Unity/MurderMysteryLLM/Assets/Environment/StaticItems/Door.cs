@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Door : Interactable
 {
-    public GameObject location;
-    
+    [SerializeField]
+    private GameObject location;
+
+    public GameObject Location
+    {
+        get { return location; }
+        set { location = value; }
+    }
+
+
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
