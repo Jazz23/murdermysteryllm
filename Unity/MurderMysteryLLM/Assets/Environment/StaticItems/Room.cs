@@ -1,6 +1,9 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+
+[ExecuteInEditMode]
 public class Room : MonoBehaviour
 {
     public enum RoomType
@@ -26,6 +29,13 @@ public class Room : MonoBehaviour
     [SerializeField]
     private Door[] doors;
 
+    public Door[] Doors
+    {
+        get => doors;
+        set => doors = value;
+    }
+
+
     [SerializeField]
     private Dictionary<Door, Room> neighbors = new Dictionary<Door, Room>();
 
@@ -41,6 +51,12 @@ public class Room : MonoBehaviour
     {
         
     }
+
+    private void Update(){
+        // handle destroyed furniture
+    }
+
+
 
     private void OnSpawn(Room[] neighbors)
     {
@@ -90,6 +106,8 @@ public class Room : MonoBehaviour
     {
 
     }
+
+
 
 
 
