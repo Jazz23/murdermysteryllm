@@ -10,7 +10,7 @@ using UnityEditor.Rendering.Universal;
 public class RoomGenerator : MonoBehaviour
 {
     [SerializeField]
-    private int ROW_ROOMS = 2;
+    private int ROW_ROOMS = 3;
 
     [SerializeField]
     private int COL_ROOMS = 3;
@@ -41,25 +41,66 @@ public class RoomGenerator : MonoBehaviour
 
 
     }
-    public void GenerateRoom() {
-        for (int r = 0; r < ROW_ROOMS; r++) {
-            for (int c = 0; c < COL_ROOMS; c++)
-            {
-                Room room = Instantiate(roomPrefab, new Vector3(r * OFFSET, c * OFFSET, 0), Quaternion.identity).GetComponent<Room>();
-                room.transform.parent = this.transform;
-                room.name = $"Room_{r}_{c}";
-                roomCached[room.name] = room;
+    public void GenerateRoom()
+	{
+		for (int r = 0; r < ROW_ROOMS; r++)
+		{
+			for (int c = 0; c < COL_ROOMS; c++)
+			{
+				Room room = Instantiate(roomPrefab, new Vector3(r * OFFSET, c * OFFSET, 0), Quaternion.identity).GetComponent<Room>();
+				room.transform.parent = this.transform;
+				room.name = $"Room_{r}_{c}";
+				roomCached[room.name] = room;
+				UpdateDoorWays(room, r, c); // Update the doorways based on the room's position
 
-                UpdateDoorWays(room, r,c);
-            }
-        }
+			}
+		}
 
-        
-        // Build Nav Mesh Agent
-        surface.BuildNavMeshAsync();
-    }
+		ConnectDoorWays();
 
-    private void UpdateDoorWays(Room room, int r, int c)
+
+		// Build Nav Mesh Agent
+		surface.BuildNavMeshAsync();
+	}
+
+	private void ConnectDoorWays()
+	{
+		for (int r = 0; r < ROW_ROOMS; r++)
+		{
+			for (int c = 0; c < COL_ROOMS; c++)
+			{
+				Room room = roomCached[$"Room_{r}_{c}"];
+				Door[] doors = room.GetComponentsInChildren<Door>();
+
+				foreach (Door door in doors)
+				{
+					switch (door.name)
+					{
+						case "North Door":
+							if (c < COL_ROOMS - 1)
+								door.Location = roomCached[$"Room_{r}_{c + 1}"].gameObject;
+							break;
+						case "South Door":
+							if (c > 0)
+								door.Location = roomCached[$"Room_{r}_{c - 1}"].gameObject;
+							break;
+						case "West Door":
+							if (r > 0)
+								door.Location = roomCached[$"Room_{r - 1}_{c}"].gameObject;
+							break;
+						case "East Door":
+							if (r < ROW_ROOMS - 1)
+								door.Location = roomCached[$"Room_{r + 1}_{c}"].gameObject;
+							break;
+					}
+				}
+
+
+			}
+		}
+	}
+
+	private void UpdateDoorWays(Room room, int r, int c)
     {
         Door[] doors = room.Doors;
         for (int i = 0; i < doors.Length; i++)
@@ -67,19 +108,15 @@ public class RoomGenerator : MonoBehaviour
             switch (doors[i].name)
             {
                 case "North Door":
-                    // North neighbor exists if c < COL_ROOMS - 1
                     doors[i].gameObject.SetActive(c < COL_ROOMS - 1);
                     break;
                 case "South Door":
-                    // South neighbor exists if c > 0
                     doors[i].gameObject.SetActive(c > 0);
                     break;
                 case "West Door":
-                    // West neighbor exists if r > 0
                     doors[i].gameObject.SetActive(r > 0);
                     break;
                 case "East Door":
-                    // East neighbor exists if r < ROW_ROOMS - 1
                     doors[i].gameObject.SetActive(r < ROW_ROOMS - 1);
                     break;
             }

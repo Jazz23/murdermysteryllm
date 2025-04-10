@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: decd72146c536bd49ade820fd859690b, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1329,6 +1329,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grand Library Door
       objectReference: {fileID: 0}
+    - target: {fileID: 8024364769738781914, guid: d0905647da3f21c4e95cea207b601adf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8849529931439600874, guid: d0905647da3f21c4e95cea207b601adf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.02
@@ -2518,14 +2522,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7492197193086023070, guid: e07060dffbedd6743be022a38e929603, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 3200179871
-      objectReference: {fileID: 0}
-    - target: {fileID: 2101142155320000500, guid: e07060dffbedd6743be022a38e929603, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 781647611
-      objectReference: {fileID: 0}
     - target: {fileID: 3472192530307406992, guid: e07060dffbedd6743be022a38e929603, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.047875583
@@ -2565,10 +2561,6 @@ PrefabInstance:
     - target: {fileID: 3472192530307406992, guid: e07060dffbedd6743be022a38e929603, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4492423575071545031, guid: e07060dffbedd6743be022a38e929603, type: 3}
-      propertyPath: <SceneId>k__BackingField
-      value: 4276084479
       objectReference: {fileID: 0}
     - target: {fileID: 6083891258600081425, guid: e07060dffbedd6743be022a38e929603, type: 3}
       propertyPath: m_Name
@@ -2648,7 +2640,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: 2c3a22dce8b152d45877888efce30673, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 597084e27e20b5d429efc305239fa537, type: 2}
 --- !u!4 &1890581370
 Transform:
   m_ObjectHideFlags: 0
@@ -3082,6 +3074,14 @@ PrefabInstance:
       propertyPath: m_Color.g
       value: 0.95814526
       objectReference: {fileID: 0}
+    - target: {fileID: 3148859113266574847, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: location
+      value: 
+      objectReference: {fileID: 8133779367225278660}
+    - target: {fileID: 3148859113266574847, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: hoverMessage
+      value: Enter Grand Library?
+      objectReference: {fileID: 0}
     - target: {fileID: 4633998089023573799, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3120,6 +3120,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4633998089023573799, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4682117259600847294, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5698508543465430308, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8569012810794753659, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
@@ -3301,6 +3309,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ballroom Door
       objectReference: {fileID: 0}
+    - target: {fileID: 8024364769738781914, guid: d0905647da3f21c4e95cea207b601adf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8849529931439600874, guid: d0905647da3f21c4e95cea207b601adf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.02
@@ -3355,6 +3367,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2620511336331970917, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: location
+      value: 
+      objectReference: {fileID: 2098519389}
+    - target: {fileID: 2620511336331970917, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
+      propertyPath: hoverMessage
+      value: Enter Ballroom?
+      objectReference: {fileID: 0}
     - target: {fileID: 4633998089023573799, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3405,7 +3425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8569012810794753659, guid: 6ef82104ed739334e9eb24f822ae397a, type: 3}
       propertyPath: m_Name
-      value: Grand Library
+      value: Library
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

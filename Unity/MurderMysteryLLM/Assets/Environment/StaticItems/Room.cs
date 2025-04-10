@@ -6,22 +6,7 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class Room : MonoBehaviour
 {
-    public enum RoomType
-    {
-        HallWay,
-        Library,
-
-        BallRoom,
-
-        Kitchen,
-
-        Study,
-
-        DiningRoom,
-
-        Lounge,
-
-    }
+    
 
     [SerializeField]
     private RoomType roomType;
@@ -83,7 +68,7 @@ public class Room : MonoBehaviour
     {
         switch (this.roomType)
         {
-            case RoomType.HallWay:
+            case RoomType.Hall:
                 return "HallWay";
             case RoomType.Library:
                 return "Library";
@@ -107,13 +92,18 @@ public class Room : MonoBehaviour
 
     }
 
+}
 
-
-
-
-
-
-
-
-
+public enum RoomType
+{
+    BallRoom,
+    BilliardRoom,
+    Conservatory,
+    DiningRoom,
+    Hall,
+    Kitchen,
+    Library,
+    Lounge,
+    Study,
+    Unknown
 }
