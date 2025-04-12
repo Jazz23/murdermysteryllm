@@ -8,6 +8,7 @@ public class Chat : MonoBehaviour
     [SerializeField] private Transform textPanel;
     
     [SerializeField] private TMP_InputField inputBox;
+    private List<TextMeshProUGUI> _chatMessages = new();
 
     private static Chat _instance;
 
@@ -45,13 +46,30 @@ public class Chat : MonoBehaviour
         {
             child.gameObject.SetActive(!isActive);
         }
+        
+        // Make sure the input box is ready to go when the UI opens
+        if (!isActive)
+            _instance.inputBox.ActivateInputField();
+        else
+        {
+            _instance._chatMessages.ForEach(Destroy);
+            _instance._chatMessages.Clear();
+        }
     }
 
     public void OnInputBox()
     {
-        //...
-        
+        AddChatMessage(inputBox.text);
 
         inputBox.text = "";
+        inputBox.ActivateInputField();
+    }
+
+    public void AddChatMessage(string text)
+    {
+        var chatMessage = Instantiate(textPrefab, textPanel)
+            .GetComponent<TextMeshProUGUI>();
+        chatMessage.text = text;
+        _chatMessages.Add(chatMessage);
     }
 }

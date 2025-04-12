@@ -38,12 +38,9 @@ public class InteractableManager : MonoBehaviour
             if (!hit || !hit.TryGetComponent<Interactable>(out var interactable))
                 continue;
 
-            // If we've already hit this interactable, no further action is needed.
-            if (_activelyHovered != null) return;
-            
             _activelyHovered = interactable;
+            _activelyHovered.OnHoverStay();
             TextCommunication.DisplayStorytellerText(interactable.hoverMessage);
-            interactable.OnHoverNear();
 
             return;
         }

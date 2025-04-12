@@ -12,6 +12,6 @@ public abstract class Interactable : MonoBehaviour
     /// </summary>
     /// <param name="conn"></param>
     public virtual void OnInteraction() { }
-    public virtual void OnHoverNear() { }
+    public virtual void OnHoverStay() { }
     public virtual void OnHoverLeave() { }
 }

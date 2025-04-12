@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// This class is attached to any game object that can be talked to, IE agents.
+/// </summary>
 public class Talk : Interactable
 {
     public string hoverMessageTemplate = "Talk to {0}?";
     
-    public override void OnHoverNear()
+    public override void OnHoverStay()
     {
         // If they just spawned in, they don't have a name yet
         if (GetComponent<IPlayer>().PlayerInfo?.CharacterInformation?.Name is not { } playerName)
