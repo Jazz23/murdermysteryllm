@@ -2,6 +2,7 @@
   "name": "Raul Alvaros",
   "age": 57,
   "occupation": "Optometrist",
+  "traits": ["Compassionate", "Intelligent"],
   "description": "Raul Alvaros has been the owner and sole optometrist in his small town for the last 30 years. Often seen as the grumpy eye doctor by everyone, he has made a life for himself, having gone through two marriages, raised three kids, and is expecting a grandchild in the fall. He’s a hard worker and hopes to retire the sooner, the better with his current wife in the beaches of Miami. Though he hopes his gambling doesn’t catch up with him, as he has a bad temper when it comes to losing bets.",
   "murderer": false
 }

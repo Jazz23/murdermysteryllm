@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using OpenAI.Chat;
+using UnityEngine;
 
 // This partial handles all aspects of the agent talking to other agents and or the player
 // TODO: Add these to the IPlayer interface and make them comptable with the story teller and add events for the Unity team to subscribe to
@@ -15,7 +16,7 @@ public partial class AIAgent
     /// If the agent is actively talking with someone, this stores (in chronological order) the statements made by the agent and the other party.
     /// If the agent is not actively talking with someone, this is null.
     /// </summary>
-    public List<Statement>? CurrentConversation { get; private set; }
+    public List<Statement> CurrentConversation { get; private set; } = new();
     
     public void InjectTestConversation(List<Statement> conversation) => CurrentConversation = conversation;
 
@@ -26,13 +27,13 @@ public partial class AIAgent
     [AppendContext]
     private List<ChatMessage> AppendConversationContext()
     {
-       if (CurrentConversation == null || CurrentConversation.Count == 0)
+       if (CurrentConversation.Count == 0)
            return new List<ChatMessage>();
 
        return new List<ChatMessage>
        {
            new SystemChatMessage(
-               string.Join("\n", CurrentConversation.Select(x => $"{x.Speaker}: {x.Text}"))
+               string.Join("\n", CurrentConversation.Select(x => $"{x.Speaker.PlayerInfo.CharacterInformation.Name}: {x.Text}"))
            )
        };
     }
@@ -40,12 +41,8 @@ public partial class AIAgent
     /// <summary>
     /// Speaks to another agent. Adds a single spoken statement to each agents' CurrentConversation.
     /// </summary>
-    public async Task<Statement> SpeakTo(AIAgent agent)
+    public async Task<Statement> SpeakTo(IPlayer agent)
     {
-        // If first time speaking, initialize conversation
-        CurrentConversation ??= new List<Statement>();
-        agent.CurrentConversation ??= new List<Statement>();
-        
         // Speak to the agent and append the statement to the respective conversations
         var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
         var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
@@ -61,7 +58,7 @@ public partial class AIAgent
             StopSpeaking();
             return new Statement
             {
-                Speaker = PlayerInfo.CharacterInformation.Name,
+                Speaker = this,
                 Text = "end_conversation"
             };
         }
@@ -70,22 +67,35 @@ public partial class AIAgent
         var words = completion.Content.First().Text;
         var newStatement = new Statement
         {
-            Speaker = PlayerInfo.CharacterInformation.Name,
+            Speaker = this,
             Text = words
         };
         
         CurrentConversation.Add(newStatement);
-        agent.CurrentConversation.Add(newStatement);
         
         return newStatement;
     }
-    
+
     /// <summary>
     /// Resets the current conversation to null. TODO: Previous messages should already summarized and stored and added for future context.
     /// </summary>
-    public void StopSpeaking() => CurrentConversation = null;
+    public void StopSpeaking() => CurrentConversation.Clear();
     
-    public void TalkTo(IPlayer other)
+    public void OnTalkedAt(IPlayer other, string message)
     {
+        // Add the message to our conversation
+        var statement = new Statement
+        {
+            Speaker = other,
+            Text = message
+        };
+        CurrentConversation.Add(statement);
+
+        Task.Run(async () =>
+        {
+            await Awaitable.MainThreadAsync();
+            var myResponse = await SpeakTo(other);
+            other.OnTalkedAt(this, myResponse.Text);
+        });
     }
 }

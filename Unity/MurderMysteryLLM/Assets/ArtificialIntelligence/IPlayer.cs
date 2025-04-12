@@ -24,7 +24,10 @@ public interface IPlayer
     /// </summary>
     public void TakeDoor(string doorName, string message);
 
-    public void TalkTo(IPlayer other);
+    /// <summary>
+    /// Send a chat message to another player. Think of the body of this method as "Talked At".
+    /// </summary>
+    public void OnTalkedAt(IPlayer other, string message);
 
     // TODO: Add the rest of actions and their logic
     // https://github.com/Jazz23/murdermysteryllm/issues/12

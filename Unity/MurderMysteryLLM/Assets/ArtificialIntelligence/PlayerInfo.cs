@@ -14,10 +14,10 @@ public class PlayerInfo
 
 public class Statement
 {
-    public string Speaker { get; init; }
+    public IPlayer Speaker { get; init; }
     public string Text { get; init; }
 
-    public override string ToString() => $"{Speaker}: {Text}";
+    public override string ToString() => $"{Speaker.PlayerInfo.CharacterInformation.Name}: {Text}";
 }
 
 public class CharacterInformation

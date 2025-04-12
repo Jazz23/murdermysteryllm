@@ -119,18 +119,18 @@ public class AIInterface : MonoBehaviour
         foreach (var agent in _agents)
         {
             agent.ChatClient = ChatClient;
-            agent.PlayerInfo = await GetPlayerInfo();
+            agent.PlayerInfo = await GetPlayerInfo(1);
             agent.StateMachine = DefaultStateMachine;
             DefaultStateMachine.AddPlayer(agent);
         }
     }
 
-    public static async Awaitable<PlayerInfo> GetPlayerInfo()
+    public static async Awaitable<PlayerInfo> GetPlayerInfo(int index)
     {
         // if (_instance.MockPlayerInfo)
         // {
             var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
-            return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + "AgentPrompts/ExampleData/character.jsonc", "Grand Library",
+            return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
                 StoryContext);
         // }
     }

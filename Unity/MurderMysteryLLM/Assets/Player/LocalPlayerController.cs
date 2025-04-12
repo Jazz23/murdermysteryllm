@@ -43,7 +43,7 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
         Task.Run(async () =>
         {
             await Awaitable.MainThreadAsync();
-            PlayerInfo = await AIInterface.GetPlayerInfo();
+            PlayerInfo = await AIInterface.GetPlayerInfo(0);
         });
     }
     
@@ -60,8 +60,8 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
         
     }
 
-    public void TalkTo(IPlayer other)
+    public void OnTalkedAt(IPlayer other, string message)
     {
-        throw new System.NotImplementedException();
+        Chat.AddChatMessage($"{other.PlayerInfo.CharacterInformation.Name}: {message}");
     }
 }

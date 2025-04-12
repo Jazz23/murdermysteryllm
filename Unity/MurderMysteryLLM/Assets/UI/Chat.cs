@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Chat : MonoBehaviour
 {
+    private static Chat _instance;
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private Transform textPanel;
-    
     [SerializeField] private TMP_InputField inputBox;
-    private List<TextMeshProUGUI> _chatMessages = new();
+    
+    /// <summary>
+    /// Who we are currently talking to.
+    /// </summary>
+    private IPlayer _other;
 
-    private static Chat _instance;
 
     private void Awake() => _instance = this;
 
@@ -38,8 +41,11 @@ public class Chat : MonoBehaviour
     /// <summary>
     /// Sets child objects of "ChatStuff" to be active or inactive.
     /// </summary>
-    public static void ToggleChat()
+    public static void ToggleChat(IPlayer other = null)
     {
+        if (other != null)
+            _instance._other = other;
+        
         var isActive = _instance.transform.GetChild(0).gameObject.activeSelf;
         
         foreach (Transform child in _instance.transform)
@@ -52,24 +58,27 @@ public class Chat : MonoBehaviour
             _instance.inputBox.ActivateInputField();
         else
         {
-            _instance._chatMessages.ForEach(Destroy);
-            _instance._chatMessages.Clear();
+            foreach (Transform chatMessage in _instance.textPanel)
+            {
+                Destroy(chatMessage.gameObject);
+            }
         }
     }
 
     public void OnInputBox()
     {
-        AddChatMessage(inputBox.text);
-
+        if (inputBox.text == "" || !inputBox.gameObject.activeSelf)
+            return;
+        
+        AddChatMessage($"{LocalPlayerController.LocalPlayer.PlayerInfo.CharacterInformation.Name}: {inputBox.text}");
+        _other.OnTalkedAt(LocalPlayerController.LocalPlayer, inputBox.text);
         inputBox.text = "";
         inputBox.ActivateInputField();
     }
 
-    public void AddChatMessage(string text)
+    public static void AddChatMessage(string text)
     {
-        var chatMessage = Instantiate(textPrefab, textPanel)
-            .GetComponent<TextMeshProUGUI>();
-        chatMessage.text = text;
-        _chatMessages.Add(chatMessage);
+        Instantiate(_instance.textPrefab, _instance.textPanel)
+            .GetComponent<TextMeshProUGUI>().text = text;
     }
 }

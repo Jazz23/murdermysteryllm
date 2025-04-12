@@ -19,7 +19,7 @@ public class Talk : Interactable
     public override void OnInteraction()
     {
         LocalPlayerController.BlockInput();
-        Chat.ToggleChat();
+        Chat.ToggleChat(GetComponent<IPlayer>());
         InputSystem.actions.FindAction("Cancel").started += OnCancel;
     }
 

@@ -20,7 +20,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     public StateMachine StateMachine { get; set; }
 
-    private readonly ChatClient _chatClient;
     private NavMeshAgent _navAgent;
 
     public void Start()
@@ -36,9 +35,17 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     /// <returns>The assistant reply from ChatGPT</returns>
     private async Task<ChatCompletion> ChatGPT(string userPrompt, ChatCompletionOptions chatCompletionOptions)
     {
-        var context = BuildChatGPTContext();
-        context.Add(new UserChatMessage(userPrompt));
-        return await _chatClient.CompleteChatAsync(context, chatCompletionOptions);
+        try
+        {
+            var context = BuildChatGPTContext();
+            context.Add(new UserChatMessage(userPrompt));
+            return await ChatClient.CompleteChatAsync(context, chatCompletionOptions);
+        }
+        catch (Exception e)
+        {
+            UnityEngine.Debug.LogError($"ChatGPT error: {e.Message}");
+            throw;
+        }
     }
 
     /// <summary>
@@ -68,8 +75,14 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     public void TurnStart()
     {
+        // // If we are currently talking to someone, respond
+        // if (CurrentConversation.Count > 0)
+        // {
+        //     SpeakTo(CurrentConversation.Last().Speaker);
+        //     return;
+        // }
         
-        // For now, just pick the nearest door and go to it
+        // For now, just pick the nearest door and go to it. TODO: Have ChatGPT choose a door.
         var targetDoor = gameObject.GetCurrentLocation().GetComponentsInChildren<Door>()
             .First();
         
