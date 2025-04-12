@@ -34,6 +34,19 @@ public class Chat : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets child objects of "ChatStuff" to be active or inactive.
+    /// </summary>
+    public static void ToggleChat()
+    {
+        var isActive = _instance.transform.GetChild(0).gameObject.activeSelf;
+        
+        foreach (Transform child in _instance.transform)
+        {
+            child.gameObject.SetActive(!isActive);
+        }
+    }
+
     public void OnInputBox()
     {
         //...

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using UnityEngine.InputSystem;
@@ -6,6 +7,7 @@ using UnityEngine;
 public partial class LocalPlayerController : MonoBehaviour, IPlayer
 {
     public static LocalPlayerController LocalPlayer { get; private set; }
+    public static bool IsInputBlocked => _blockInputCounter > 0;
     
     public float speed;
     public StateMachine StateMachine { get; set; }
@@ -14,6 +16,18 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     
     private InputAction _moveAction;
     private Rigidbody2D _rigidBody;
+    
+    /// <summary>
+    /// When greater than 0, the player cannot move. The reason this is an int is to allow for multiple sources
+    /// to block input.
+    /// </summary>
+    private static int _blockInputCounter = 0;
+
+    /// <summary>
+    /// Make sure to call UnblockInput only once after calling this method.
+    /// </summary>
+    public static void BlockInput() => _blockInputCounter++;
+    public static void UnblockInput() => _blockInputCounter--;
 
     public void Awake()
     {
@@ -28,7 +42,6 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
         
         Task.Run(async () =>
         {
-            // SyncVars must be on the main thread
             await Awaitable.MainThreadAsync();
             PlayerInfo = await AIInterface.GetPlayerInfo();
         });
@@ -36,6 +49,9 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     
     private void Update()
     {
+        if (IsInputBlocked)
+            return;
+        
         _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>() * (Time.deltaTime * speed * 100);
     }
     

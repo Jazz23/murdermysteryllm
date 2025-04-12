@@ -16,6 +16,10 @@ public class InteractableManager : MonoBehaviour
 
     private void OnInteractKey(InputAction.CallbackContext obj)
     {
+        // We don't want interactions if input is blocked.
+        if (LocalPlayerController.IsInputBlocked)
+            return;
+        
         _activelyHovered?.OnInteraction();
     }
 
