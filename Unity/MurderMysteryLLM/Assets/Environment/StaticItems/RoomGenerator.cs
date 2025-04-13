@@ -9,22 +9,20 @@ using UnityEditor.Rendering.Universal;
 [ExecuteInEditMode]
 public class RoomGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private int ROW_ROOMS = 3;
+    static private int ROW_ROOMS = 1;
 
-    [SerializeField]
-    private int COL_ROOMS = 3;
+    static private int COL_ROOMS = 2;
 
     [SerializeField]
     private float OFFSET = 100f;
 
     [SerializeField]
-    private GameObject roomPrefab = null;
+    private GameObject[] roomPrefabs = null;
 
-    private Dictionary<string, Room> roomCached = new Dictionary<string, Room>();
+    private Dictionary<(int, int), Room> roomCached = new Dictionary<(int, int), Room>();
 
     [SerializeField]
-    private NavMeshSurface surface= null;
+    private NavMeshSurface surface = null;
 
     private void OnGUI()
     {
@@ -38,69 +36,81 @@ public class RoomGenerator : MonoBehaviour
         {
             ClearRoom();
         }
-
-
     }
+
     public void GenerateRoom()
-	{
-		for (int r = 0; r < ROW_ROOMS; r++)
-		{
-			for (int c = 0; c < COL_ROOMS; c++)
-			{
-				Room room = Instantiate(roomPrefab, new Vector3(r * OFFSET, c * OFFSET, 0), Quaternion.identity).GetComponent<Room>();
-				room.transform.parent = this.transform;
-				room.name = $"Room_{r}_{c}";
-				roomCached[room.name] = room;
-				UpdateDoorWays(room, r, c); // Update the doorways based on the room's position
+    {
+        for (int r = 0; r < ROW_ROOMS; r++)
+        {
+            for (int c = 0; c < COL_ROOMS; c++)
+            {
+                Room room = Instantiate(roomPrefabs[r * 3 + c], new Vector3(r * OFFSET, c * OFFSET, 0), Quaternion.identity).GetComponent<Room>();
+                room.transform.parent = this.transform;
+                room.name = room.GetRoomName();
+                roomCached[(r, c)] = room;
+                UpdateDoorWays(room, r, c); // Update the doorways based on the room's position
+            }
+        }
 
-			}
-		}
+        ConnectDoorWays();
 
-		ConnectDoorWays();
+        // Build Nav Mesh Agent
+        surface.BuildNavMeshAsync();
+    }
 
+    private string GenerateRoomName(Room room, int r, int c)
+    {
+        string name = $"{room.RoomType}";
 
-		// Build Nav Mesh Agent
-		surface.BuildNavMeshAsync();
-	}
+        return name;
+    }
 
-	private void ConnectDoorWays()
-	{
-		for (int r = 0; r < ROW_ROOMS; r++)
-		{
-			for (int c = 0; c < COL_ROOMS; c++)
-			{
-				Room room = roomCached[$"Room_{r}_{c}"];
-				Door[] doors = room.GetComponentsInChildren<Door>();
+    private void ConnectDoorWays()
+    {
 
-				foreach (Door door in doors)
-				{
-					switch (door.name)
-					{
-						case "North Door":
-							if (c < COL_ROOMS - 1)
-								door.Location = roomCached[$"Room_{r}_{c + 1}"].gameObject;
-							break;
-						case "South Door":
-							if (c > 0)
-								door.Location = roomCached[$"Room_{r}_{c - 1}"].gameObject;
-							break;
-						case "West Door":
-							if (r > 0)
-								door.Location = roomCached[$"Room_{r - 1}_{c}"].gameObject;
-							break;
-						case "East Door":
-							if (r < ROW_ROOMS - 1)
-								door.Location = roomCached[$"Room_{r + 1}_{c}"].gameObject;
-							break;
-					}
-				}
+        string hoverMessage = "Go to";
+        for (int r = 0; r < ROW_ROOMS; r++)
+        {
+            for (int c = 0; c < COL_ROOMS; c++)
+            {
+                Room room = roomCached[(r, c)];
+                Door[] doors = room.GetComponentsInChildren<Door>();
 
+                foreach (Door door in doors)
+                {
+                    switch (door.name)
+                    {
+                        case "North Door":
+                            if (c >= COL_ROOMS - 1) break;
+                            GameObject roomAbove = roomCached[(r, c + 1)].gameObject;
+                            door.Location = roomAbove;
+                            door.hoverMessage = hoverMessage + $" {roomAbove.name}?";
+                            break;
+                        case "South Door":
+                            if (c <= 0) break;
+                            GameObject roomBelow = roomCached[(r, c - 1)].gameObject;
+                            door.Location = roomBelow;
+                            door.hoverMessage = hoverMessage + $" {roomBelow.name}";
+                            break;
+                        case "West Door":
+                            if (r <= 0) break;
+                            GameObject roomLeft = roomCached[(r - 1, c)].gameObject;
+                            door.Location = roomLeft;
+                            door.hoverMessage = hoverMessage + $" {roomLeft.name}";
+                            break;
+                        case "East Door":
+                            if (r >= ROW_ROOMS - 1) break;
+                            GameObject roomRight = roomCached[(r + 1, c)].gameObject;
+                            door.Location = roomRight;
+                            door.hoverMessage = hoverMessage + $" {roomRight.name}";
+                            break;
+                    }
+                }
+            }
+        }
+    }
 
-			}
-		}
-	}
-
-	private void UpdateDoorWays(Room room, int r, int c)
+    private void UpdateDoorWays(Room room, int r, int c)
     {
         Door[] doors = room.Doors;
         for (int i = 0; i < doors.Length; i++)
@@ -123,22 +133,23 @@ public class RoomGenerator : MonoBehaviour
         }
     }
 
-    public void ClearRoom() {
-
-# if UNITY_EDITOR
-        foreach (var room in roomCached.Values) 
+    public void ClearRoom()
+    {
+#if UNITY_EDITOR
+        foreach (var room in roomCached.Values)
             DestroyImmediate(room.gameObject);
 #endif
-        try{
+        try
+        {
             foreach (var room in roomCached.Values)
                 Destroy(room.gameObject);
         }
-        catch {
+        catch
+        {
             Debug.LogError("Was Not able to Destroy Rooms");
         }
-        
+
         surface.RemoveData();
         roomCached.Clear();
     }
-
 }

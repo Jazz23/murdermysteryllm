@@ -1,7 +1,5 @@
 using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
+
 
 [ExecuteInEditMode]
 public class Room : MonoBehaviour
@@ -10,6 +8,12 @@ public class Room : MonoBehaviour
 
     [SerializeField]
     private RoomType roomType;
+
+    public RoomType RoomType
+    {
+        get => roomType;
+        set => roomType = value;
+    }
 
     [SerializeField]
     private Door[] doors;
@@ -66,31 +70,20 @@ public class Room : MonoBehaviour
 
     public string GetRoomName()
     {
-        switch (this.roomType)
-        {
-            case RoomType.Hall:
-                return "HallWay";
-            case RoomType.Library:
-                return "Library";
-            case RoomType.BallRoom:
-                return "BallRoom";
-            case RoomType.Kitchen:
-                return "Kitchen";
-            case RoomType.Study:
-                return "Study";
-            case RoomType.DiningRoom:
-                return "DiningRoom";
-            case RoomType.Lounge:
-                return "Lounge";
-            default:
-                return "Unknown Room Type";
-        }
-    }
-
-    private void GenerateSpawn()
-    {
-
-    }
+		return this.roomType switch
+		{
+			RoomType.Hall => "HallWay",
+			RoomType.Library => "Library",
+			RoomType.BallRoom => "BallRoom",
+            RoomType.BilliardRoom => "Billiard",
+            RoomType.Conservatory => "Conservatory",
+			RoomType.Kitchen => "Kitchen",
+			RoomType.Study => "Study",
+			RoomType.DiningRoom => "DiningRoom",
+			RoomType.Lounge => "Lounge",
+			_ => "Unknown Room Type",
+		};
+	}
 
 }
 
