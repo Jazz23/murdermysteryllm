@@ -30,10 +30,15 @@ public class Room : MonoBehaviour
 
 
     [SerializeField]
-    private GameObject[] furniture = null;
+    private GameObject[] items = null;
+
+    public GameObject[] Items{
+        get => items;
+        set => items = value;
+    }
 
     [SerializeField]
-    private Transform spanZones = null;
+    private Transform[] spanZones = null;
 
 
     private void Awake()
@@ -84,6 +89,18 @@ public class Room : MonoBehaviour
 			_ => "Unknown Room Type",
 		};
 	}
+
+    private void SpawnFurniture(){
+        if (this.spanZones == null) { return; }
+
+        if(this.items == null) { return; }
+
+        for (int i = 0; i < this.items.Length; i++){
+            // Randomly pick a unchcosen spanw zone 
+
+            // place item in same positon
+        }
+    }
 
 }
 
