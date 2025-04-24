@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
+using OllamaSharp.Models.Chat;
 using OpenAI.Chat;
 using UnityEngine;
 
@@ -25,16 +26,19 @@ public partial class AIAgent
     /// If the AIAgent is not in a conversation, nothing is returned.
     /// </summary>
     [AppendContext]
-    private List<ChatMessage> AppendConversationContext()
+    private List<Message> AppendConversationContext()
     {
        if (CurrentConversation.Count == 0)
-           return new List<ChatMessage>();
+           return new List<Message>();
 
-       return new List<ChatMessage>
+       return new List<Message>
        {
-           new SystemChatMessage(
-               string.Join("\n", CurrentConversation.Select(x => $"{x.Speaker.PlayerInfo.CharacterInformation.Name}: {x.Text}"))
-           )
+           new()
+           {
+               Role = ChatRole.System,
+               Content = string.Join("\n",
+                   CurrentConversation.Select(x => $"{x.Speaker.PlayerInfo.CharacterInformation.Name}: {x.Text}"))
+           }
        };
     }
     
@@ -46,25 +50,14 @@ public partial class AIAgent
         // Speak to the agent and append the statement to the respective conversations
         var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
         var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
-        var completion = await ChatGPT(prompt, new ChatCompletionOptions()
+        var completion = await Ollama(prompt, new ChatCompletionOptions()
         {
             ToolChoice = ChatToolChoice.CreateAutoChoice(),
             Tools = { endSignalTool }
         });
-        
-        // If ChatGPT called our end_conversation function, stop speaking
-        if (completion.FinishReason == ChatFinishReason.ToolCalls)
-        {
-            StopSpeaking();
-            return new Statement
-            {
-                Speaker = this,
-                Text = "end_conversation"
-            };
-        }
 
         // The conversation continues, append the new goodies to our conversation history
-        var words = completion.Content.First().Text;
+        var words = completion;
         var newStatement = new Statement
         {
             Speaker = this,
