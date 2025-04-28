@@ -32808,7 +32808,7 @@ GameObject:
   - component: {fileID: 1046987498}
   - component: {fileID: 1046987497}
   - component: {fileID: 1046987496}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Furniture
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -35,22 +35,22 @@ public class AIInterface : MonoBehaviour
     private Storyteller _storyteller;
     private readonly StoryContext _syncedStoryContext = new();
     private static AIInterface _instance;
-    
+
     public void Awake()
     {
         // We don't want anything to trigger until after initializing our AI Library
         enabled = false;
         _instance = this;
-        
+
         Task.Run(async () =>
         {
             try
             {
                 await Awaitable.MainThreadAsync();
+                await SpawnAI();
                 // Only the server should mess around with the AI library
                 await InitAILibrary();
                 LoadLocations();
-                await SpawnAI();
                 await PlayLoop();
             }
             catch (Exception ex)
@@ -67,12 +67,12 @@ public class AIInterface : MonoBehaviour
             sm.Update();
         }
     }
-    
+
     private static void LoadLocations()
     {
         if (Locations != null)
             return;
-        
+
         // Load the locations from the scene by name
         Locations = new List<Transform>();
         foreach (var location in StoryContext.LocationGraph)
@@ -82,15 +82,15 @@ public class AIInterface : MonoBehaviour
                 Locations.Add(locationObject.transform);
         }
     }
-    
+
     // Loads prompts and any testing data
     private async Awaitable InitAILibrary()
     {
         // Place .env in root of unity project
         DotEnv.Load();
-        
+
         ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
-        
+
         // Load prompts from local text files
         var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
         await Prompt.LoadPrompts(promptPathPrefix);
@@ -103,10 +103,10 @@ public class AIInterface : MonoBehaviour
         }
 
         _storyteller = new Storyteller();
-        
+
         StateMachine.LocationStateMachines =
             GameObject.FindGameObjectsWithTag("Location").Select(x => new StateMachine { Location = x }).ToArray();
-        
+
         var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
         player.StateMachine = DefaultStateMachine;
         DefaultStateMachine.AddPlayer(player);
@@ -115,13 +115,13 @@ public class AIInterface : MonoBehaviour
     private async Awaitable SpawnAI()
     {
         _agents = (await InstantiateAsync(_agentPrefab, agentCount)).Select(x => x.GetComponent<AIAgent>()).ToList();
-        
+
         foreach (var agent in _agents)
         {
             agent.ChatClient = ChatClient;
             agent.PlayerInfo = await GetPlayerInfo(1);
-            agent.StateMachine = DefaultStateMachine;
-            DefaultStateMachine.AddPlayer(agent);
+            // agent.StateMachine = DefaultStateMachine;
+            // DefaultStateMachine.AddPlayer(agent);
         }
     }
 
@@ -129,9 +129,9 @@ public class AIInterface : MonoBehaviour
     {
         // if (_instance.MockPlayerInfo)
         // {
-            var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
-            return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
-                StoryContext);
+        var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
+        return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
+            StoryContext);
         // }
     }
 
