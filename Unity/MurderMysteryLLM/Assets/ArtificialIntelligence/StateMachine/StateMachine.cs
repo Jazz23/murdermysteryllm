@@ -7,8 +7,6 @@ namespace ArtificialIntelligence.StateMachine;
 /// </summary>
 public class StateMachine
 {
-    public static StateMachine[] LocationStateMachines;
-    
     public GameObject Location { get; init; }
     public readonly List<IPlayer> Players = new();
     public IPlayer CurrentPlayer; // Who's turn it is
@@ -38,17 +36,6 @@ public class StateMachine
     }
     
     public void AddPlayer(IPlayer player) => Players.Add(player);
-
-    public void SwitchPlayerToStateMachine(IPlayer player, StateMachine other)
-    {
-        // Add to the new location's state machine
-        Players.Remove(player);
-        other.Players.Add(player);
-        player.StateMachine = other;
-        if (CurrentPlayer == player)
-            CurrentPlayer = null;
-        QueuedActions.RemoveAll(x => x.Player == player);
-    }
 }
 
 public abstract class State

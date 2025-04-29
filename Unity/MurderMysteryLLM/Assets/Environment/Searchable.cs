@@ -8,7 +8,7 @@ public class Searchable : Interactable
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
-        player.StateMachine.QueueAction(new SearchAction { Item = gameObject, Player = player });
+        AIInterface.TurnStateMachine.QueueAction(new SearchAction { Item = gameObject, Player = player });
     }
     
     public string Search()

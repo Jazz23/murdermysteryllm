@@ -18,8 +18,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     public PlayerInfo PlayerInfo { get; set; }
     public ChatClient ChatClient { get; set; }
 
-    public StateMachine StateMachine { get; set; }
-
     private NavMeshAgent _navAgent;
 
     public void Start()
@@ -81,22 +79,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         //     SpeakTo(CurrentConversation.Last().Speaker);
         //     return;
         // }
-        
-        // For now, just pick the nearest door and go to it. TODO: Have ChatGPT choose a door.
-        var targetDoor = gameObject.GetCurrentLocation().GetComponentsInChildren<Door>()
-            .First();
-        
-        _navAgent.destination = targetDoor.transform.position;
-        
-        Task.Run(async () =>
-        {
-            await Awaitable.MainThreadAsync();
-            await Awaitable.NextFrameAsync(); // Make sure we start moving
-            while (_navAgent.velocity != Vector3.zero)
-                await Awaitable.NextFrameAsync();
-            
-            StateMachine.QueueAction(new DoorAction { Location = targetDoor.Location, Player = this });
-        });
     }
 
     /// <summary>

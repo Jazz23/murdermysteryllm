@@ -13,7 +13,6 @@ public interface IPlayer
 {
     public PlayerInfo PlayerInfo { get; }
     public HashSet<string> CluesFound { get; }
-    public StateMachine.StateMachine StateMachine { get; set; }
     
     public void TurnStart();
     

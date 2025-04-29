@@ -26,9 +26,7 @@ public class AIInterface : MonoBehaviour
     public bool mockStoryContext = true;
     public bool mockPlayerInfo = true;
     public int agentCount = 1;
-    public GameObject defaultLocation;
-    private static StateMachine DefaultStateMachine =>
-        StateMachine.LocationStateMachines.First(x => x.Location == _instance.defaultLocation);
+    public static StateMachine TurnStateMachine = new();
 
     [SerializeField] private GameObject _agentPrefab;
     private List<AIAgent> _agents;
@@ -47,10 +45,8 @@ public class AIInterface : MonoBehaviour
             try
             {
                 await Awaitable.MainThreadAsync();
-                await SpawnAI();
-                // Only the server should mess around with the AI library
                 await InitAILibrary();
-                LoadLocations();
+                await SpawnAI();
                 await PlayLoop();
             }
             catch (Exception ex)
@@ -62,10 +58,7 @@ public class AIInterface : MonoBehaviour
 
     private void FixedUpdate()
     {
-        foreach (var sm in StateMachine.LocationStateMachines)
-        {
-            sm.Update();
-        }
+        TurnStateMachine.Update();
     }
 
     private static void LoadLocations()
@@ -104,12 +97,8 @@ public class AIInterface : MonoBehaviour
 
         _storyteller = new Storyteller();
 
-        StateMachine.LocationStateMachines =
-            GameObject.FindGameObjectsWithTag("Location").Select(x => new StateMachine { Location = x }).ToArray();
-
         var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
-        player.StateMachine = DefaultStateMachine;
-        DefaultStateMachine.AddPlayer(player);
+        TurnStateMachine.AddPlayer(player);
     }
 
     private async Awaitable SpawnAI()
@@ -120,8 +109,7 @@ public class AIInterface : MonoBehaviour
         {
             agent.ChatClient = ChatClient;
             agent.PlayerInfo = await GetPlayerInfo(1);
-            // agent.StateMachine = DefaultStateMachine;
-            // DefaultStateMachine.AddPlayer(agent);
+            TurnStateMachine.AddPlayer(agent);
         }
     }
 

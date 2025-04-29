@@ -17,6 +17,6 @@ public class Door : Interactable
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
-        player.StateMachine.QueueAction(new DoorAction { Location = location, Player = player });
+        // player.StateMachine.QueueAction(new DoorAction { Location = location, Player = player });
     }
 }
