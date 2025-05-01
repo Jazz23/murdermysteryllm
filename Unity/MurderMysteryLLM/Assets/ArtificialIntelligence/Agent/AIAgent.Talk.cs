@@ -69,6 +69,15 @@ public partial class AIAgent
             Text = words
         };
         
+        if (CurrentConversation.Count > 5)
+        {
+            return new Statement
+            {
+                Speaker = this,
+                Text = EndConvoKeyword
+            };
+        }
+        
         CurrentConversation.Add(newStatement);
         
         Debug.Log($"{PlayerInfo.CharacterInformation.Name}: {words}");
