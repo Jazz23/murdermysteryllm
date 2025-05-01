@@ -8,7 +8,7 @@ public class Chat : MonoBehaviour
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private Transform textPanel;
     [SerializeField] private TMP_InputField inputBox;
-    
+
     /// <summary>
     /// Who we are currently talking to.
     /// </summary>
@@ -24,12 +24,12 @@ public class Chat : MonoBehaviour
 
     public static void UpdateChat(ChatMessage[] chatLog) =>
         _instance.UpdateChatHelper(chatLog);
-    
+
     private void UpdateChatHelper(ChatMessage[] chatLog)
     {
         _oldMessages.ForEach(Destroy);
         _oldMessages.Clear();
-        
+
         foreach (var message in chatLog)
         {
             var textbox = Instantiate(textPrefab, textPanel);
@@ -45,14 +45,14 @@ public class Chat : MonoBehaviour
     {
         if (other != null)
             _instance._other = other;
-        
+
         var isActive = _instance.transform.GetChild(0).gameObject.activeSelf;
-        
+
         foreach (Transform child in _instance.transform)
         {
             child.gameObject.SetActive(!isActive);
         }
-        
+
         // Make sure the input box is ready to go when the UI opens
         if (!isActive)
             _instance.inputBox.ActivateInputField();
@@ -69,7 +69,7 @@ public class Chat : MonoBehaviour
     {
         if (inputBox.text == "" || !inputBox.gameObject.activeSelf)
             return;
-        
+
         AddChatMessage($"{LocalPlayerController.LocalPlayer.PlayerInfo.CharacterInformation.Name}: {inputBox.text}");
         _other.OnTalkedAt(LocalPlayerController.LocalPlayer, inputBox.text);
         inputBox.text = "";
@@ -78,7 +78,11 @@ public class Chat : MonoBehaviour
 
     public static void AddChatMessage(string text)
     {
-        Instantiate(_instance.textPrefab, _instance.textPanel)
-            .GetComponent<TextMeshProUGUI>().text = text;
+        TextMeshProUGUI textBox = Instantiate(_instance.textPrefab, _instance.textPanel)
+            .GetComponent<TextMeshProUGUI>();
+
+        textBox.fontSize = 30f;
+        // textBox.font = Resources.Load<TMP_FontAsset>("XTypewriter-Regular");
+        textBox.text = text;
     }
 }
