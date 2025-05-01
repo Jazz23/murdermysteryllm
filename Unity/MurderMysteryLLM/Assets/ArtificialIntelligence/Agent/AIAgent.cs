@@ -81,7 +81,12 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         //     SpeakTo(CurrentConversation.Last().Speaker);
         //     return;
         // }
-        // var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+        var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+        AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+        {
+            Other = agentToTalkTo,
+            Player = this,
+        });
         // SpeakTo(agentToTalkTo);
     }
 

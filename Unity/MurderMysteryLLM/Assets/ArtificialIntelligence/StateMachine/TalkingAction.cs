@@ -11,6 +11,9 @@ public class TalkingAction : ActionState
 
     public void EndConversation()
     {
+        Other.StopTalking();
+        Player.StopTalking();
+        
         StateMachine.SetState(new PickPlayerState());
     }
 }

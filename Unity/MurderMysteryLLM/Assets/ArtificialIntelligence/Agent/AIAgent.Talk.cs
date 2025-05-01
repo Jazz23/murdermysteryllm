@@ -7,6 +7,7 @@ using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using OpenAI.Chat;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 // This partial handles all aspects of the agent talking to other agents and or the player
 // TODO: Add these to the IPlayer interface and make them comptable with the story teller and add events for the Unity team to subscribe to
@@ -21,6 +22,8 @@ public partial class AIAgent
     public List<Statement> CurrentConversation { get; private set; } = new();
     
     public void InjectTestConversation(List<Statement> conversation) => CurrentConversation = conversation;
+
+    private TalkingAction _talkingAction;
 
     /// <summary>
     /// If the AIAgent is currently in an active conversation, this will append that conversation as context to subsequent ChatGPT prompts.
@@ -55,9 +58,8 @@ public partial class AIAgent
         });
         
         // If ChatGPT called our end_conversation function, stop speaking
-        if (completion.FinishReason == ChatFinishReason.ToolCalls)
+        if (completion.FinishReason == ChatFinishReason.ToolCalls || CurrentConversation.Count > 5)
         {
-            StopSpeaking();
             return new Statement
             {
                 Speaker = this,
@@ -75,13 +77,9 @@ public partial class AIAgent
         
         CurrentConversation.Add(newStatement);
         
+        Debug.Log($"{PlayerInfo.CharacterInformation.Name}: {words}");
         return newStatement;
     }
-
-    /// <summary>
-    /// Resets the current conversation to null. TODO: Previous messages should already summarized and stored and added for future context.
-    /// </summary>
-    public void StopSpeaking() => CurrentConversation.Clear();
     
     public void OnTalkedAt(IPlayer other, string message)
     {
@@ -93,14 +91,16 @@ public partial class AIAgent
         };
         CurrentConversation.Add(statement);
 
+        // Respond to the person who talked to us
         Task.Run(async () =>
         {
             await Awaitable.MainThreadAsync();
             var myResponse = await SpeakTo(other);
 
+            // Conversation is over, don't invoke their OnTalkedAt
             if (myResponse.Text == EndConvoKeyword)
             {
-                
+                _talkingAction.EndConversation();
             }
             else
             {
@@ -111,6 +111,18 @@ public partial class AIAgent
 
     public void StartTalking(TalkingAction action)
     {
-        
+        _talkingAction = action;
+        // To begin a conversation, grab a message from ChatGPT and send it to the other agent
+        Task.Run(async () =>
+        {
+            var text = await SpeakTo(action.Other);
+            action.Other.OnTalkedAt(this, text.Text);
+        });
+    }
+
+    public void StopTalking()
+    {
+        CurrentConversation.Clear();
+        _talkingAction = null;
     }
 }

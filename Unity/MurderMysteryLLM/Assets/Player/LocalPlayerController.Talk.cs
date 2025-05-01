@@ -26,4 +26,6 @@ public partial class LocalPlayerController
         Chat.ToggleChat();
         UnblockInput();
     }
+
+    public void StopTalking() { }
 }
