@@ -28,6 +28,11 @@ public interface IPlayer
     /// </summary>
     public void OnTalkedAt(IPlayer other, string message);
 
+    /// <summary>
+    /// Initiate a conversation.
+    /// </summary>
+    public void StartTalking(TalkingAction action);
+
     // TODO: Add the rest of actions and their logic
     // https://github.com/Jazz23/murdermysteryllm/issues/12
 }

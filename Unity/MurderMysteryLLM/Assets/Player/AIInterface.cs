@@ -22,6 +22,7 @@ public class AIInterface : MonoBehaviour
     /// List of references to the locations the player can move to via the door action.
     /// </summary>
     public static List<Transform> Locations;
+    public static List<AIAgent> Agents { get; } = new();
     public static StateMachine TurnStateMachine { get; } = new();
 
     public bool mockStoryContext = true;
@@ -30,7 +31,6 @@ public class AIInterface : MonoBehaviour
     public Transform agentSpawnLocation;
 
     [SerializeField] private GameObject _agentPrefab;
-    private List<AIAgent> _agents;
     private Storyteller _storyteller;
     private readonly StoryContext _syncedStoryContext = new();
     private static AIInterface _instance;
@@ -104,9 +104,15 @@ public class AIInterface : MonoBehaviour
 
     private async Awaitable SpawnAI()
     {
-        _agents = (await InstantiateAsync(_agentPrefab, agentCount, agentSpawnLocation.position, agentSpawnLocation.rotation)).Select(x => x.GetComponent<AIAgent>()).ToList();
+        for (var i = 0; i < agentCount; i++)
+        {
+            // Randomly spawn them near the spawn location
+            var newPos = agentSpawnLocation.position +
+                         new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
+            Agents.Add(Instantiate(_agentPrefab, newPos, agentSpawnLocation.rotation).GetComponent<AIAgent>());
+        }
 
-        foreach (var agent in _agents)
+        foreach (var agent in Agents)
         {
             agent.ChatClient = ChatClient;
             agent.PlayerInfo = await GetPlayerInfo(1);

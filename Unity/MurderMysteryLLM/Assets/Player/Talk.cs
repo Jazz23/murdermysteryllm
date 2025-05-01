@@ -1,3 +1,4 @@
+using ArtificialIntelligence.StateMachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,15 +19,10 @@ public class Talk : Interactable
 
     public override void OnInteraction()
     {
-        LocalPlayerController.BlockInput();
-        Chat.ToggleChat(GetComponent<IPlayer>());
-        InputSystem.actions.FindAction("Cancel").started += OnCancel;
-    }
-
-    private void OnCancel(InputAction.CallbackContext obj)
-    {
-        InputSystem.actions.FindAction("Cancel").started -= OnCancel;
-        Chat.ToggleChat();
-        LocalPlayerController.UnblockInput();
+        AIInterface.TurnStateMachine.QueueAction(new TalkingAction
+        {
+            Player = LocalPlayerController.LocalPlayer, // Only the local player can interact
+            Other = GetComponent<IPlayer>(), // We are being interacted with
+        });
     }
 }

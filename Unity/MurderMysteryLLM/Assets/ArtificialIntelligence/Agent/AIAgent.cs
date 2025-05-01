@@ -12,6 +12,7 @@ using ArtificialIntelligence.StateMachine;
 using OpenAI.Chat;
 using UnityEngine;
 using UnityEngine.AI;
+using Debug = UnityEngine.Debug;
 
 public partial class AIAgent : MonoBehaviour, IPlayer
 {
@@ -37,6 +38,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         {
             var context = BuildChatGPTContext();
             context.Add(new UserChatMessage(userPrompt));
+            Debug.Log("Sending ChatGPT API Request");
             return await ChatClient.CompleteChatAsync(context, chatCompletionOptions);
         }
         catch (Exception e)
@@ -79,6 +81,8 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         //     SpeakTo(CurrentConversation.Last().Speaker);
         //     return;
         // }
+        // var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+        // SpeakTo(agentToTalkTo);
     }
 
     /// <summary>

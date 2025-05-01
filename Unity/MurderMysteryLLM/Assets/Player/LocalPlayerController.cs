@@ -59,9 +59,4 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     {
         
     }
-
-    public void OnTalkedAt(IPlayer other, string message)
-    {
-        Chat.AddChatMessage($"{other.PlayerInfo.CharacterInformation.Name}: {message}");
-    }
 }

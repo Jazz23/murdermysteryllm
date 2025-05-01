@@ -5523,7 +5523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mockStoryContext: 1
   mockPlayerInfo: 1
-  agentCount: 1
+  agentCount: 2
   agentSpawnLocation: {fileID: 855871616}
   _agentPrefab: {fileID: 9182942811539460375, guid: c23f53152b3810d46b8ec677ed940c8b, type: 3}
 --- !u!1 &390323260

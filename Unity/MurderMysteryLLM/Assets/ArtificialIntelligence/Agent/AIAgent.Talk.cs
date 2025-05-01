@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
+using ArtificialIntelligence.StateMachine;
 using OpenAI.Chat;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ using UnityEngine;
 // https://github.com/Jazz23/murdermysteryllm/issues/16
 public partial class AIAgent
 {
+    public static string EndConvoKeyword = "end_conversation";
     /// <summary>
     /// If the agent is actively talking with someone, this stores (in chronological order) the statements made by the agent and the other party.
     /// If the agent is not actively talking with someone, this is null.
@@ -45,7 +47,7 @@ public partial class AIAgent
     {
         // Speak to the agent and append the statement to the respective conversations
         var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
-        var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
+        var endSignalTool = ChatTool.CreateFunctionTool(EndConvoKeyword);
         var completion = await ChatGPT(prompt, new ChatCompletionOptions()
         {
             ToolChoice = ChatToolChoice.CreateAutoChoice(),
@@ -59,7 +61,7 @@ public partial class AIAgent
             return new Statement
             {
                 Speaker = this,
-                Text = "end_conversation"
+                Text = EndConvoKeyword
             };
         }
 
@@ -95,7 +97,20 @@ public partial class AIAgent
         {
             await Awaitable.MainThreadAsync();
             var myResponse = await SpeakTo(other);
-            other.OnTalkedAt(this, myResponse.Text);
+
+            if (myResponse.Text == EndConvoKeyword)
+            {
+                
+            }
+            else
+            {
+                other.OnTalkedAt(this, myResponse.Text);
+            }
         });
+    }
+
+    public void StartTalking(TalkingAction action)
+    {
+        
     }
 }
