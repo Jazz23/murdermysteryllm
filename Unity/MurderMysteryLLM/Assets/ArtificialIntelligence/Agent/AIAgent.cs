@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
+using OllamaSharp;
+using OllamaSharp.Models.Chat;
 using OpenAI.Chat;
 using UnityEngine;
 using UnityEngine.AI;
@@ -32,14 +34,27 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
     /// </summary>
     /// <returns>The assistant reply from ChatGPT</returns>
-    private async Task<ChatCompletion> ChatGPT(string userPrompt, ChatCompletionOptions chatCompletionOptions)
+    private async Task<string> Ollama(string userPrompt, ChatCompletionOptions chatCompletionOptions)
     {
         try
         {
             var context = BuildChatGPTContext();
-            context.Add(new UserChatMessage(userPrompt));
-            Debug.Log("Sending ChatGPT API Request");
-            return await ChatClient.CompleteChatAsync(context, chatCompletionOptions);
+            context.Add(new Message()
+            {
+                Role = ChatRole.User,
+                Content = userPrompt
+            });
+            var uri = new Uri("http://localhost:11434");
+            var ollama = new OllamaApiClient(uri);
+            ollama.SelectedModel = "gemma3";
+            
+            var response = "";
+            await foreach (var stream in ollama.ChatAsync(new ChatRequest()
+                           {
+                               Messages = context
+                           }))
+                response += stream.Message.Content;
+            return response;
         }
         catch (Exception e)
         {
@@ -51,9 +66,9 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     /// <summary>
     /// Prepends necessary information to chat log, such as the setup prompt and game state.
     /// </summary>
-    private List<ChatMessage> BuildChatGPTContext()
+    private List<Message> BuildChatGPTContext()
     {
-        var context = new List<ChatMessage>();
+        var context = new List<Message>();
 
         var rawCharacterInfo = JsonSerializer.Serialize(PlayerInfo.CharacterInformation);
         var rawMurderInnocentInstructions =
@@ -66,7 +81,11 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             rawStoryContext,
             PlayerInfo.CurrentLocation);
         
-        context.Add(new SystemChatMessage(setupPrompt));
+        context.Add(new Message()
+        {
+            Role = ChatRole.System,
+            Content = setupPrompt
+        });
         
         // All other custom context methods found in this class
         context.AddRange(AppendContext.GatherContext(this));
@@ -87,7 +106,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             Other = agentToTalkTo,
             Player = this,
         });
-        // SpeakTo(agentToTalkTo);
     }
 
     /// <summary>
@@ -101,14 +119,14 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         /// Iterates all methods in the AIAgent type and invokes their context methods and returns a squashed list of
         /// return values.
         /// </summary>
-        public static List<ChatMessage> GatherContext(AIAgent agent)
+        public static List<Message> GatherContext(AIAgent agent)
         {
             var contextMethods = agent
                 .GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                 .Where(x => x.GetCustomAttribute<AppendContext>() != null);
             
-            return contextMethods.SelectMany(x => (List<ChatMessage>) x.Invoke(agent, null)!).ToList();
+            return contextMethods.SelectMany(x => (List<Message>) x.Invoke(agent, null)!).ToList();
         }
     }
 }
