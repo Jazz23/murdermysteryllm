@@ -30,10 +30,24 @@ public class Clue : MonoBehaviour
     {
         cluePanel.GetComponentInChildren<TextMeshProUGUI>().text = clue;
         cluePanel.SetActive(true);
+
         Task.Run(async () =>
         {
+            float elapsedTime = 0f;
+            while (elapsedTime < clueDisplaySeconds)
+            {
             await Awaitable.MainThreadAsync();
-            await Awaitable.WaitForSecondsAsync(clueDisplaySeconds);
+
+            if (Input.GetButtonDown("Cancel"))
+            {
+                cluePanel.SetActive(false);
+                return;
+            }
+
+            await Awaitable.WaitForSecondsAsync(0.1f);
+            elapsedTime += 0.1f;
+            }
+
             cluePanel.SetActive(false);
         });
     }
@@ -49,7 +63,7 @@ public class Clue : MonoBehaviour
         // Reset old sticky notes
         _clueStickys.ForEach(Destroy);
         _clueStickys.Clear();
-        
+
         // Instantiate new ones
         for (var i = 0; i < cluesFound.Count; i++)
         {
@@ -58,7 +72,7 @@ public class Clue : MonoBehaviour
             var newSticky = Instantiate(stickyNotePrefab, stickyPanel.transform);
             newSticky.transform.position = pos;
             newSticky.GetComponent<Sticky>().clueText = cluesFound.ElementAt(i);
-            
+
             _clueStickys.Add(newSticky);
         }
     }
