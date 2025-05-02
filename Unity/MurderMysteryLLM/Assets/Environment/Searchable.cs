@@ -5,6 +5,8 @@ public class Searchable : Interactable
 {
     public string clue = "This is an example clue.";
 
+    public bool isRelatedToTheCrime = false;
+
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
