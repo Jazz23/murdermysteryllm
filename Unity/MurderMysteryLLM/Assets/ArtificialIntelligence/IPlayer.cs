@@ -26,7 +26,7 @@ public interface IPlayer
     /// <summary>
     /// Send a chat message to another player. Think of the body of this method as "Talked At".
     /// </summary>
-    public void OnTalkedAt(IPlayer other, string message);
+    public Task OnTalkedAt(IPlayer other, string message);
 
     /// <summary>
     /// Initiate a conversation.

@@ -23,9 +23,6 @@ public class StateMachine
     public void Update()
     {
         _currentState.Update();
-        Debug.Log($"Current State: {_currentState.GetType().Name}");
-        Debug.Log($"Current Player: {CurrentPlayer?.PlayerInfo?.CharacterInformation?.Name}");
-
     }
 
     public void SetState(State newState)

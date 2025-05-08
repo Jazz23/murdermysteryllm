@@ -1,13 +1,16 @@
 ﻿using ArtificialIntelligence.StateMachine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public partial class LocalPlayerController
 {
     private TalkingAction _talkingAction;
     
-    public void OnTalkedAt(IPlayer other, string message)
+    public async Task OnTalkedAt(IPlayer other, string message)
     {
+        await Awaitable.MainThreadAsync();
         Chat.AddChatMessage($"{other.PlayerInfo.CharacterInformation.Name}: {message}");
+        await Awaitable.BackgroundThreadAsync();
     }
     
     public void StartTalking(TalkingAction action)

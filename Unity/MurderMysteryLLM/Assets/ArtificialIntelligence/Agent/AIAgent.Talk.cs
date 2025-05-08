@@ -100,7 +100,7 @@ public partial class AIAgent
         return newStatement;
     }
     
-    public void OnTalkedAt(IPlayer other, string message)
+    public async Task OnTalkedAt(IPlayer other, string message)
     {
         // Add the message to our conversation
         var statement = new Statement
@@ -111,20 +111,18 @@ public partial class AIAgent
         CurrentConversation.Add(statement);
 
         // Respond to the person who talked to us
-        Task.Run(async () =>
-        {
-            var myResponse = await SpeakTo(other);
+        
+        var myResponse = await SpeakTo(other);
 
-            // Conversation is over, don't invoke their OnTalkedAt
-            if (myResponse.Text == EndConvoKeyword)
-            {
-                _talkingAction.EndConversation();
-            }
-            else
-            {
-                other.OnTalkedAt(this, myResponse.Text);
-            }
-        });
+        // Conversation is over, don't invoke their OnTalkedAt
+        if (myResponse.Text == EndConvoKeyword)
+        {
+            _talkingAction.EndConversation();
+        }
+        else
+        {
+           await other.OnTalkedAt(this, myResponse.Text);
+        }
     }
 
     public void StartTalking(TalkingAction action)
@@ -134,7 +132,7 @@ public partial class AIAgent
         Task.Run(async () =>
         {
             var text = await SpeakTo(action.Other);
-            action.Other.OnTalkedAt(this, text.Text);
+            await action.Other.OnTalkedAt(this, text.Text);
         });
     }
 
