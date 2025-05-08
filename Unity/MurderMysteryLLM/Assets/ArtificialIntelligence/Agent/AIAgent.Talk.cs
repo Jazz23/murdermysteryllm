@@ -113,7 +113,6 @@ public partial class AIAgent
         // Respond to the person who talked to us
         Task.Run(async () =>
         {
-            await Awaitable.MainThreadAsync();
             var myResponse = await SpeakTo(other);
 
             // Conversation is over, don't invoke their OnTalkedAt
