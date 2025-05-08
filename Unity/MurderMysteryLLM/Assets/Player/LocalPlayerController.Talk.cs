@@ -21,11 +21,13 @@ public partial class LocalPlayerController
     private void OnCancel(InputAction.CallbackContext obj)
     {
         _talkingAction.EndConversation();
-        _talkingAction = null;
         InputSystem.actions.FindAction("Cancel").started -= OnCancel;
         Chat.ToggleChat();
         UnblockInput();
     }
 
-    public void StopTalking() { }
+    public void StopTalking()
+    {
+        _talkingAction = null;
+    }
 }

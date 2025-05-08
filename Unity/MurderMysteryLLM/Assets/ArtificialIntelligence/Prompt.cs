@@ -18,6 +18,7 @@ public class Prompt
     public static readonly Prompt Murderer = new("AgentPrompts/murdererPrompt.txt");
     public static readonly Prompt AgentSetup = new("AgentPrompts/agentSetupPrompt.txt");
     public static readonly Prompt AgentTalk = new("AgentPrompts/agentTalkPrompt.txt");
+    public static readonly Prompt SummarizeConversation = new("AgentPrompts/summarizeConversation.txt");
     
     // Member variables to cache the file contents
     private readonly string _fileLocation;

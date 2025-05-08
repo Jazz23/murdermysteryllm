@@ -34,7 +34,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
     /// </summary>
     /// <returns>The assistant reply from ChatGPT</returns>
-    private async Task<string> Ollama(string userPrompt, ChatCompletionOptions chatCompletionOptions)
+    private async Task<string> Ollama(string userPrompt)
     {
         try
         {
@@ -94,17 +94,21 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     public void TurnStart()
     {
-        // // If we are currently talking to someone, respond
-        // if (CurrentConversation.Count > 0)
-        // {
-        //     SpeakTo(CurrentConversation.Last().Speaker);
-        //     return;
-        // }
-        var agentToTalkTo = AIInterface.Agents.First(x => x != this);
-        AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+        Task.Run(async () =>
         {
-            Other = agentToTalkTo,
-            Player = this,
+            // Just in case we need to interact with Unity during this turn, use the main thread
+            await Awaitable.MainThreadAsync();
+            
+            // Wait for any past summarizing tasks to finish before starting our turn
+            if (_summarizeCompletionSource != null)
+                await _summarizeCompletionSource.Task;
+            
+            var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+            AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+            {
+                Other = agentToTalkTo,
+                Player = this,
+            });
         });
     }
 

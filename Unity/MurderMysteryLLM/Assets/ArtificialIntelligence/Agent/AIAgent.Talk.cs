@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
+using JetBrains.Annotations;
 using OllamaSharp.Models.Chat;
 using OpenAI.Chat;
 using UnityEngine;
@@ -21,10 +22,17 @@ public partial class AIAgent
     /// If the agent is not actively talking with someone, this is null.
     /// </summary>
     public List<Statement> CurrentConversation { get; private set; } = new();
-    
+    public string CurrentConversationAsString => string.Join("\n",
+        CurrentConversation.Select(x => $"{x.Speaker.PlayerInfo.CharacterInformation.Name}: {x.Text}"));
     public void InjectTestConversation(List<Statement> conversation) => CurrentConversation = conversation;
 
     private TalkingAction _talkingAction;
+    [CanBeNull] private TaskCompletionSource<bool> _summarizeCompletionSource;
+    
+    /// <summary>
+    /// LLM summarized conversations.
+    /// </summary>
+    private List<string> _pastConversationSummaries = new();
 
     /// <summary>
     /// If the AIAgent is currently in an active conversation, this will append that conversation as context to subsequent ChatGPT prompts.
@@ -41,10 +49,22 @@ public partial class AIAgent
            new()
            {
                Role = ChatRole.System,
-               Content = string.Join("\n",
-                   CurrentConversation.Select(x => $"{x.Speaker.PlayerInfo.CharacterInformation.Name}: {x.Text}"))
+               Content = CurrentConversationAsString
            }
        };
+    }
+    
+    [AppendContext]
+    private List<Message> AppendConversationSummaries()
+    {
+        if (_pastConversationSummaries.Count == 0)
+            return new List<Message>();
+
+        return _pastConversationSummaries.Select(x => new Message
+        {
+            Role = ChatRole.System,
+            Content = x
+        }).ToList();
     }
     
     /// <summary>
@@ -55,11 +75,7 @@ public partial class AIAgent
         // Speak to the agent and append the statement to the respective conversations
         var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
         var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
-        var completion = await Ollama(prompt, new ChatCompletionOptions()
-        {
-            ToolChoice = ChatToolChoice.CreateAutoChoice(),
-            Tools = { endSignalTool }
-        });
+        var completion = await Ollama(prompt);
 
         // The conversation continues, append the new goodies to our conversation history
         var words = completion;
@@ -115,7 +131,7 @@ public partial class AIAgent
     public void StartTalking(TalkingAction action)
     {
         _talkingAction = action;
-        // To begin a conversation, grab a message from ChatGPT and send it to the other agent
+        // To begin a conversation, grab a message from the LLM and send it to the other agent
         Task.Run(async () =>
         {
             var text = await SpeakTo(action.Other);
@@ -125,7 +141,26 @@ public partial class AIAgent
 
     public void StopTalking()
     {
-        CurrentConversation.Clear();
+        // Mark that we have begun summarizing. Agent does not take their turn until this is done.
+        _summarizeCompletionSource = new TaskCompletionSource<bool>();
+        Task.Run(SummarizeConversation);
         _talkingAction = null;
+    }
+
+    /// <summary>
+    /// Summarizes the current conversation and stores it in the _pastConversationSummaries list to be added
+    /// as context to future prompts.
+    /// </summary>
+    private async Task SummarizeConversation()
+    {
+        var prompt = string.Format(Prompt.SummarizeConversation, CurrentConversationAsString);
+        var completion = await Ollama(prompt);
+        Debug.Log($"Summary: {completion}");
+        _pastConversationSummaries.Add(completion);
+        CurrentConversation.Clear();
+        
+        // Mark that we have finished summarizing the conversation
+        _summarizeCompletionSource.SetResult(true);
+        _summarizeCompletionSource = null;
     }
 }
