@@ -128,6 +128,7 @@ public class AIInterface : MonoBehaviour
         {
             agent.ChatClient = ChatClient;
             agent.PlayerInfo = await GetPlayerInfo(1);
+            agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}";
             TurnStateMachine.AddPlayer(agent);
         }
     }

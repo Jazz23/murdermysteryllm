@@ -1,31 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using OllamaSharp;
 using OllamaSharp.Models.Chat;
 using OpenAI.Chat;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using Debug = UnityEngine.Debug;
+using UnityEngine.UI;
 
 public partial class AIAgent : MonoBehaviour, IPlayer
 {
     public PlayerInfo PlayerInfo { get; set; }
     public ChatClient ChatClient { get; set; }
-
     private NavMeshAgent _navAgent;
 
     [SerializeField]
+    private SpriteRenderer _spriteRender;
 
-    
+
+    [SerializeField]
+    public TextMeshProUGUI uiDescriptorText;
+
+    [SerializeField]
+    public RawImage speechBubble;
+
 
     public void Start()
     {
@@ -33,8 +34,15 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         _navAgent.updateRotation = false;
         _navAgent.updateUpAxis = false;
 
+        _spriteRender = GetComponent<SpriteRenderer>();
+        _spriteRender.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
+
+        uiDescriptorText = GetComponentInChildren<TextMeshProUGUI>();
+        speechBubble = GetComponentInChildren<RawImage>();
+        speechBubble.enabled = false;
+
     }
-    
+
     /// <summary>
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
     /// </summary>
@@ -52,12 +60,12 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             var uri = new Uri("http://localhost:11434");
             var ollama = new OllamaApiClient(uri);
             ollama.SelectedModel = "gemma3";
-            
+
             var response = "";
             await foreach (var stream in ollama.ChatAsync(new ChatRequest()
-                           {
-                               Messages = context
-                           }))
+            {
+                Messages = context
+            }))
                 response += stream.Message.Content;
             return response;
         }
@@ -85,13 +93,13 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             rawMurderInnocentInstructions,
             rawStoryContext,
             PlayerInfo.CurrentLocation);
-        
+
         context.Add(new Message()
         {
             Role = ChatRole.System,
             Content = setupPrompt
         });
-        
+
         // All other custom context methods found in this class
         context.AddRange(AppendContext.GatherContext(this));
         return context;
@@ -103,11 +111,11 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         {
             // Just in case we need to interact with Unity during this turn, use the main thread
             await Awaitable.MainThreadAsync();
-            
+
             // Wait for any past summarizing tasks to finish before starting our turn
             if (_summarizeCompletionSource != null)
                 await _summarizeCompletionSource.Task;
-            
+
             var agentToTalkTo = AIInterface.Agents.First(x => x != this);
             AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
             {
@@ -134,8 +142,8 @@ public partial class AIAgent : MonoBehaviour, IPlayer
                 .GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                 .Where(x => x.GetCustomAttribute<AppendContext>() != null);
-            
-            return contextMethods.SelectMany(x => (List<Message>) x.Invoke(agent, null)!).ToList();
+
+            return contextMethods.SelectMany(x => (List<Message>)x.Invoke(agent, null)!).ToList();
         }
     }
 

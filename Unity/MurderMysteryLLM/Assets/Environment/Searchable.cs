@@ -7,6 +7,15 @@ public class Searchable : Interactable
 
     public bool isRelatedToTheCrime = false;
 
+
+    private void Awake() {
+
+        if(this.hoverMessage != null) {
+            this.hoverMessage = $"Search {this.gameObject.name}";
+        }
+        
+        
+    }
     public override void OnInteraction()
     {
         var player = LocalPlayerController.LocalPlayer;
