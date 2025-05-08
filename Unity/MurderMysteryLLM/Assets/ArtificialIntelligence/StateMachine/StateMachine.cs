@@ -10,17 +10,23 @@ public class StateMachine
     public GameObject Location { get; init; }
     public readonly List<IPlayer> Players = new();
     public IPlayer CurrentPlayer; // Who's turn it is
-    
+
     /// <summary>
     /// List of actions that have been requested by players.
     /// </summary>
     public List<ActionState> QueuedActions = new();
-    
+
     private State _currentState;
 
     public StateMachine() => SetState(new PickPlayerState());
 
-    public void Update() => _currentState.Update();
+    public void Update()
+    {
+        _currentState.Update();
+        Debug.Log($"Current State: {_currentState.GetType().Name}");
+        Debug.Log($"Current Player: {CurrentPlayer?.PlayerInfo?.CharacterInformation?.Name}");
+
+    }
 
     public void SetState(State newState)
     {
@@ -34,7 +40,7 @@ public class StateMachine
     {
         QueuedActions.Add(action);
     }
-    
+
     public void AddPlayer(IPlayer player) => Players.Add(player);
 }
 

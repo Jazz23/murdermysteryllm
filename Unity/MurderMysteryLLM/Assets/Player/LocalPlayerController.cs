@@ -14,6 +14,7 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     public HashSet<string> CluesFound { get; } = new();
     public PlayerInfo PlayerInfo { get; private set; }
     
+    [SerializeField]
     private InputAction _moveAction;
     private Rigidbody2D _rigidBody;
     
