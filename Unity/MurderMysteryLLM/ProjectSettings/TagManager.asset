@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TextInput
   - Location
+  - Agent
   layers:
   - Default
   - TransparentFX

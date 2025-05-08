@@ -21,11 +21,16 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     private NavMeshAgent _navAgent;
 
+    [SerializeField]
+
+    
+
     public void Start()
     {
         _navAgent = GetComponent<NavMeshAgent>();
         _navAgent.updateRotation = false;
         _navAgent.updateUpAxis = false;
+
     }
     
     /// <summary>
@@ -106,4 +111,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             return contextMethods.SelectMany(x => (List<ChatMessage>) x.Invoke(agent, null)!).ToList();
         }
     }
+
+
 }

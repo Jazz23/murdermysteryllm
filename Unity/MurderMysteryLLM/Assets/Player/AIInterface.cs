@@ -13,6 +13,7 @@ using UnityEngine;
 /// <summary>
 /// Used to interface Unity with AI library. This starts a thread to drive the Storyteller and AIAgents.
 /// </summary>
+[ExecuteInEditMode]
 public class AIInterface : MonoBehaviour
 {
     // Synchronize the server's StoryContext to the rest of the clients
@@ -28,7 +29,7 @@ public class AIInterface : MonoBehaviour
     public bool mockStoryContext = true;
     public bool mockPlayerInfo = true;
     public int agentCount = 1;
-    public Transform agentSpawnLocation;
+    public List<Transform> agentSpawnLocations;
 
     [SerializeField] private GameObject _agentPrefab;
     private Storyteller _storyteller;
@@ -106,10 +107,21 @@ public class AIInterface : MonoBehaviour
     {
         for (var i = 0; i < agentCount; i++)
         {
-            // Randomly spawn them near the spawn location
-            var newPos = agentSpawnLocation.position +
-                         new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
-            Agents.Add(Instantiate(_agentPrefab, newPos, agentSpawnLocation.rotation).GetComponent<AIAgent>());
+            // Randomly pick a spawn location from the available locations
+            if (agentSpawnLocations.Count == 0)
+            {
+                Debug.LogError("No spawn locations available for agents.");
+                return;
+            }
+
+            var randomIndex = UnityEngine.Random.Range(0, agentSpawnLocations.Count);
+            var selectedSpawnLocation = agentSpawnLocations[randomIndex];
+            agentSpawnLocations.RemoveAt(randomIndex); // Remove the selected location from the list
+
+            // Randomly spawn the agent near the selected spawn location
+            // var newPos = selectedSpawnLocation.position +
+            //              new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
+            Agents.Add(Instantiate(_agentPrefab, selectedSpawnLocation.position, selectedSpawnLocation.rotation).GetComponent<AIAgent>());
         }
 
         foreach (var agent in Agents)
