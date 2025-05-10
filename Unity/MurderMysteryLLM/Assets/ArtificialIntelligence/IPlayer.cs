@@ -17,11 +17,6 @@ public interface IPlayer
     public void TurnStart();
     
     public void Search(GameObject obj);
-    
-    /// <summary>
-    /// Invoked by the storyteller after finalizing a new location to be at. This method should move the player.
-    /// </summary>
-    public void TakeDoor(string doorName, string message);
 
     /// <summary>
     /// Send a chat message to another player. Think of the body of this method as "Talked At".

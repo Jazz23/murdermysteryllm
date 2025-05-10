@@ -7,6 +7,7 @@ using ArtificialIntelligence;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using dotenv.net;
+using OllamaSharp;
 using OpenAI.Chat;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class AIInterface : MonoBehaviour
 {
     // Synchronize the server's StoryContext to the rest of the clients
     public static StoryContext StoryContext { get; private set; }
-    public static ChatClient ChatClient;
+    public static OllamaApiClient ChatClient;
     /// <summary>
     /// List of references to the locations the player can move to via the door action.
     /// </summary>
@@ -63,28 +64,17 @@ public class AIInterface : MonoBehaviour
         TurnStateMachine.Update();
     }
 
-    private static void LoadLocations()
-    {
-        if (Locations != null)
-            return;
-
-        // Load the locations from the scene by name
-        Locations = new List<Transform>();
-        foreach (var location in StoryContext.LocationGraph)
-        {
-            var locationObject = GameObject.Find(location.Name);
-            if (locationObject)
-                Locations.Add(locationObject.transform);
-        }
-    }
-
     // Loads prompts and any testing data
     private async Awaitable InitAILibrary()
     {
         // Place .env in root of unity project
         DotEnv.Load();
-
-        ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+        
+        var uri = new Uri("http://localhost:11434");
+        ChatClient = new OllamaApiClient(uri);
+        ChatClient.SelectedModel = "gemma3";
+        
+        // ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
         // Load prompts from local text files
         var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;

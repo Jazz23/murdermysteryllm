@@ -283,7 +283,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 0
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -598,6 +598,7 @@ GameObject:
   - component: {fileID: 6995566203346143929}
   - component: {fileID: 3231038141794708593}
   - component: {fileID: 1415290296900795250}
+  - component: {fileID: 2096989571608472994}
   - component: {fileID: 7554075232716382831}
   - component: {fileID: 3366583058129375670}
   m_Layer: 6
@@ -716,6 +717,27 @@ MonoBehaviour:
   _spriteRender: {fileID: 0}
   uiDescriptorText: {fileID: 0}
   speechBubble: {fileID: 0}
+--- !u!114 &2096989571608472994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182942811539460375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057faf55a16b48c78c470c47d6b834c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Locations:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!61 &7554075232716382831
 BoxCollider2D:
   m_ObjectHideFlags: 0

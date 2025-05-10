@@ -14,8 +14,9 @@ using UnityEngine.UI;
 public partial class AIAgent : MonoBehaviour, IPlayer
 {
     public PlayerInfo PlayerInfo { get; set; }
-    public ChatClient ChatClient { get; set; }
-    private NavMeshAgent _navAgent;
+    public OllamaApiClient ChatClient { get; set; }
+
+    private AgentMover _agentMover;
 
     [SerializeField]
     private SpriteRenderer _spriteRender;
@@ -30,10 +31,8 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     public void Start()
     {
-        _navAgent = GetComponent<NavMeshAgent>();
-        _navAgent.updateRotation = false;
-        _navAgent.updateUpAxis = false;
-
+        _agentMover = GetComponent<AgentMover>();
+        
         _spriteRender = GetComponent<SpriteRenderer>();
         _spriteRender.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
 
@@ -57,15 +56,12 @@ public partial class AIAgent : MonoBehaviour, IPlayer
                 Role = ChatRole.User,
                 Content = userPrompt
             });
-            var uri = new Uri("http://localhost:11434");
-            var ollama = new OllamaApiClient(uri);
-            ollama.SelectedModel = "gemma3";
-
+            
             var response = "";
-            await foreach (var stream in ollama.ChatAsync(new ChatRequest()
-            {
-                Messages = context
-            }))
+            await foreach (var stream in ChatClient.ChatAsync(new ChatRequest()
+                           {
+                               Messages = context
+                           }))
                 response += stream.Message.Content;
             return response;
         }
@@ -116,12 +112,15 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             if (_summarizeCompletionSource != null)
                 await _summarizeCompletionSource.Task;
 
-            var agentToTalkTo = AIInterface.Agents.First(x => x != this);
-            AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
-            {
-                Other = agentToTalkTo,
-                Player = this,
-            });
+            // var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+            // AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+            // {
+            //     Other = agentToTalkTo,
+            //     Player = this,
+            // });
+            
+            _agentMover.GotoLocation(2);
+            AIInterface.TurnStateMachine.SetState(new PickPlayerState());
         });
     }
 
