@@ -37,26 +37,17 @@ public class AIInterface : MonoBehaviour
     private readonly StoryContext _syncedStoryContext = new();
     private static AIInterface _instance;
 
-    public void Awake()
+    public async void Awake()
     {
         // We don't want anything to trigger until after initializing our AI Library
         enabled = false;
         _instance = this;
 
-        Task.Run(async () =>
-        {
-            try
-            {
-                await Awaitable.MainThreadAsync();
-                await InitAILibrary();
-                await SpawnAI();
-                await PlayLoop();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError(ex);
-            }
-        });
+        
+        await Awaitable.MainThreadAsync();
+        await InitAILibrary();
+        await SpawnAI();
+        await PlayLoop();
     }
 
     private void FixedUpdate()

@@ -148,7 +148,7 @@ public partial class AIAgent
     /// Summarizes the current conversation and stores it in the _pastConversationSummaries list to be added
     /// as context to future prompts.
     /// </summary>
-    private async Task SummarizeConversation()
+    public async Task SummarizeConversation()
     {
         var prompt = string.Format(Prompt.SummarizeConversation, CurrentConversationAsString);
         var completion = await Ollama(prompt);

@@ -6,22 +6,26 @@ using UnityEngine.AI;
 /// </summary>
 public class AgentMover : MonoBehaviour
 {
-    public List<GameObject> Locations;
-    public string LocationsAsString => string.Join("\n", Locations.Select(l => l.name));
+    public static List<GameObject> Locations { get; private set; }
+    public static string LocationsAsString => string.Join("\n", Locations.Select(l => l.name));
+    public static string LocationCount => Locations.Count.ToString();
     
     private NavMeshAgent _navAgent;
 
-    public void Start()
+    public void Awake()
     {
+        _navAgent = GetComponent<NavMeshAgent>();
+        _navAgent.updateRotation = false;
+        _navAgent.updateUpAxis = false;
+        
+        if (Locations != null)
+            return;
+        
         Locations = new List<GameObject>();
         foreach (Transform location in GameObject.Find("RoomColliders").transform)
         {
             Locations.Add(location.gameObject);
         }
-        
-        _navAgent = GetComponent<NavMeshAgent>();
-        _navAgent.updateRotation = false;
-        _navAgent.updateUpAxis = false;
     }
 
     public void GotoLocation(int locationIndex)

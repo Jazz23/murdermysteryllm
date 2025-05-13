@@ -1,0 +1,1 @@
+﻿Reply only with "Location", "Search", or "Talk" based on the best course of action.

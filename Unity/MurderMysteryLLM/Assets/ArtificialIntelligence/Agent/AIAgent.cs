@@ -7,6 +7,7 @@ using OllamaSharp;
 using OllamaSharp.Models.Chat;
 using OpenAI.Chat;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -57,12 +58,14 @@ public partial class AIAgent : MonoBehaviour, IPlayer
                 Content = userPrompt
             });
             
+            await Awaitable.BackgroundThreadAsync();
             var response = "";
             await foreach (var stream in ChatClient.ChatAsync(new ChatRequest()
                            {
                                Messages = context
                            }))
                 response += stream.Message.Content;
+            await Awaitable.MainThreadAsync();
             return response;
         }
         catch (Exception e)
@@ -105,9 +108,8 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     {
         Task.Run(async () =>
         {
-            // Just in case we need to interact with Unity during this turn, use the main thread
             await Awaitable.MainThreadAsync();
-
+            
             // Wait for any past summarizing tasks to finish before starting our turn
             if (_summarizeCompletionSource != null)
                 await _summarizeCompletionSource.Task;
@@ -118,10 +120,45 @@ public partial class AIAgent : MonoBehaviour, IPlayer
             //     Other = agentToTalkTo,
             //     Player = this,
             // });
-            
-            _agentMover.GotoLocation(2);
-            AIInterface.TurnStateMachine.SetState(new PickPlayerState());
+
+            var prompt = Prompt.TurnStart;
+            var response = (await Ollama(prompt)).ToLower();
+            Debug.Log(response);
+
+            if (response.Contains("talk"))
+            {
+                await TalkTask();
+            }
+            else if (response.Contains("search"))
+            {
+                await SearchTask();
+            }
+            else if (response.Contains("location"))
+            {
+                await LocationTask();
+            }
         });
+    }
+
+    private async Task TalkTask()
+    {
+        AIInterface.TurnStateMachine.SetState(new PickPlayerState());
+    }
+
+    private async Task SearchTask()
+    {
+        AIInterface.TurnStateMachine.SetState(new PickPlayerState());
+    }
+
+    private async Task LocationTask()
+    {
+        var prompt = string.Format(Prompt.LocationQuery, AgentMover.Locations.Count, AgentMover.LocationsAsString);
+        var response = await Ollama(prompt);
+        // Remove whitespace and newlines
+        response = response.Replace("\n", "").Replace("\r", "").Trim();
+        var location = int.Parse(response);
+        _agentMover.GotoLocation(location);
+        AIInterface.TurnStateMachine.SetState(new PickPlayerState());
     }
 
     /// <summary>

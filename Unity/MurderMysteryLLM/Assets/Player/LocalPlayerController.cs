@@ -53,7 +53,7 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
         if (IsInputBlocked)
             return;
         
-        _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>() * (Time.deltaTime * speed * 100);
+        _rigidBody.linearVelocity = _moveAction.ReadValue<Vector2>().normalized * speed;
     }
     
     public void TurnStart()

@@ -1,0 +1,3 @@
+﻿Reply with a number: The 0-indexed index of the location you want to go to. There are a total of {0} locations.
+
+{1}
