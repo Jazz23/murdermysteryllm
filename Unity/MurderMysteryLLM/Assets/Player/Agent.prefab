@@ -164,7 +164,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 5
+  m_Radius: 10
 --- !u!114 &7210601397987945295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +179,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _searchableObject: []
   _peersNearby: []
-  _currentLocation: 
+  _locations: []
+  context: 
 --- !u!1 &5290462006992695285
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,15 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057faf55a16b48c78c470c47d6b834c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Locations:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!61 &7554075232716382831
 BoxCollider2D:
   m_ObjectHideFlags: 0
