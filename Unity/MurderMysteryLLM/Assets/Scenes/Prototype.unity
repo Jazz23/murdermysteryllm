@@ -32878,7 +32878,7 @@ GameObject:
   - component: {fileID: 542141449}
   - component: {fileID: 542141448}
   - component: {fileID: 542141447}
-  - component: {fileID: 542141452}
+  - component: {fileID: 542141453}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -32900,11 +32900,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDebugText: 0
   ShowCameraFrustum: 1
-  IgnoreTimeScale: 0
+  IgnoreTimeScale: 1
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
   UpdateMethod: 2
-  BlendUpdateMethod: 1
+  BlendUpdateMethod: 0
   LensModeOverride:
     Enabled: 0
     DefaultMode: 2
@@ -32942,7 +32942,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
-  m_Antialiasing: 2
+  m_Antialiasing: 1
   m_AntialiasingQuality: 0
   m_StopNaN: 1
   m_Dithering: 1
@@ -32979,7 +32979,7 @@ Camera:
   m_GameObject: {fileID: 542141446}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.5761837, g: 0.6365976, b: 0.735849, a: 0.74509805}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -32997,15 +32997,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.18083183
+    x: 0
     y: 0
-    width: 0.63737196
+    width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 5000
+  far clip plane: 1000
   field of view: 96.6
   orthographic: 1
-  orthographic size: 4.6875
+  orthographic size: 7
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -33036,7 +33036,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &542141452
+--- !u!114 &542141453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -33045,21 +33045,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 542141446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9420f5aea32df7646ab1a75a6346d5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
-  m_AssetsPPU: 32
-  m_RefResolutionX: 340
-  m_RefResolutionY: 300
-  m_CropFrame: 4
-  m_GridSnapping: 1
-  m_FilterMode: 0
-  m_UpscaleRT: 0
-  m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
-  m_StretchFill: 0
+  matteColor: {r: 0, g: 0, b: 0, a: 1}
+  referenceMode: 0
+  x: 16
+  y: 8
+  width: 1080
+  height: 540
+  onAwake: 1
+  onUpdate: 1
 --- !u!1 &570359021
 GameObject:
   m_ObjectHideFlags: 0
@@ -42073,11 +42069,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoundingShape2D: {fileID: 1497557350}
   Damping: 5
-  SlowingDistance: 0
+  SlowingDistance: 5
   OversizeWindow:
     Enabled: 0
-    MaxWindowSize: 0
-    Padding: 100
+    MaxWindowSize: 0.12
+    Padding: 19.9
   m_LegacyMaxWindowSize: -2
 --- !u!114 &1644844366
 MonoBehaviour:
@@ -42104,9 +42100,9 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 96.6
-    OrthographicSize: 6
+    OrthographicSize: 7
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 1
     PhysicalProperties:
@@ -42151,10 +42147,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TrackerSettings:
     BindingMode: 3
-    PositionDamping: {x: 1, y: 1, z: 1}
-    AngularDampingMode: 1
+    PositionDamping: {x: 2, y: 2, z: 1}
+    AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
-    QuaternionDamping: 5.6
+    QuaternionDamping: 0
   FollowOffset: {x: 0, y: 0, z: -10}
 --- !u!1 &1654706049
 GameObject:
@@ -45791,9 +45787,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 955397495561964303, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9485137
+      objectReference: {fileID: 0}
+    - target: {fileID: 955397495561964303, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9782942
+      objectReference: {fileID: 0}
+    - target: {fileID: 955397495561964303, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_Color.r
+      value: 0.990566
+      objectReference: {fileID: 0}
     - target: {fileID: 3364409915787723411, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
       propertyPath: m_Name
       value: StoyTeller_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765206358783782805, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 87.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765206358783782805, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -815
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765206358783782805, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6683839421248279518, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
       propertyPath: m_Pivot.x
@@ -45874,6 +45894,10 @@ PrefabInstance:
     - target: {fileID: 6683839421248279518, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7708494280706915468, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
