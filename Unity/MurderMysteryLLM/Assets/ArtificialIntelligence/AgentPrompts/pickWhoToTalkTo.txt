@@ -1,0 +1,1 @@
+﻿Choose from the following the list of players to talk to: {0}. Only reply with a single number, the 0-indexed index of the person.

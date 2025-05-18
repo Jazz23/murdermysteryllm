@@ -80,6 +80,7 @@ public class AIInterface : MonoBehaviour
 
         _storyteller = new Storyteller();
 
+        if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
         var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
         TurnStateMachine.AddPlayer(player);
     }

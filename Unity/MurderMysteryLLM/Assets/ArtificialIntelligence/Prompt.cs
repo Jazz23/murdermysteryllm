@@ -21,6 +21,7 @@ public class Prompt
     public static readonly Prompt SummarizeConversation = new("AgentPrompts/summarizeConversation.txt");
     public static readonly Prompt TurnStart = new("AgentPrompts/turnStart.txt");
     public static readonly Prompt LocationQuery = new("AgentPrompts/locationQuery.txt");
+    public static readonly Prompt PickWhoToTalkTo = new("AgentPrompts/pickWhoToTalkTo.txt");
     
     // Member variables to cache the file contents
     private readonly string _fileLocation;

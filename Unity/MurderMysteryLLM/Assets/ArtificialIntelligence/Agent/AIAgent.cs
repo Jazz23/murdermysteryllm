@@ -33,6 +33,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     public void Start()
     {
         _agentMover = GetComponent<AgentMover>();
+        _agentObserver = GetComponentInChildren<AgentObserver>();
         
         _spriteRender = GetComponent<SpriteRenderer>();
         _spriteRender.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
@@ -51,6 +52,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     {
         try
         {
+            await Awaitable.MainThreadAsync();
             var context = BuildChatGPTContext();
             context.Add(new Message()
             {
@@ -66,11 +68,11 @@ public partial class AIAgent : MonoBehaviour, IPlayer
                            }))
                 response += stream.Message.Content;
             await Awaitable.MainThreadAsync();
-            return response;
+            return response.Replace("\n", "").Replace("\r", "").Trim();
         }
         catch (Exception e)
         {
-            UnityEngine.Debug.LogError($"ChatGPT error: {e.Message}");
+            UnityEngine.Debug.LogError(e);
             throw;
         }
     }
@@ -142,7 +144,29 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     private async Task TalkTask()
     {
-        AIInterface.TurnStateMachine.SetState(new PickPlayerState());
+        var playerList = _agentObserver.PeersNearby.Select(x => x.GetComponent<IPlayer>()).ToList();
+        var playerNames = string.Join(", ", playerList.Select(x => x.PlayerInfo.CharacterInformation.Name));
+        var prompt = string.Format(Prompt.PickWhoToTalkTo, playerNames);
+        var response = await Ollama(prompt);
+        
+        var person = playerList[int.Parse(response)];
+        AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+        {
+            Other = person,
+            Player = this
+        });
+        
+        // To display the chat box
+        if (person is LocalPlayerController)
+        {
+            var mockTalkingAction = new TalkingAction()
+            {
+                Other = this,
+                Player = person,
+                StateMachine = AIInterface.TurnStateMachine
+            };
+            person.StartTalking(mockTalkingAction);
+        }
     }
 
     private async Task SearchTask()
@@ -155,7 +179,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         var prompt = string.Format(Prompt.LocationQuery, AgentMover.Locations.Count, AgentMover.LocationsAsString);
         var response = await Ollama(prompt);
         // Remove whitespace and newlines
-        response = response.Replace("\n", "").Replace("\r", "").Trim();
         var location = int.Parse(response);
         _agentMover.GotoLocation(location);
         AIInterface.TurnStateMachine.SetState(new PickPlayerState());
