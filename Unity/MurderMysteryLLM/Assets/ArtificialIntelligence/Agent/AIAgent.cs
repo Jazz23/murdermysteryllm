@@ -48,12 +48,12 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
     /// </summary>
     /// <returns>The assistant reply from ChatGPT</returns>
-    private async Task<string> Ollama(string userPrompt)
+    private async Task<string> Ollama(string userPrompt, bool includeContext = true)
     {
         try
         {
             await Awaitable.MainThreadAsync();
-            var context = BuildChatGPTContext();
+            var context = includeContext ? BuildChatGPTContext() : new List<Message>();
             context.Add(new Message()
             {
                 Role = ChatRole.User,

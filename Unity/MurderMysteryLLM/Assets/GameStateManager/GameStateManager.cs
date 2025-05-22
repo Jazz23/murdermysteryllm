@@ -1,84 +1,60 @@
+using TMPro;
 using UnityEditor;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GameStateManager : MonoBehaviour
 {
 
     [Header("GameStates")]
-    private IGameState currentState;
+    public IGameState currentState;
+    [Tooltip("Time in seconds to search for clues")]
+    [Range(0,180)]
+    public float searchTime = 75f;
 
-    private StartState startState = new StartState();
-    private SearchState searchState = new SearchState();
-    private VoteState voteState = new VoteState();
-    private EndState endState = new EndState();
+    [Tooltip("Time in seconds to vote")]
+    [Range(0, 180)]
+    public float voteTime = 75f;
+    public StartState startState = new StartState();
+    public SearchState searchState = new SearchState();
+    public VoteState voteState = new VoteState();
+    public EndState endState = new EndState();
 
     [Header("Scene")]
-
-    [SerializeField]
     public List<GameObject> players;
-
-    [SerializeField]
-    private GameObject killer;
+    public GameObject killer;
 
 
     [Header("Clues")]
 
     [Range(0, 14)]
     [SerializeField]
-    private int realCluesNecessary = 10;
+    public int realCluesNecessary = 10;
 
     [SerializeField]
-    private List<GameObject> clues;
+    public List<GameObject> clues;
 
     [SerializeField]
-    private List<GameObject> fakeClues;
+    public List<GameObject> fakeClues;
 
     [SerializeField]
-    private List<GameObject> realClues;
+    public List<GameObject> realClues;
 
+    [Header("Found Information")]
+    public List<GameObject> foundClues;
 
+    public List<GameObject> foundAccusations;
 
-    private void Awake()
-    {
-        // Create Scenario (who died)
+    [Header("UI")]
 
-        // Set killer
+    public TextMeshProUGUI timerText;
 
-        // Generate Clues in scene
-
-        // Create win condition ( whos is killer and clues)
-
-        // set game State
-        FindPlayers();
-
-        int randomIndex = Random.Range(0, players.Count);
-        killer = players[randomIndex];
-
-        if (clues != null)
-        {
-            fakeClues.Clear();
-            realClues.Clear();
-
-
-            fakeClues = new List<GameObject>(clues);
-
-            var shuffled = fakeClues.OrderBy(x => Random.value).ToList();
-            realClues = shuffled.GetRange(0, realCluesNecessary);
-            shuffled.RemoveRange(0, realClues.Count);
-        }
-
-        OnGameStateChanged(startState);
-
-
-    }
-
-
-
+  
     void Start()
     {
-
+        OnGameStateChanged(startState);
     }
 
     // Update is called once per frame
@@ -95,7 +71,37 @@ public class GameStateManager : MonoBehaviour
         currentState.OnEnter(this);
     }
 
-    private void FindPlayers()
+    public void NextState()
+    {
+        if (currentState == startState)
+        {
+            OnGameStateChanged(searchState);
+        }
+        else if (currentState == searchState)
+        {
+            OnGameStateChanged(players.Count > 2 ? voteState : endState);
+        }
+        else if (currentState == voteState)
+        {
+            OnGameStateChanged(players.Count > 2 ? endState : searchState);
+        }
+    }
+
+    public void GenerateClueLists()
+    {
+        if (clues != null)
+        {
+            fakeClues.Clear();
+            realClues.Clear();
+            fakeClues = new List<GameObject>(clues);
+            var shuffled = fakeClues.OrderBy(x => Random.value).ToList();
+            realClues = shuffled.GetRange(0, realCluesNecessary);
+            shuffled.RemoveRange(0, realClues.Count);
+        }
+    }
+
+
+    public void FindPlayers()
     {
         players.Clear();
         var agents = GameObject.FindGameObjectsWithTag("Agent");
