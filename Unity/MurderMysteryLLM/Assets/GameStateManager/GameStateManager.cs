@@ -7,16 +7,16 @@ using UnityEngine.UI;
 
 public class GameStateManager : MonoBehaviour
 {
-
+    private const int minPlayers = 2;
     [Header("GameStates")]
     public IGameState currentState;
     [Tooltip("Time in seconds to search for clues")]
-    [Range(0,180)]
-    public float searchTime = 75f;
+    [Range(0, 180)]
+    public int searchTime = 75;
 
     [Tooltip("Time in seconds to vote")]
     [Range(0, 180)]
-    public float voteTime = 75f;
+    public int voteTime = 75;
     public StartState startState = new StartState();
     public SearchState searchState = new SearchState();
     public VoteState voteState = new VoteState();
@@ -49,12 +49,20 @@ public class GameStateManager : MonoBehaviour
 
     [Header("UI")]
 
-    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI countdownTimerDisplay;
 
-  
+
     void Start()
     {
-        OnGameStateChanged(startState);
+        currentState = startState;
+        currentState.OnEnter(this);
+        // countdownTimerDisplay.gameObject.SetActive(false);
+        // countdownTimerDisplay.text = "";
+        // players = new List<GameObject>();
+        // foundClues = new List<GameObject>();
+        // foundAccusations = new List<GameObject>();
+        // fakeClues = new List<GameObject>();
+        // realClues = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -71,19 +79,20 @@ public class GameStateManager : MonoBehaviour
         currentState.OnEnter(this);
     }
 
-    public void NextState()
+    public void ChangetoNextState()
     {
+        currentState.OnExit(this);
         if (currentState == startState)
         {
             OnGameStateChanged(searchState);
         }
         else if (currentState == searchState)
         {
-            OnGameStateChanged(players.Count > 2 ? voteState : endState);
+            OnGameStateChanged(players.Count > minPlayers ? voteState : endState);
         }
         else if (currentState == voteState)
         {
-            OnGameStateChanged(players.Count > 2 ? endState : searchState);
+            OnGameStateChanged(players.Count > minPlayers ? endState : searchState);
         }
     }
 
@@ -97,6 +106,7 @@ public class GameStateManager : MonoBehaviour
             var shuffled = fakeClues.OrderBy(x => Random.value).ToList();
             realClues = shuffled.GetRange(0, realCluesNecessary);
             shuffled.RemoveRange(0, realClues.Count);
+            fakeClues = shuffled;
         }
     }
 
@@ -111,11 +121,6 @@ public class GameStateManager : MonoBehaviour
     }
 
 
-    public void DetermineEndCondition()
-    {
-        // win condition is met if most clues are found or rightfully accused is eliminated
-
-    }
 }
 
 public interface IGameState

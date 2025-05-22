@@ -1,40 +1,69 @@
+using TMPro;
 using UnityEngine;
 
 public class SearchState : IGameState
 {
-	public float duration;
+	private float timeRemaining;
 	private bool isSearching = false;
-	private string countdownText = "";
+	private TextMeshProUGUI countdownTimerDisplay;
+
 	public void OnEnter(GameStateManager gameStateManager)
 	{
-		duration = gameStateManager.searchTime;
+		Debug.Log("SearchState: OnEnter");
+		timeRemaining = gameStateManager.searchTime;
+		countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
 		isSearching = true;
-		gameStateManager.timerText.text = "Searching for clues...";
-		gameStateManager.timerText.gameObject.SetActive(true);
+		countdownTimerDisplay.text = "";
+		countdownTimerDisplay.gameObject.SetActive(true);
 	}
-
 
 	public void OnUpdate(GameStateManager gameStateManager)
 	{
+		Debug.Log("SearchState: OnUpdate");
+		if (!isSearching)
+		{
+			gameStateManager.ChangetoNextState();
+			return;
+		}
 
+		UpdateCountdown();
+
+		if (!isSearching)
+			gameStateManager.ChangetoNextState();
+		else
+			DisplayTime(timeRemaining);
 	}
 
 	public void OnExit(GameStateManager gameStateManager)
 	{
-		isSearching = false;
-		gameStateManager.NextState();
-		gameStateManager.timerText.gameObject.SetActive(false);
-		gameStateManager.timerText.text = "";
-
+		Debug.Log("SearchState: OnExit");
+		countdownTimerDisplay.gameObject.SetActive(false);
+		countdownTimerDisplay.text = "";
 	}
 
-	private async void Countdown(float duration)
+	private void UpdateCountdown()
 	{
-		if (isSearching) return;
+		if (isSearching)
+		{
+			timeRemaining -= Time.deltaTime;
+			if (timeRemaining <= 0)
+			{
+				timeRemaining = 0;
+				isSearching = false;
+			}
+		}
+		else
+			isSearching = false;
 
-		isSearching = true;
-		
 	}
 
+	private void DisplayTime(float timeToDisplay)
+	{
+		timeToDisplay += 1f; // To display as countdown
+		int minutes = Mathf.FloorToInt(timeToDisplay / 60f);
+		int seconds = Mathf.FloorToInt(timeToDisplay % 60f);
+		int milliseconds = Mathf.FloorToInt((timeToDisplay % 1f) * 1000f);
 
+		countdownTimerDisplay.text = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
+	}
 }
