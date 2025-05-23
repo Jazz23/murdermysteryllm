@@ -21,7 +21,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     [SerializeField]
     private SpriteRenderer _spriteRender;
-
+    public SpriteRenderer SpriteRender => _spriteRender;
 
     [SerializeField]
     public TextMeshProUGUI uiDescriptorText;
@@ -36,32 +36,12 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         _agentObserver = GetComponentInChildren<AgentObserver>();
 
         _spriteRender = GetComponent<SpriteRenderer>();
-        _spriteRender.color = GetRandomColor();
-
         uiDescriptorText = GetComponentInChildren<TextMeshProUGUI>();
         speechBubble = GetComponentInChildren<RawImage>();
         speechBubble.enabled = false;
 
     }
 
-    private static Color GetRandomColor()
-    {
-        Color[] colors = new Color[]
-        {
-            Color.red,
-            Color.green,
-            Color.blue,
-            Color.yellow,
-            Color.cyan,
-            Color.magenta,
-            Color.gray,
-            Color.white,
-            new Color(1f, 0.5f, 0f), // orange
-            new Color(0.5f, 0f, 1f)  // purple
-		};
-        int index = UnityEngine.Random.Range(0, colors.Length);
-        return colors[index];
-    }
 
     /// <summary>
     /// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.

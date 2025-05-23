@@ -14,7 +14,6 @@ using UnityEngine;
 /// <summary>
 /// Used to interface Unity with AI library. This starts a thread to drive the Storyteller and AIAgents.
 /// </summary>
-[ExecuteInEditMode]
 public class AIInterface : MonoBehaviour
 {
     // Synchronize the server's StoryContext to the rest of the clients
@@ -113,7 +112,8 @@ public class AIInterface : MonoBehaviour
             agent.ChatClient = ChatClient;
             int randomIndex = UnityEngine.Random.Range(1, 6); // 1 to 5 inclusive
             agent.PlayerInfo = await GetPlayerInfo(randomIndex);
-            agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}";
+            agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}\n {agent.PlayerInfo.CharacterInformation.Age}";
+            agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
             TurnStateMachine.AddPlayer(agent);
         }
     }
@@ -128,6 +128,8 @@ public class AIInterface : MonoBehaviour
         // }
     }
 
+
+
     private void GetAgentSpawnLocations()
     {
         this.agentSpawnLocations = new List<Transform>();
@@ -136,6 +138,9 @@ public class AIInterface : MonoBehaviour
         foreach (Transform child in spawn)
             this.agentSpawnLocations.Add(child);
     }
+
+
+
 
     /// <summary>
     /// Loops between players and takes their turn via the storyteller.
