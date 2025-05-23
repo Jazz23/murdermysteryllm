@@ -10,11 +10,19 @@ public class SearchState : IGameState
 	public void OnEnter(GameStateManager gameStateManager)
 	{
 		Debug.Log("SearchState: OnEnter");
+		gameStateManager.currentStateDisplay.text = "Search";
+		gameStateManager.transitionAnimator.SetBool("startTransition", true);
 		timeRemaining = gameStateManager.searchTime;
 		countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
 		isSearching = true;
 		countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
+
+		System.Collections.IEnumerator WaitForTransition()
+		{
+			yield return new WaitForSeconds(1f);
+			gameStateManager.transitionAnimator.SetBool("startTransition", false);
+		}
 	}
 
 	public void OnUpdate(GameStateManager gameStateManager)

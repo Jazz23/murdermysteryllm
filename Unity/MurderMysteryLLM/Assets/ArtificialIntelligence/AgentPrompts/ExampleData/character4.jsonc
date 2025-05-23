@@ -1,0 +1,8 @@
+﻿{
+  "name": "Andre Kim",
+  "age": 26,
+  "occupation": "Freelance App Developer",
+  "traits": ["Introverted", "Cynical"],
+  "description": "Andre Kim spends most of his time indoors, coding late into the night while listening to conspiracy podcasts. A recluse by nature, he distrusts institutions and prefers online interactions over face-to-face contact. Despite his social awkwardness, he notices things others miss and keeps detailed logs of neighborhood activity for 'security reasons.'",
+  "murderer": false
+}

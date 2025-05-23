@@ -51,6 +51,10 @@ public class GameStateManager : MonoBehaviour
 
     public TextMeshProUGUI countdownTimerDisplay;
 
+    public TextMeshProUGUI countdownTimerDisplayVote;
+    public TextMeshProUGUI currentStateDisplay;
+
+    public Animator transitionAnimator;
 
     void Start()
     {

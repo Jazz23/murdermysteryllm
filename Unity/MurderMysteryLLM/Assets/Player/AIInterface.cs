@@ -29,8 +29,10 @@ public class AIInterface : MonoBehaviour
 
     public bool mockStoryContext = true;
     public bool mockPlayerInfo = true;
+
+    [Range(1, 5)]
     public int agentCount = 1;
-    public List<Transform> agentSpawnLocations;
+    public List<Transform> agentSpawnLocations = new();
 
     [SerializeField] private GameObject _agentPrefab;
     private Storyteller _storyteller;
@@ -42,8 +44,8 @@ public class AIInterface : MonoBehaviour
         // We don't want anything to trigger until after initializing our AI Library
         enabled = false;
         _instance = this;
+        GetAgentSpawnLocations();
 
-        
         await Awaitable.MainThreadAsync();
         await InitAILibrary();
         await SpawnAI();
@@ -60,11 +62,11 @@ public class AIInterface : MonoBehaviour
     {
         // Place .env in root of unity project
         DotEnv.Load();
-        
+
         var uri = new Uri("http://localhost:11434");
         ChatClient = new OllamaApiClient(uri);
         ChatClient.SelectedModel = "gemma3";
-        
+
         // ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
         // Load prompts from local text files
@@ -109,7 +111,8 @@ public class AIInterface : MonoBehaviour
         foreach (var agent in Agents)
         {
             agent.ChatClient = ChatClient;
-            agent.PlayerInfo = await GetPlayerInfo(1);
+            int randomIndex = UnityEngine.Random.Range(1, 6); // 1 to 5 inclusive
+            agent.PlayerInfo = await GetPlayerInfo(randomIndex);
             agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}";
             TurnStateMachine.AddPlayer(agent);
         }
@@ -123,6 +126,15 @@ public class AIInterface : MonoBehaviour
         return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
             StoryContext);
         // }
+    }
+
+    private void GetAgentSpawnLocations()
+    {
+        this.agentSpawnLocations = new List<Transform>();
+        Transform spawn = transform.Find("Spawn");
+        if (spawn == null) return;
+        foreach (Transform child in spawn)
+            this.agentSpawnLocations.Add(child);
     }
 
     /// <summary>

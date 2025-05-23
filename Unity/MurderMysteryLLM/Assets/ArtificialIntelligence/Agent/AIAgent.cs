@@ -27,21 +27,40 @@ public partial class AIAgent : MonoBehaviour, IPlayer
     public TextMeshProUGUI uiDescriptorText;
 
     [SerializeField]
-    public RawImage speechBubble;
+    public RawImage speechBubble = null;
 
 
     public void Start()
     {
         _agentMover = GetComponent<AgentMover>();
         _agentObserver = GetComponentInChildren<AgentObserver>();
-        
+
         _spriteRender = GetComponent<SpriteRenderer>();
-        _spriteRender.color = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
+        _spriteRender.color = GetRandomColor();
 
         uiDescriptorText = GetComponentInChildren<TextMeshProUGUI>();
         speechBubble = GetComponentInChildren<RawImage>();
         speechBubble.enabled = false;
 
+    }
+
+    private static Color GetRandomColor()
+    {
+        Color[] colors = new Color[]
+        {
+            Color.red,
+            Color.green,
+            Color.blue,
+            Color.yellow,
+            Color.cyan,
+            Color.magenta,
+            Color.gray,
+            Color.white,
+            new Color(1f, 0.5f, 0f), // orange
+            new Color(0.5f, 0f, 1f)  // purple
+		};
+        int index = UnityEngine.Random.Range(0, colors.Length);
+        return colors[index];
     }
 
     /// <summary>
@@ -59,13 +78,13 @@ public partial class AIAgent : MonoBehaviour, IPlayer
                 Role = ChatRole.User,
                 Content = userPrompt
             });
-            
+
             await Awaitable.BackgroundThreadAsync();
             var response = "";
             await foreach (var stream in ChatClient.ChatAsync(new ChatRequest()
-                           {
-                               Messages = context
-                           }))
+            {
+                Messages = context
+            }))
                 response += stream.Message.Content;
             await Awaitable.MainThreadAsync();
             return response.Replace("\n", "").Replace("\r", "").Trim();
@@ -111,7 +130,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         Task.Run(async () =>
         {
             await Awaitable.MainThreadAsync();
-            
+
             // Wait for any past summarizing tasks to finish before starting our turn
             if (_summarizeCompletionSource != null)
                 await _summarizeCompletionSource.Task;
@@ -148,14 +167,14 @@ public partial class AIAgent : MonoBehaviour, IPlayer
         var playerNames = string.Join(", ", playerList.Select(x => x.PlayerInfo.CharacterInformation.Name));
         var prompt = string.Format(Prompt.PickWhoToTalkTo, playerNames);
         var response = await Ollama(prompt);
-        
+
         var person = playerList[int.Parse(response)];
         AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
         {
             Other = person,
             Player = this
         });
-        
+
         // To display the chat box
         if (person is LocalPlayerController)
         {
