@@ -30,7 +30,7 @@ public class InteractableManager : MonoBehaviour
         
         // Perform a circle raycast around the player, searching for interactables
         Array.Clear(colliderResults, 0, colliderResults.Length);
-        Physics2D.OverlapCircleNonAlloc(transform.position, searchRadius, colliderResults, ~LayerMask.GetMask("Player"));
+		_ = Physics2D.OverlapCircleNonAlloc(transform.position, searchRadius, colliderResults, ~LayerMask.GetMask("Player"));
         
         // Iterate each collider in order of closest to farthest
         foreach (var hit in colliderResults.Where(x => x).OrderBy(x => Vector3.Distance(x.transform.position, transform.position)))

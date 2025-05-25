@@ -71,7 +71,7 @@ public class Chat : MonoBehaviour
             return;
 
         AddChatMessage($"{LocalPlayerController.LocalPlayer.PlayerInfo.CharacterInformation.Name}: {inputBox.text}");
-        _other.OnTalkedAt(LocalPlayerController.LocalPlayer, inputBox.text);
+		_ = _other.OnTalkedAt(LocalPlayerController.LocalPlayer, inputBox.text);
         inputBox.text = "";
         inputBox.ActivateInputField();
     }

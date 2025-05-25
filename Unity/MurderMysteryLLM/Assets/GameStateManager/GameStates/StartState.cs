@@ -1,10 +1,11 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class StartState : IGameState
 {
-	public void OnEnter(GameStateManager gameStateManager)
+	public async Task OnEnter(GameStateManager gameStateManager)
 	{
-		Debug.Log("StartState: OnEnter");
+		// Debug.Log("StartState: OnEnter");
 
 		gameStateManager.FindPlayers();
 
@@ -13,18 +14,18 @@ public class StartState : IGameState
 
 		gameStateManager.GenerateClueLists();
 
-		gameStateManager.ChangetoNextState();
+		_ = gameStateManager.ChangeToNextState();
 	}
 
-	public void OnExit(GameStateManager gameStateManager)
+	public async Task OnExit(GameStateManager gameStateManager)
 	{
-		Debug.Log("StartState: OnExit");
+		// Debug.Log("StartState: OnExit");
 		return;
 	}
 
-	public void OnUpdate(GameStateManager gameStateManager)
+	public async Task OnUpdate(GameStateManager gameStateManager)
 	{
-		Debug.Log("StartState: OnUpdate");
+		// Debug.Log("StartState: OnUpdate");
 		return;
 	}
 }

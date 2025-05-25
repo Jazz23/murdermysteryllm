@@ -9,7 +9,7 @@ public partial class AIAgent
 
     public void Search(GameObject obj)
     {
-        CluesFound.Add(obj.GetComponent<Searchable>().Search());
+		_ = CluesFound.Add(obj.GetComponent<Searchable>().Search());
     }
     
     [AppendContext]

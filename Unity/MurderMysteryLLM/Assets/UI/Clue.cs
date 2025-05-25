@@ -31,25 +31,25 @@ public class Clue : MonoBehaviour
         cluePanel.GetComponentInChildren<TextMeshProUGUI>().text = clue;
         cluePanel.SetActive(true);
 
-        Task.Run(async () =>
-        {
-            float elapsedTime = 0f;
-            while (elapsedTime < clueDisplaySeconds)
-            {
-            await Awaitable.MainThreadAsync();
+		_ = Task.Run(async () =>
+		{
+			float elapsedTime = 0f;
+			while (elapsedTime < clueDisplaySeconds)
+			{
+				await Awaitable.MainThreadAsync();
 
-            if (Input.GetButtonDown("Cancel"))
-            {
-                cluePanel.SetActive(false);
-                return;
-            }
+				if (Input.GetButtonDown("Cancel"))
+				{
+					cluePanel.SetActive(false);
+					return;
+				}
 
-            await Awaitable.WaitForSecondsAsync(0.1f);
-            elapsedTime += 0.1f;
-            }
+				await Awaitable.WaitForSecondsAsync(0.1f);
+				elapsedTime += 0.1f;
+			}
 
-            cluePanel.SetActive(false);
-        });
+			cluePanel.SetActive(false);
+		});
     }
 
     /// <summary>

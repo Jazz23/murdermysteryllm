@@ -25,6 +25,6 @@ public class TestAgent : MonoBehaviour
 
         // Set the z-coordinate to 0 for 2D
         mouseWorldPosition.z = 0;
-        _agent.Warp(mouseWorldPosition);
+		_ = _agent.Warp(mouseWorldPosition);
     }
 }

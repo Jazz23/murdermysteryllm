@@ -7,40 +7,29 @@ public class VoteState : IGameState
 	private float timeRemaining;
 	private bool isVoting = false;
 	private TextMeshProUGUI countdownTimerDisplay;
-	private GameStateManager gameStateManager;
-	public void OnEnter(GameStateManager gameStateManager)
+	public async Task OnEnter(GameStateManager gameStateManager)
 	{
-		Debug.Log("VoteState: OnEnter");
-		this.gameStateManager = gameStateManager;
-		timeRemaining = gameStateManager.voteTime;
-		countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
+		// Debug.Log("VoteState: OnEnter");
 		isVoting = true;
-		countdownTimerDisplay.text = "";
+		this.timeRemaining = gameStateManager.voteTime;
+		this.countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
+		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
+
+		await StartCountdown(gameStateManager);
 	}
-	public void OnUpdate(GameStateManager gameStateManager)
+	public async Task OnUpdate(GameStateManager gameStateManager)
 	{
-		Debug.Log("VoteState: OnUpdate");
-		if (!isVoting)
-		{
-			gameStateManager.ChangetoNextState();
-			return;
-		}
 
-		UpdateCountdown();
-
-		if (!isVoting)
-			gameStateManager.ChangetoNextState();
-		else
-			DisplayTime(timeRemaining);
 	}
 
-	public void OnExit(GameStateManager gameStateManager)
+	public async Task OnExit(GameStateManager gameStateManager)
 	{
-		Debug.Log("VoteState: OnExit");
+		// Debug.Log("VoteState: OnExit");
 		gameStateManager.countdownTimerDisplay.gameObject.SetActive(false);
 		gameStateManager.countdownTimerDisplay.text = "";
-		gameStateManager.ChangetoNextState();
+		gameStateManager.transitionStateDisplay.text = "";
+		await gameStateManager.PlayTransition("End");
 
 	}
 
@@ -53,19 +42,26 @@ public class VoteState : IGameState
 
 		countdownTimerDisplay.text = $"{minutes:00}:{seconds:00}:{milliseconds:00}";
 	}
-	
-		private void UpdateCountdown()
+
+	private async Task StartCountdown(GameStateManager gameStateManager)
 	{
-		if (isVoting)
+		while (isVoting && timeRemaining > 0)
 		{
-			timeRemaining -= Time.deltaTime;
+			await Task.Delay(10); // Update every 10 milliseconds
+			timeRemaining -= 0.01f; // Decrease time by 10 milliseconds
+			DisplayTime(timeRemaining);
+
 			if (timeRemaining <= 0)
 			{
 				timeRemaining = 0;
 				isVoting = false;
 			}
 		}
-		else
-			isVoting = false;
+
+		// Transition to the next state when the countdown ends
+		if (!isVoting)
+		{
+			await gameStateManager.ChangeToNextState();
+		}
 	}
 }

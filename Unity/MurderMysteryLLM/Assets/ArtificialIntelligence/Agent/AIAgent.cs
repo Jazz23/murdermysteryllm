@@ -107,38 +107,38 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
     public void TurnStart()
     {
-        Task.Run(async () =>
-        {
-            await Awaitable.MainThreadAsync();
+		_ = Task.Run(async () =>
+		{
+			await Awaitable.MainThreadAsync();
 
-            // Wait for any past summarizing tasks to finish before starting our turn
-            if (_summarizeCompletionSource != null)
-                await _summarizeCompletionSource.Task;
+			// Wait for any past summarizing tasks to finish before starting our turn
+			if (_summarizeCompletionSource != null)
+				_ = await _summarizeCompletionSource.Task;
 
-            // var agentToTalkTo = AIInterface.Agents.First(x => x != this);
-            // AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
-            // {
-            //     Other = agentToTalkTo,
-            //     Player = this,
-            // });
+			// var agentToTalkTo = AIInterface.Agents.First(x => x != this);
+			// AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
+			// {
+			//     Other = agentToTalkTo,
+			//     Player = this,
+			// });
 
-            var prompt = Prompt.TurnStart;
-            var response = (await Ollama(prompt)).ToLower();
-            Debug.Log(response);
+			var prompt = Prompt.TurnStart;
+			var response = (await Ollama(prompt)).ToLower();
+			Debug.Log(response);
 
-            if (response.Contains("talk"))
-            {
-                await TalkTask();
-            }
-            else if (response.Contains("search"))
-            {
-                await SearchTask();
-            }
-            else if (response.Contains("location"))
-            {
-                await LocationTask();
-            }
-        });
+			if (response.Contains("talk"))
+			{
+				await TalkTask();
+			}
+			else if (response.Contains("search"))
+			{
+				await SearchTask();
+			}
+			else if (response.Contains("location"))
+			{
+				await LocationTask();
+			}
+		});
     }
 
     private async Task TalkTask()

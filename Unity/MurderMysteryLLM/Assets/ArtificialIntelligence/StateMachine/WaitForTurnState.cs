@@ -9,7 +9,7 @@ public class WaitForTurnState : State
             is not { } currentPlayerAction)
             return;
 
-        StateMachine.QueuedActions.Remove(currentPlayerAction);
+		_ = StateMachine.QueuedActions.Remove(currentPlayerAction);
         StateMachine.SetState(currentPlayerAction);
     }
 }

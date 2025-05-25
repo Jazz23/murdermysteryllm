@@ -128,19 +128,19 @@ public partial class AIAgent
     public void StartTalking(TalkingAction action)
     {
         _talkingAction = action;
-        // To begin a conversation, grab a message from the LLM and send it to the other agent
-        Task.Run(async () =>
-        {
-            var text = await SpeakTo(action.Other);
-            await action.Other.OnTalkedAt(this, text.Text);
-        });
+		// To begin a conversation, grab a message from the LLM and send it to the other agent
+		_ = Task.Run(async () =>
+		{
+			var text = await SpeakTo(action.Other);
+			await action.Other.OnTalkedAt(this, text.Text);
+		});
     }
 
     public void StopTalking()
     {
         // Mark that we have begun summarizing. Agent does not take their turn until this is done.
         _summarizeCompletionSource = new TaskCompletionSource<bool>();
-        Task.Run(SummarizeConversation);
+		_ = Task.Run(SummarizeConversation);
         _talkingAction = null;
     }
 

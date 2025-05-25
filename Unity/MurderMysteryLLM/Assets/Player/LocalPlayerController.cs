@@ -40,12 +40,12 @@ public partial class LocalPlayerController : MonoBehaviour, IPlayer
     {
         _moveAction = InputSystem.actions.FindAction("Move");
         _rigidBody = GetComponent<Rigidbody2D>();
-        
-        Task.Run(async () =>
-        {
-            await Awaitable.MainThreadAsync();
-            PlayerInfo = await AIInterface.GetPlayerInfo(0);
-        });
+
+		_ = Task.Run(async () =>
+		{
+			await Awaitable.MainThreadAsync();
+			PlayerInfo = await AIInterface.GetPlayerInfo(0);
+		});
     }
     
     private void Update()

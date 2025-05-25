@@ -1,19 +1,25 @@
 using UnityEngine;
 
+using System.Threading.Tasks;
+using UnityEngine;
+
 public class EndState : IGameState
 {
-	public void OnEnter(GameStateManager gameStateManager)
+	public async Task OnEnter(GameStateManager gameStateManager)
 	{
-		throw new System.NotImplementedException();
+		// Logic for entering the state
+		await Task.CompletedTask;
 	}
 
-	public void OnExit(GameStateManager gameStateManager)
+	public async Task OnExit(GameStateManager gameStateManager)
 	{
-		throw new System.NotImplementedException();
+		// Logic for exiting the state
+		await Task.CompletedTask;
 	}
 
-	public void OnUpdate(GameStateManager gameStateManager)
+	public async Task OnUpdate(GameStateManager gameStateManager)
 	{
-		throw new System.NotImplementedException();
+		// Logic for updating the state
+		await Task.CompletedTask;
 	}
 }

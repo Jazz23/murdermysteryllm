@@ -53,8 +53,8 @@ public class RoomGenerator : MonoBehaviour
 
         ConnectDoorWays();
 
-        // Build Nav Mesh Agent
-        surface.BuildNavMeshAsync();
+		// Build Nav Mesh Agent
+		_ = surface.BuildNavMeshAsync();
     }
 
     private string GenerateRoomName(Room room, int r, int c)

@@ -38,15 +38,15 @@ public class AgentObserver : MonoBehaviour
     {
         if (other.CompareTag("Agent") || other.gameObject.name == "Player")
         {
-            PeersNearby.Remove(other.gameObject);
+			_ = PeersNearby.Remove(other.gameObject);
         }
         else if (other.CompareTag("Searchable"))
         {
-            SearchableObject.Remove(other.gameObject);
+			_ = SearchableObject.Remove(other.gameObject);
         }
         else if (other.CompareTag("Location"))
         {
-            Locations.Remove(other.gameObject);
+			_ = Locations.Remove(other.gameObject);
         }
     }
 
@@ -56,7 +56,7 @@ public class AgentObserver : MonoBehaviour
 
     async private void RecordContext()
     {
-        ConvertToContext();
+		_ = ConvertToContext();
         await Task.Delay(recordContextDelay);
         this.context = "";
     }

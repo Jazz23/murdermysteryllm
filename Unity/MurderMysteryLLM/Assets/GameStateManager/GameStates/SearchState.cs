@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -7,62 +8,54 @@ public class SearchState : IGameState
 	private bool isSearching = false;
 	private TextMeshProUGUI countdownTimerDisplay;
 
-	public void OnEnter(GameStateManager gameStateManager)
+	public async Task OnEnter(GameStateManager gameStateManager)
 	{
-		Debug.Log("SearchState: OnEnter");
-		gameStateManager.currentStateDisplay.text = "Search";
-		gameStateManager.transitionAnimator.SetBool("startTransition", true);
-		timeRemaining = gameStateManager.searchTime;
-		countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
 		isSearching = true;
-		countdownTimerDisplay.text = "";
+		this.timeRemaining = gameStateManager.searchTime;
+		this.countdownTimerDisplay = gameStateManager.countdownTimerDisplay;
+		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
 
-		System.Collections.IEnumerator WaitForTransition()
-		{
-			yield return new WaitForSeconds(1f);
-			gameStateManager.transitionAnimator.SetBool("startTransition", false);
-		}
+
+		await gameStateManager.PlayTransition("Search");
+
+		// Start the countdown timer asynchronously
+		await StartCountdown(gameStateManager);
 	}
 
-	public void OnUpdate(GameStateManager gameStateManager)
+	public async Task OnUpdate(GameStateManager gameStateManager)
 	{
-		Debug.Log("SearchState: OnUpdate");
-		if (!isSearching)
-		{
-			gameStateManager.ChangetoNextState();
-			return;
-		}
-
-		UpdateCountdown();
-
-		if (!isSearching)
-			gameStateManager.ChangetoNextState();
-		else
-			DisplayTime(timeRemaining);
+		// No need to handle countdown logic here anymore
 	}
 
-	public void OnExit(GameStateManager gameStateManager)
+	public async Task OnExit(GameStateManager gameStateManager)
 	{
-		Debug.Log("SearchState: OnExit");
 		countdownTimerDisplay.gameObject.SetActive(false);
 		countdownTimerDisplay.text = "";
+		gameStateManager.transitionStateDisplay.text = "";
+		await gameStateManager.PlayTransition("Vote");
 	}
 
-	private void UpdateCountdown()
+	private async Task StartCountdown(GameStateManager gameStateManager)
 	{
-		if (isSearching)
+		while (isSearching && timeRemaining > 0)
 		{
-			timeRemaining -= Time.deltaTime;
+			await Task.Delay(10); // Update every 10 milliseconds
+			timeRemaining -= 0.01f; // Decrease time by 10 milliseconds
+			DisplayTime(timeRemaining);
+
 			if (timeRemaining <= 0)
 			{
 				timeRemaining = 0;
 				isSearching = false;
 			}
 		}
-		else
-			isSearching = false;
 
+		// Transition to the next state when the countdown ends
+		if (!isSearching)
+		{
+			await gameStateManager.ChangeToNextState();
+		}
 	}
 
 	private void DisplayTime(float timeToDisplay)
