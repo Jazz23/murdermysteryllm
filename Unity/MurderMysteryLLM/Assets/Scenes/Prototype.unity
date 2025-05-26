@@ -824,37 +824,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 27.044052, y: 9.988623}
   m_EdgeRadius: 0
---- !u!1 &141747232
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 141747233}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &141747233
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 141747232}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 377.82755, y: 102.8185, z: -2.1720347}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159693885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3364409915787723411, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
@@ -45855,6 +45824,10 @@ PrefabInstance:
       objectReference: {fileID: 159693885}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: transitionTime
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: transitionTimeEnd
       value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
@@ -45961,6 +45934,10 @@ PrefabInstance:
       propertyPath: 'clues.Array.data[25]'
       value: 
       objectReference: {fileID: 500515262}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: transitionTimeSearch
+      value: 4.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -46111,7 +46088,6 @@ SceneRoots:
   - {fileID: 106563909}
   - {fileID: 1890581370}
   - {fileID: 1347494282632780516}
-  - {fileID: 141747233}
   - {fileID: 1866335219}
   - {fileID: 1497557351}
   - {fileID: 440535785}

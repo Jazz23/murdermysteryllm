@@ -16,10 +16,7 @@ public class SearchState : IGameState
 		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
 
-
-		await gameStateManager.PlayTransition("Search");
-
-		// Start the countdown timer asynchronously
+		await gameStateManager.PlayTransition("Search", gameStateManager.transitionTimeSearch);
 		await StartCountdown(gameStateManager);
 	}
 
@@ -33,7 +30,7 @@ public class SearchState : IGameState
 		countdownTimerDisplay.gameObject.SetActive(false);
 		countdownTimerDisplay.text = "";
 		gameStateManager.transitionStateDisplay.text = "";
-		await gameStateManager.PlayTransition("Vote");
+	
 	}
 
 	private async Task StartCountdown(GameStateManager gameStateManager)

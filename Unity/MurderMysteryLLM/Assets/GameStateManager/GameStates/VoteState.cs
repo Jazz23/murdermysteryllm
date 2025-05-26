@@ -16,6 +16,7 @@ public class VoteState : IGameState
 		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
 
+		await gameStateManager.PlayTransition("Vote", gameStateManager.transitionTimeVote);
 		await StartCountdown(gameStateManager);
 	}
 	public async Task OnUpdate(GameStateManager gameStateManager)
@@ -29,7 +30,7 @@ public class VoteState : IGameState
 		gameStateManager.countdownTimerDisplay.gameObject.SetActive(false);
 		gameStateManager.countdownTimerDisplay.text = "";
 		gameStateManager.transitionStateDisplay.text = "";
-		await gameStateManager.PlayTransition("End");
+
 
 	}
 
