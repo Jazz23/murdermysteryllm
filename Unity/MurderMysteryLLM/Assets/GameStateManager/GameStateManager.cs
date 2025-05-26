@@ -28,7 +28,7 @@ public class GameStateManager : MonoBehaviour
 
     [Header("Clues")]
     [Range(0, 14)][SerializeField] private int realCluesNecessary = 10;
-    [SerializeField] private List<GameObject> clues = new List<GameObject>();
+    [SerializeField] private List<GameObject> interactableItems = new List<GameObject>();
     [SerializeField] private List<GameObject> fakeClues = new List<GameObject>();
     [SerializeField] private List<GameObject> realClues = new List<GameObject>();
 
@@ -44,8 +44,6 @@ public class GameStateManager : MonoBehaviour
     public Animator transitionAnimator;
 
     public float transitionTime = 5f;
-
-    private bool pressedOnce = false;
 
     public static GameStateManager Instance
     {
@@ -115,55 +113,75 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    public void FindClues()
+    public void FindIntractableGameObjects()
     {
-        clues = new List<GameObject>();
+        interactableItems = new List<GameObject>();
         Transform InteractableGameObject = GameObject.Find("Interactable").transform;
         if (InteractableGameObject == null) return;
         foreach (Transform child in InteractableGameObject)
-            this.clues.Add(child.gameObject);
+            this.interactableItems.Add(child.gameObject);
     }
 
     public void GenerateClueLists()
     {
-        if (clues == null || clues.Count == 0) return;
+        if (interactableItems == null || interactableItems.Count == 0) return;
 
         fakeClues.Clear();
         realClues.Clear();
 
-        fakeClues = new List<GameObject>(clues);
+        fakeClues = new List<GameObject>(interactableItems);
         var shuffled = fakeClues.OrderBy(_ => Random.value).ToList();
 
         realClues = shuffled.Take(realCluesNecessary).ToList();
         fakeClues = shuffled.Skip(realCluesNecessary).ToList();
     }
 
-    public void FindPlayers()
+    public void RetrievePlayerAgents(List<GameObject> agents = null)
+	{
+		players.Clear();
+		players.AddRange(agents);
+		players.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+		DetermineKiller();
+	}
+
+    private void DetermineKiller(int numberOfKillers = 0)
     {
-        players.Clear();
-        players.AddRange(GameObject.FindGameObjectsWithTag("Agent"));
-        players.AddRange(GameObject.FindGameObjectsWithTag("Player"));
-    }
+        if (players.Count < MINIMUM_NUM_PLAYER_ALLOWED)
+        {
+            Debug.LogWarning("Not enough players to determine a killer.");
+            return;
+        }
+        int randomIndex = Random.Range(0, players.Count);
+        this.killer = players[randomIndex];
+	}
 
     public async Task PlayTransition(string transitionText = "")
     {
-        Debug.Log("PlayTransition");
-        this.transitionStateDisplay.text = transitionText;
         if (transitionAnimator == null)
         {
             Debug.LogWarning("Transition Animator is not set.");
             return;
         }
-        countdownTimerDisplay.gameObject.SetActive(false);
-        storyTellerUI.SetActive(false);
-        transitionAnimator.SetBool("IsTransitioning", true);
+
+        UpdateTransitionUI(transitionText, isTransitioning: true);
 
         await Task.Delay((int)(transitionTime * 1000)); // Wait for the transition time
-        transitionAnimator.SetBool("IsTransitioning", false);
-        countdownTimerDisplay.gameObject.SetActive(true);
-        storyTellerUI.SetActive(true);
+
+        UpdateTransitionUI(transitionText, isTransitioning: false);
     }
-}
+
+    private void UpdateTransitionUI(string transitionText, bool isTransitioning)
+    {
+        transitionStateDisplay.text = transitionText;
+        countdownTimerDisplay.gameObject.SetActive(!isTransitioning);
+        storyTellerUI.SetActive(!isTransitioning);
+        transitionAnimator.SetBool("IsTransitioning", isTransitioning);
+        foreach (var player in players)
+        {
+            player.gameObject.SetActive(!isTransitioning);}
+        }
+    }
+
 
 public interface IGameState
 {

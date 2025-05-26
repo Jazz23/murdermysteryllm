@@ -33080,7 +33080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matteColor: {r: 0, g: 0, b: 0, a: 1}
-  referenceMode: 0
+  referenceMode: 1
   x: 16
   y: 8
   width: 1080
@@ -44018,8 +44018,16 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6083891258600081425, guid: e07060dffbedd6743be022a38e929603, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083891258600081425, guid: e07060dffbedd6743be022a38e929603, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9071758127819699226, guid: e07060dffbedd6743be022a38e929603, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -45820,6 +45828,10 @@ PrefabInstance:
     - target: {fileID: 580224578987913010, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1785025699982585845, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3430709823586871194, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: m_IsActive

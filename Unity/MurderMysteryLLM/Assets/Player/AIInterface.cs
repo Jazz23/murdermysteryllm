@@ -29,7 +29,7 @@ public class AIInterface : MonoBehaviour
     public bool mockStoryContext = true;
     public bool mockPlayerInfo = true;
 
-    [Range(1, 5)]
+    [Range(2, 5)]
     public int agentCount = 1;
     public List<Transform> agentSpawnLocations = new();
 
@@ -48,6 +48,7 @@ public class AIInterface : MonoBehaviour
         await Awaitable.MainThreadAsync();
         await InitAILibrary();
         await SpawnAI();
+        await InitializePlayerAgents();
         await PlayLoop();
     }
 
@@ -87,38 +88,69 @@ public class AIInterface : MonoBehaviour
     }
 
     private async Awaitable SpawnAI()
+	{
+		for (var i = 0; i < agentCount; i++)
+		{
+			// Randomly pick a spawn location from the available locations
+			if (agentSpawnLocations.Count == 0)
+			{
+				Debug.LogError("No spawn locations available for agents.");
+				return;
+			}
+
+			var randomIndex = UnityEngine.Random.Range(0, agentSpawnLocations.Count);
+			var selectedSpawnLocation = agentSpawnLocations[randomIndex];
+			agentSpawnLocations.RemoveAt(randomIndex); // Remove the selected location from the list
+
+			// Randomly spawn the agent near the selected spawn location
+			// var newPos = selectedSpawnLocation.position +
+			//              new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
+			Agents.Add(Instantiate(_agentPrefab, selectedSpawnLocation.position, selectedSpawnLocation.rotation).GetComponent<AIAgent>());
+		}
+
+
+
+	}
+
+    private static async Task InitializePlayerAgents()
     {
-        for (var i = 0; i < agentCount; i++)
-        {
-            // Randomly pick a spawn location from the available locations
-            if (agentSpawnLocations.Count == 0)
-            {
-                Debug.LogError("No spawn locations available for agents.");
-                return;
-            }
-
-            var randomIndex = UnityEngine.Random.Range(0, agentSpawnLocations.Count);
-            var selectedSpawnLocation = agentSpawnLocations[randomIndex];
-            agentSpawnLocations.RemoveAt(randomIndex); // Remove the selected location from the list
-
-            // Randomly spawn the agent near the selected spawn location
-            // var newPos = selectedSpawnLocation.position +
-            //              new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
-            Agents.Add(Instantiate(_agentPrefab, selectedSpawnLocation.position, selectedSpawnLocation.rotation).GetComponent<AIAgent>());
-        }
-
+        // Create a list of unique indices to assign to agents
+        List<int> availableIndices = Enumerable.Range(1, 5).ToList(); // 1 to 5 inclusive
+        
         foreach (var agent in Agents)
-        {
-            agent.ChatClient = ChatClient;
-            int randomIndex = UnityEngine.Random.Range(1, 6); // 1 to 5 inclusive
-            agent.PlayerInfo = await GetPlayerInfo(randomIndex);
-            agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}\n {agent.PlayerInfo.CharacterInformation.Age}";
-            agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
-            TurnStateMachine.AddPlayer(agent);
-        }
+		{
+			agent.ChatClient = ChatClient;
+
+			int selectedIndex;
+			bool flowControl = FetchRandomAgentIndex(availableIndices, out selectedIndex);
+			if (!flowControl) return;
+
+			agent.PlayerInfo = await GetPlayerInfo(selectedIndex);
+			agent.uiDescriptorText.text = $"{agent.PlayerInfo.CharacterInformation.Name}\n {agent.PlayerInfo.CharacterInformation.Age}";
+			agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+			TurnStateMachine.AddPlayer(agent);
+		}
+
+		GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
     }
 
-    public static async Awaitable<PlayerInfo> GetPlayerInfo(int index)
+	private static bool FetchRandomAgentIndex(List<int> availableIndices, out int selectedIndex)
+	{
+		if (availableIndices.Count == 0)
+		{
+			Debug.LogError("No more unique indices available for agents.");
+			selectedIndex = 0;
+			return false;
+		}
+
+		// Randomly pick an index from the available indices
+		int randomIndex = UnityEngine.Random.Range(0, availableIndices.Count);
+		selectedIndex = availableIndices[randomIndex];
+		availableIndices.RemoveAt(randomIndex); // Remove the selected index from the list
+		return true;
+	}
+
+	public static async Awaitable<PlayerInfo> GetPlayerInfo(int index)
     {
         // if (_instance.MockPlayerInfo)
         // {

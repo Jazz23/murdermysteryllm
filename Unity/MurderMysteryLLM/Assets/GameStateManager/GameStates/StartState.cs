@@ -6,14 +6,8 @@ public class StartState : IGameState
 	public async Task OnEnter(GameStateManager gameStateManager)
 	{
 		// Debug.Log("StartState: OnEnter");
-
-		gameStateManager.FindPlayers();
-
-		int randomIndex = Random.Range(0, gameStateManager.players.Count);
-		gameStateManager.killer = gameStateManager.players[randomIndex];
-
+		
 		gameStateManager.GenerateClueLists();
-
 		_ = gameStateManager.ChangeToNextState();
 	}
 
