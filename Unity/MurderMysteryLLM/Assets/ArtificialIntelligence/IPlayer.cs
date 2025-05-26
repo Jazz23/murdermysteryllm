@@ -11,33 +11,33 @@ namespace ArtificialIntelligence;
 /// </summary>
 public interface IPlayer
 {
-    public PlayerInfo PlayerInfo { get; }
-    public HashSet<string> CluesFound { get; }
-    
-    public void TurnStart();
-    
-    public void Search(GameObject obj);
+	public PlayerInfo PlayerInfo { get; }
+	public HashSet<string> CluesFound { get; }
 
-    /// <summary>
-    /// Send a chat message to another player. Think of the body of this method as "Talked At".
-    /// </summary>
-    public Task OnTalkedAt(IPlayer other, string message);
+	public void TurnStart();
 
-    /// <summary>
-    /// Initiate a conversation.
-    /// </summary>
-    public void StartTalking(TalkingAction action);
+	public void Search(GameObject obj);
 
-    public void StopTalking();
+	/// <summary>
+	/// Send a chat message to another player. Think of the body of this method as "Talked At".
+	/// </summary>
+	public Task OnTalkedAt(IPlayer other, string message);
 
-    // TODO: Add the rest of actions and their logic
-    // https://github.com/Jazz23/murdermysteryllm/issues/12
+	/// <summary>
+	/// Initiate a conversation.
+	/// </summary>
+	public void StartTalking(TalkingAction action);
+
+	public void StopTalking();
+
+	// TODO: Add the rest of actions and their logic
+	// https://github.com/Jazz23/murdermysteryllm/issues/12
 }
 
 public enum PlayerActions
 {
-    SEARCH,
-    TALK,
-    DOOR,
-    VOTE
+	SEARCH,
+	TALK,
+	DOOR,
+	VOTE
 }

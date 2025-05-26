@@ -6,7 +6,7 @@ public class StartState : IGameState
 	public async Task OnEnter(GameStateManager gameStateManager)
 	{
 		// Debug.Log("StartState: OnEnter");
-		
+
 		gameStateManager.GenerateClueLists();
 		_ = gameStateManager.ChangeToNextState();
 	}

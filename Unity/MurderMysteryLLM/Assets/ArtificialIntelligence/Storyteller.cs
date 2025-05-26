@@ -7,13 +7,13 @@ namespace ArtificialIntelligence;
 
 public class Storyteller
 {
-    // TODO: Read prompts from file instead
+	// TODO: Read prompts from file instead
 }
 
 public class Location
 {
-    public string Name { get; init; }
-    public string[] ConnectingLocations { get; init; }
+	public string Name { get; init; }
+	public string[] ConnectingLocations { get; init; }
 }
 
 /// <summary>
@@ -21,6 +21,6 @@ public class Location
 /// </summary>
 public class StoryContext
 {
-    public Location[] LocationGraph { get; init; }
-    public string[] CharacterNames { get; init; }
+	public Location[] LocationGraph { get; init; }
+	public string[] CharacterNames { get; init; }
 }

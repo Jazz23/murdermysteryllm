@@ -16,78 +16,78 @@ using UnityEngine;
 /// </summary>
 public class AIInterface : MonoBehaviour
 {
-    // Synchronize the server's StoryContext to the rest of the clients
-    public static StoryContext StoryContext { get; private set; }
-    public static OllamaApiClient ChatClient;
-    /// <summary>
-    /// List of references to the locations the player can move to via the door action.
-    /// </summary>
-    public static List<Transform> Locations;
-    public static List<AIAgent> Agents { get; } = new();
-    public static StateMachine TurnStateMachine { get; } = new();
+	// Synchronize the server's StoryContext to the rest of the clients
+	public static StoryContext StoryContext { get; private set; }
+	public static OllamaApiClient ChatClient;
+	/// <summary>
+	/// List of references to the locations the player can move to via the door action.
+	/// </summary>
+	public static List<Transform> Locations;
+	public static List<AIAgent> Agents { get; } = new();
+	public static StateMachine TurnStateMachine { get; } = new();
 
-    public bool mockStoryContext = true;
-    public bool mockPlayerInfo = true;
+	public bool mockStoryContext = true;
+	public bool mockPlayerInfo = true;
 
-    [Range(2, 5)]
-    public int agentCount = 1;
-    public List<Transform> agentSpawnLocations = new();
+	[Range(2, 5)]
+	public int agentCount = 1;
+	public List<Transform> agentSpawnLocations = new();
 
-    [SerializeField] private GameObject _agentPrefab;
-    private Storyteller _storyteller;
-    private readonly StoryContext _syncedStoryContext = new();
-    private static AIInterface _instance;
+	[SerializeField] private GameObject _agentPrefab;
+	private Storyteller _storyteller;
+	private readonly StoryContext _syncedStoryContext = new();
+	private static AIInterface _instance;
 
-    public async void Awake()
-    {
-        // We don't want anything to trigger until after initializing our AI Library
-        enabled = false;
-        _instance = this;
-        GetAgentSpawnLocations();
+	public async void Awake()
+	{
+		// We don't want anything to trigger until after initializing our AI Library
+		enabled = false;
+		_instance = this;
+		GetAgentSpawnLocations();
 
-        await Awaitable.MainThreadAsync();
-        await InitAILibrary();
-        await SpawnAI();
-        await InitializePlayerAgents();
-        await PlayLoop();
-    }
+		await Awaitable.MainThreadAsync();
+		await InitAILibrary();
+		await SpawnAI();
+		await InitializePlayerAgents();
+		await PlayLoop();
+	}
 
-    private void FixedUpdate()
-    {
-        TurnStateMachine.Update();
-    }
+	private void FixedUpdate()
+	{
+		TurnStateMachine.Update();
+	}
 
-    // Loads prompts and any testing data
-    private async Awaitable InitAILibrary()
-    {
-        // Place .env in root of unity project
-        DotEnv.Load();
+	// Loads prompts and any testing data
+	private async Awaitable InitAILibrary()
+	{
+		// Place .env in root of unity project
+		DotEnv.Load();
 
-        var uri = new Uri("http://localhost:11434");
-        ChatClient = new OllamaApiClient(uri);
-        ChatClient.SelectedModel = "gemma3";
+		var uri = new Uri("http://localhost:11434");
+		ChatClient = new OllamaApiClient(uri);
+		ChatClient.SelectedModel = "gemma3";
 
-        // ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+		// ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
-        // Load prompts from local text files
-        var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
-        await Prompt.LoadPrompts(promptPathPrefix);
+		// Load prompts from local text files
+		var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
+		await Prompt.LoadPrompts(promptPathPrefix);
 
-        if (mockStoryContext)
-        {
-            // If we're mocking story context, load from a file instead of generating it
-            StoryContext = await Helpers.CreateStoryContextFromJsonFile(
-                Path.Combine(promptPathPrefix, "StorytellerPrompts/storyObject.eg.jsonc")); // Temporary: This will be generated via ChatGPT in the future
-        }
+		if (mockStoryContext)
+		{
+			// If we're mocking story context, load from a file instead of generating it
+			StoryContext = await Helpers.CreateStoryContextFromJsonFile(
+				Path.Combine(promptPathPrefix, "StorytellerPrompts/storyObject.eg.jsonc")); // Temporary: This will be generated via ChatGPT in the future
+		}
 
-        _storyteller = new Storyteller();
+		_storyteller = new Storyteller();
 
-        if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
-        var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
-        TurnStateMachine.AddPlayer(player);
-    }
+		if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
+		var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
+		TurnStateMachine.AddPlayer(player);
+	}
 
-    private async Awaitable SpawnAI()
+	private async Awaitable SpawnAI()
 	{
 		for (var i = 0; i < agentCount; i++)
 		{
@@ -112,12 +112,12 @@ public class AIInterface : MonoBehaviour
 
 	}
 
-    private static async Task InitializePlayerAgents()
-    {
-        // Create a list of unique indices to assign to agents
-        List<int> availableIndices = Enumerable.Range(1, 5).ToList(); // 1 to 5 inclusive
-        
-        foreach (var agent in Agents)
+	private static async Task InitializePlayerAgents()
+	{
+		// Create a list of unique indices to assign to agents
+		List<int> availableIndices = Enumerable.Range(1, 5).ToList(); // 1 to 5 inclusive
+
+		foreach (var agent in Agents)
 		{
 			agent.ChatClient = ChatClient;
 
@@ -132,7 +132,7 @@ public class AIInterface : MonoBehaviour
 		}
 
 		GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
-    }
+	}
 
 	private static bool FetchRandomAgentIndex(List<int> availableIndices, out int selectedIndex)
 	{
@@ -151,35 +151,35 @@ public class AIInterface : MonoBehaviour
 	}
 
 	public static async Awaitable<PlayerInfo> GetPlayerInfo(int index)
-    {
-        // if (_instance.MockPlayerInfo)
-        // {
-        var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
-        return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
-            StoryContext);
-        // }
-    }
+	{
+		// if (_instance.MockPlayerInfo)
+		// {
+		var promptPathPrefix = Environment.GetEnvironmentVariable("PROMPTS_PATH")!;
+		return await Helpers.GetPlayerInfoFromJsonFile(promptPathPrefix + $"AgentPrompts/ExampleData/character{index}.jsonc", "Grand Library",
+			StoryContext);
+		// }
+	}
 
 
 
-    private void GetAgentSpawnLocations()
-    {
-        this.agentSpawnLocations = new List<Transform>();
-        Transform spawn = transform.Find("Spawn");
-        if (spawn == null) return;
-        foreach (Transform child in spawn)
-            this.agentSpawnLocations.Add(child);
-    }
+	private void GetAgentSpawnLocations()
+	{
+		this.agentSpawnLocations = new List<Transform>();
+		Transform spawn = transform.Find("Spawn");
+		if (spawn == null) return;
+		foreach (Transform child in spawn)
+			this.agentSpawnLocations.Add(child);
+	}
 
 
 
 
-    /// <summary>
-    /// Loops between players and takes their turn via the storyteller.
-    /// </summary>
-    /// <returns></returns>
-    private async Awaitable PlayLoop()
-    {
-        enabled = true;
-    }
+	/// <summary>
+	/// Loops between players and takes their turn via the storyteller.
+	/// </summary>
+	/// <returns></returns>
+	private async Awaitable PlayLoop()
+	{
+		enabled = true;
+	}
 }

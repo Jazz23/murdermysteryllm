@@ -6,12 +6,12 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Interactable : MonoBehaviour
 {
-    public string hoverMessage;
-    /// <summary>
-    /// Client has sent an RPC to the server letting the server know about it's interaction
-    /// </summary>
-    /// <param name="conn"></param>
-    public virtual void OnInteraction() { }
-    public virtual void OnHoverStay() { }
-    public virtual void OnHoverLeave() { }
+	public string hoverMessage;
+	/// <summary>
+	/// Client has sent an RPC to the server letting the server know about it's interaction
+	/// </summary>
+	/// <param name="conn"></param>
+	public virtual void OnInteraction() { }
+	public virtual void OnHoverStay() { }
+	public virtual void OnHoverLeave() { }
 }

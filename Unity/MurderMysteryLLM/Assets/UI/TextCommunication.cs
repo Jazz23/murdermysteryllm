@@ -12,31 +12,31 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TMP_InputField))]
 public class TextCommunication : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _storytellerText;
-    
-    private static TMP_InputField _textInput;
-    private static TextCommunication _instance;
-    
-    private string[] _validOptions;
-    // Wait until the server receives the text from the RPC
-    private static AwaitableCompletionSource<string> serverInputRequest;
-    
-    private void Awake()
-    {
-        _instance = this;
-    }
+	[SerializeField] private TextMeshProUGUI _storytellerText;
 
-    // No ownership stuff since this is a scene object
-    private void ReplyWithText(string text)
-    {
-        serverInputRequest.SetResult(text);
-    }
+	private static TMP_InputField _textInput;
+	private static TextCommunication _instance;
 
-    /// <summary>
-    /// Send an RPC to the owner to display text
-    /// </summary>
-    public static void DisplayStorytellerText(string message)
-    {
-        _instance._storytellerText.text = message;
-    }
+	private string[] _validOptions;
+	// Wait until the server receives the text from the RPC
+	private static AwaitableCompletionSource<string> serverInputRequest;
+
+	private void Awake()
+	{
+		_instance = this;
+	}
+
+	// No ownership stuff since this is a scene object
+	private void ReplyWithText(string text)
+	{
+		serverInputRequest.SetResult(text);
+	}
+
+	/// <summary>
+	/// Send an RPC to the owner to display text
+	/// </summary>
+	public static void DisplayStorytellerText(string message)
+	{
+		_instance._storytellerText.text = message;
+	}
 }

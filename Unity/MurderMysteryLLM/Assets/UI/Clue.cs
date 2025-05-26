@@ -4,32 +4,32 @@ using UnityEngine.UI;
 
 public class Clue : MonoBehaviour
 {
-    private static Clue _instance;
-    [SerializeField] private GameObject cluePanel;
-    [SerializeField] private float clueDisplaySeconds = 5;
+	private static Clue _instance;
+	[SerializeField] private GameObject cluePanel;
+	[SerializeField] private float clueDisplaySeconds = 5;
 
-    [SerializeField] private GameObject stickyPanel;
-    [SerializeField] private GameObject stickyNotePrefab;
-    [SerializeField] private float stickySpacing;
-    [SerializeField] private Transform stickyStartPos;
+	[SerializeField] private GameObject stickyPanel;
+	[SerializeField] private GameObject stickyNotePrefab;
+	[SerializeField] private float stickySpacing;
+	[SerializeField] private Transform stickyStartPos;
 
-    private readonly List<GameObject> _clueStickys = new();
+	private readonly List<GameObject> _clueStickys = new();
 
-    public void Awake()
-    {
-        _instance = this;
-    }
+	public void Awake()
+	{
+		_instance = this;
+	}
 
-    /// <summary>
-    /// Shows a large note in the center of the screen for some time.
-    /// </summary>
-    /// <param name="clue"></param>
-    public static void DisplayClue(string clue) => _instance.DisplayClueHelper(clue);
+	/// <summary>
+	/// Shows a large note in the center of the screen for some time.
+	/// </summary>
+	/// <param name="clue"></param>
+	public static void DisplayClue(string clue) => _instance.DisplayClueHelper(clue);
 
-    private void DisplayClueHelper(string clue)
-    {
-        cluePanel.GetComponentInChildren<TextMeshProUGUI>().text = clue;
-        cluePanel.SetActive(true);
+	private void DisplayClueHelper(string clue)
+	{
+		cluePanel.GetComponentInChildren<TextMeshProUGUI>().text = clue;
+		cluePanel.SetActive(true);
 
 		_ = Task.Run(async () =>
 		{
@@ -50,30 +50,30 @@ public class Clue : MonoBehaviour
 
 			cluePanel.SetActive(false);
 		});
-    }
+	}
 
-    /// <summary>
-    /// Given a hashset of strings, generates visible sticky notes at the top of the screen.
-    /// </summary>
-    public static void UpdateClueStickys(HashSet<string> cluesFound) =>
-        _instance.UpdateClueStickysHelper(cluesFound);
+	/// <summary>
+	/// Given a hashset of strings, generates visible sticky notes at the top of the screen.
+	/// </summary>
+	public static void UpdateClueStickys(HashSet<string> cluesFound) =>
+		_instance.UpdateClueStickysHelper(cluesFound);
 
-    private void UpdateClueStickysHelper(HashSet<string> cluesFound)
-    {
-        // Reset old sticky notes
-        _clueStickys.ForEach(Destroy);
-        _clueStickys.Clear();
+	private void UpdateClueStickysHelper(HashSet<string> cluesFound)
+	{
+		// Reset old sticky notes
+		_clueStickys.ForEach(Destroy);
+		_clueStickys.Clear();
 
-        // Instantiate new ones
-        for (var i = 0; i < cluesFound.Count; i++)
-        {
-            var pos = stickyStartPos.position;
-            pos.x -= i * stickySpacing;
-            var newSticky = Instantiate(stickyNotePrefab, stickyPanel.transform);
-            newSticky.transform.position = pos;
-            newSticky.GetComponent<Sticky>().clueText = cluesFound.ElementAt(i);
+		// Instantiate new ones
+		for (var i = 0; i < cluesFound.Count; i++)
+		{
+			var pos = stickyStartPos.position;
+			pos.x -= i * stickySpacing;
+			var newSticky = Instantiate(stickyNotePrefab, stickyPanel.transform);
+			newSticky.transform.position = pos;
+			newSticky.GetComponent<Sticky>().clueText = cluesFound.ElementAt(i);
 
-            _clueStickys.Add(newSticky);
-        }
-    }
+			_clueStickys.Add(newSticky);
+		}
+	}
 }

@@ -45855,7 +45855,7 @@ PrefabInstance:
       objectReference: {fileID: 159693885}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: transitionTime
-      value: 5
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[0]'
