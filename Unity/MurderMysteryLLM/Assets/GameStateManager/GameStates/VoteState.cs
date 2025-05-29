@@ -16,7 +16,7 @@ public class VoteState : IGameState
 		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
 
-		await gameStateManager.PlayTransition("Vote", gameStateManager.transitionTimeVote);
+		await gameStateManager.PlayTransition("Vote");
 		await StartCountdown(gameStateManager);
 	}
 	public async Task OnUpdate(GameStateManager gameStateManager)

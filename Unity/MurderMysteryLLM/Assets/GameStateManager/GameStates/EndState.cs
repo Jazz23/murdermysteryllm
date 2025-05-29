@@ -8,7 +8,7 @@ public class EndState : IGameState
 	public async Task OnEnter(GameStateManager gameStateManager)
 	{
 		// Logic for entering the state
-		await gameStateManager.PlayTransition("End", gameStateManager.transitionTimeEnd);
+		await gameStateManager.PlayTransition("End");
 
 	}
 

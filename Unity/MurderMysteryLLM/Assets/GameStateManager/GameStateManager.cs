@@ -29,6 +29,7 @@ public class GameStateManager : MonoBehaviour
     [Header("Clues")]
     [Range(0, 14)][SerializeField] private int realCluesNecessary = 10;
     [SerializeField] private List<GameObject> interactableItems = new List<GameObject>();
+    [SerializeField] private List<ClueData> clues = new List<ClueData>();
     [SerializeField] private List<GameObject> fakeClues = new List<GameObject>();
     [SerializeField] private List<GameObject> realClues = new List<GameObject>();
 
@@ -44,11 +45,6 @@ public class GameStateManager : MonoBehaviour
     public Animator transitionAnimator;
 
     public float transitionTime = 5f;
-    public float transitionTimeVote = 5f;
-    public float transitionTimeSearch = 5f;
-    public float transitionTimeEnd = 5f;
-
-
     public static GameStateManager Instance
     {
         get
@@ -81,11 +77,6 @@ public class GameStateManager : MonoBehaviour
 
         await Awaitable.MainThreadAsync();
         await currentState.OnEnter(this);
-    }
-
-    private async void Start()
-    {
-
     }
 
     private async void Update()
@@ -121,7 +112,7 @@ public class GameStateManager : MonoBehaviour
 
     public void FindIntractableGameObjects()
     {
-        interactableItems = new List<GameObject>();
+        this.interactableItems = new List<GameObject>();
         Transform InteractableGameObject = GameObject.Find("Interactable").transform;
         if (InteractableGameObject == null) return;
         foreach (Transform child in InteractableGameObject)
@@ -135,11 +126,33 @@ public class GameStateManager : MonoBehaviour
         fakeClues.Clear();
         realClues.Clear();
 
-        fakeClues = new List<GameObject>(interactableItems);
-        var shuffled = fakeClues.OrderBy(_ => Random.value).ToList();
+        // Shuffle interactable items
+        var shuffled = interactableItems.OrderBy(_ => Random.value).ToList();
 
+        // Select real clues
         realClues = shuffled.Take(realCluesNecessary).ToList();
         fakeClues = shuffled.Skip(realCluesNecessary).ToList();
+
+        // Assign ClueData to real clues
+        for (int i = 0; i < realClues.Count; i++)
+        {
+            var clueObj = realClues[i];
+            var clueComponent = clueObj.GetComponent<Searchable>();
+            if (clueComponent != null && i < clues.Count)
+            {
+                clueComponent.clueData = clues[i];
+            }
+        }
+
+        // Remove ClueData from fake clues
+        foreach (var fakeClueObj in fakeClues)
+        {
+            var clueComponent = fakeClueObj.GetComponent<Searchable>();
+            if (clueComponent != null)
+            {
+                clueComponent.clueData = null;
+            }
+        }
     }
 
     public void RetrievePlayerAgents(List<GameObject> agents = null)
@@ -161,7 +174,7 @@ public class GameStateManager : MonoBehaviour
         this.killer = players[randomIndex];
     }
 
-    public async Task PlayTransition(string transitionText = "", float transitionTime = 5f)
+    public async Task PlayTransition(string transitionText = "")
     {
         if (transitionAnimator == null)
         {
@@ -171,22 +184,10 @@ public class GameStateManager : MonoBehaviour
 
         UpdateTransitionUI(transitionText, isTransitioning: true);
 
-        // while (IsAnimatorPlaying(transitionAnimator))
-        // { 
-        //     await Task.Yield(); // Wait for the animator to finish playing
-        // }
-
         await Task.Delay((int)(transitionTime * 1000)); // Wait for the transition time
 
         UpdateTransitionUI(transitionText, isTransitioning: false);
     }
-
-    bool IsAnimatorPlaying(Animator animator)
-    {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.normalizedTime < 1f || animator.IsInTransition(0);
-    }
-
 
     private void UpdateTransitionUI(string transitionText, bool isTransitioning)
     {

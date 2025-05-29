@@ -3,9 +3,9 @@ using ArtificialIntelligence.StateMachine;
 
 public class Searchable : Interactable
 {
-	public string clue = "This is an example clue.";
+	
+	public ClueData clueData;
 
-	public bool isRelatedToTheCrime = false;
 
 
 	private void Awake()
@@ -26,6 +26,6 @@ public class Searchable : Interactable
 
 	public string Search()
 	{
-		return clue;
+		return clueData.Description;
 	}
 }

@@ -16,7 +16,7 @@ public class SearchState : IGameState
 		this.countdownTimerDisplay.text = "";
 		countdownTimerDisplay.gameObject.SetActive(true);
 
-		await gameStateManager.PlayTransition("Search", gameStateManager.transitionTimeSearch);
+		await gameStateManager.PlayTransition("Search");
 		await StartCountdown(gameStateManager);
 	}
 

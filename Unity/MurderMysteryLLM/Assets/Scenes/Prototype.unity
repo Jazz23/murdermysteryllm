@@ -346,9 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &75010483
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,9 +711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &106563908
 GameObject:
   m_ObjectHideFlags: 0
@@ -32336,9 +32334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &442154297
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -32556,9 +32553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &500515266
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -33281,9 +33277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -33711,9 +33706,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &746023400
 GameObject:
   m_ObjectHideFlags: 0
@@ -33805,9 +33799,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!4 &753233550 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3472192530307406992, guid: e07060dffbedd6743be022a38e929603, type: 3}
@@ -34163,9 +34156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!4 &838628652
 Transform:
   m_ObjectHideFlags: 0
@@ -34500,9 +34492,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &878908175
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -39630,9 +39621,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the book case you find a loose leaflet
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!4 &1095164442
 Transform:
   m_ObjectHideFlags: 0
@@ -39739,9 +39729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1139611781
 GameObject:
   m_ObjectHideFlags: 0
@@ -40130,9 +40119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1218994237
 GameObject:
   m_ObjectHideFlags: 0
@@ -40418,9 +40406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1325455280
 GameObject:
   m_ObjectHideFlags: 0
@@ -40599,9 +40586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1372847607
 GameObject:
   m_ObjectHideFlags: 0
@@ -40868,9 +40854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &1403277779
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -41626,9 +41611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1536266561
 GameObject:
   m_ObjectHideFlags: 0
@@ -41730,9 +41714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &1536266565
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -43131,9 +43114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &1682646093
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -43271,9 +43253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1693493828
 GameObject:
   m_ObjectHideFlags: 0
@@ -43365,9 +43346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1717499652
 GameObject:
   m_ObjectHideFlags: 0
@@ -44266,9 +44246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: Inspect the Dead Body?
-  clue: This is an example clue.
-  isRelatedToTheCrime: 1
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &1856132239
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -44579,9 +44558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1888327741
 GameObject:
   m_ObjectHideFlags: 0
@@ -44837,9 +44815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &1949043221
 GameObject:
   m_ObjectHideFlags: 0
@@ -44931,9 +44908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &2002688245
 GameObject:
   m_ObjectHideFlags: 0
@@ -45187,9 +45163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: Inside the Fridge find an old hidden booklet?
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!1 &2079644836
 GameObject:
   m_ObjectHideFlags: 0
@@ -45566,9 +45541,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35db0c8a45041828ed4583a4be4893f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverMessage: 
-  clue: This is an example clue.
-  isRelatedToTheCrime: 0
+  hoverMessage: Search {0}
+  clueData: {fileID: 0}
 --- !u!61 &2138307583
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -45802,6 +45776,10 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3324518023403395755, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3430709823586871194, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -45827,85 +45805,89 @@ PrefabInstance:
       value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: clues.Array.size
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: transitionTimeEnd
       value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[0]'
       value: 
-      objectReference: {fileID: 838628648}
+      objectReference: {fileID: 11400000, guid: a7641a78a46c8e34a9de6bfde4e3ff20, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[1]'
       value: 
-      objectReference: {fileID: 1095164439}
+      objectReference: {fileID: 11400000, guid: e512f834dff7fd44ea4260305096ba16, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[2]'
       value: 
-      objectReference: {fileID: 85489635}
+      objectReference: {fileID: 11400000, guid: 8050d4b70dbc08e4596c1131f908d596, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[3]'
       value: 
-      objectReference: {fileID: 1209650428}
+      objectReference: {fileID: 11400000, guid: db1d7ff9e99c663489196a3e23c46fc3, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[4]'
       value: 
-      objectReference: {fileID: 2043127287}
+      objectReference: {fileID: 11400000, guid: 86b4c5c797537ea49bcdd3ec3c02288e, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[5]'
       value: 
-      objectReference: {fileID: 1885950506}
+      objectReference: {fileID: 11400000, guid: 315432f5eba034c4ba558cc271c7b6bf, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[6]'
       value: 
-      objectReference: {fileID: 1354112157}
+      objectReference: {fileID: 11400000, guid: dd809ebaf1ded254e995f914c3cd009e, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[7]'
       value: 
-      objectReference: {fileID: 1303045031}
+      objectReference: {fileID: 11400000, guid: a51b0652d59f8b84e9cba6df5b6023ab, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[8]'
       value: 
-      objectReference: {fileID: 735370019}
+      objectReference: {fileID: 11400000, guid: 7764715da4300254188fd2c9257d5398, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[9]'
       value: 
-      objectReference: {fileID: 1685231085}
+      objectReference: {fileID: 11400000, guid: bc38a186281326b4ba1515050e045f01, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[10]'
       value: 
-      objectReference: {fileID: 1935514183}
+      objectReference: {fileID: 11400000, guid: 9c54747d8c4e86b47b3ac2301a4d998b, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[11]'
       value: 
-      objectReference: {fileID: 1693493828}
+      objectReference: {fileID: 11400000, guid: 7678462a61e35774ab9ae44cfef2e0aa, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[12]'
       value: 
-      objectReference: {fileID: 1949043221}
+      objectReference: {fileID: 11400000, guid: 32a48624630f26447b5fc6ea868eafa3, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[13]'
       value: 
-      objectReference: {fileID: 746023400}
+      objectReference: {fileID: 11400000, guid: 71371a5d0f517594f92935e4be86868a, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[14]'
       value: 
-      objectReference: {fileID: 1103810059}
+      objectReference: {fileID: 11400000, guid: 2cabad4a26c76b44998994ad78e2be5a, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[15]'
       value: 
-      objectReference: {fileID: 1524187814}
+      objectReference: {fileID: 11400000, guid: a98cb82887e4c5949a31708a21d49c7c, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[16]'
       value: 
-      objectReference: {fileID: 36390150}
+      objectReference: {fileID: 11400000, guid: 76245cfd525112d4382be84873c6299e, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[17]'
       value: 
-      objectReference: {fileID: 602527525}
+      objectReference: {fileID: 11400000, guid: 1be45f2988ec9ed458cd22dae4813691, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[18]'
       value: 
-      objectReference: {fileID: 1856132235}
+      objectReference: {fileID: 11400000, guid: d3eaab885f932484f914cab89a64b984, type: 2}
     - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
       propertyPath: 'clues.Array.data[19]'
       value: 
@@ -45938,6 +45920,114 @@ PrefabInstance:
       propertyPath: transitionTimeSearch
       value: 4.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: interactableItems.Array.size
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[0]'
+      value: 
+      objectReference: {fileID: 838628648}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1095164439}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[2]'
+      value: 
+      objectReference: {fileID: 85489635}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1209650428}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[4]'
+      value: 
+      objectReference: {fileID: 2043127287}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[5]'
+      value: 
+      objectReference: {fileID: 1885950506}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[6]'
+      value: 
+      objectReference: {fileID: 1354112157}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[7]'
+      value: 
+      objectReference: {fileID: 1303045031}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[8]'
+      value: 
+      objectReference: {fileID: 735370019}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[9]'
+      value: 
+      objectReference: {fileID: 1685231085}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[10]'
+      value: 
+      objectReference: {fileID: 1935514183}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[11]'
+      value: 
+      objectReference: {fileID: 1693493828}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[12]'
+      value: 
+      objectReference: {fileID: 1949043221}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[13]'
+      value: 
+      objectReference: {fileID: 746023400}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[14]'
+      value: 
+      objectReference: {fileID: 1103810059}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[15]'
+      value: 
+      objectReference: {fileID: 1524187814}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[16]'
+      value: 
+      objectReference: {fileID: 36390150}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[17]'
+      value: 
+      objectReference: {fileID: 602527525}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[18]'
+      value: 
+      objectReference: {fileID: 442154295}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[19]'
+      value: 
+      objectReference: {fileID: 2138307579}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[20]'
+      value: 
+      objectReference: {fileID: 1403277775}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[21]'
+      value: 
+      objectReference: {fileID: 1682646089}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[22]'
+      value: 
+      objectReference: {fileID: 1536266561}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[23]'
+      value: 
+      objectReference: {fileID: 878908171}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[24]'
+      value: 
+      objectReference: {fileID: 500515262}
+    - target: {fileID: 5952592348488061338, guid: d141e0ca7839aec4eb1a123ff4be280b, type: 3}
+      propertyPath: 'interactableItems.Array.data[25]'
+      value: 
+      objectReference: {fileID: 500515262}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

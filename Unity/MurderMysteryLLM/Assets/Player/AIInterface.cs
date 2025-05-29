@@ -25,8 +25,9 @@ public class AIInterface : MonoBehaviour
 	public static List<Transform> Locations;
 	public static List<AIAgent> Agents { get; } = new();
 	public static StateMachine TurnStateMachine { get; } = new();
+    public static bool accessGameStateManager { get; private set; }
 
-	public bool mockStoryContext = true;
+    public bool mockStoryContext = true;
 	public bool mockPlayerInfo = true;
 
 	[Range(2, 5)]
@@ -47,6 +48,7 @@ public class AIInterface : MonoBehaviour
 
 		await Awaitable.MainThreadAsync();
 		await InitAILibrary();
+		// await GenertateSceneario();
 		await SpawnAI();
 		await InitializePlayerAgents();
 		await PlayLoop();
@@ -85,6 +87,17 @@ public class AIInterface : MonoBehaviour
 		if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
 		var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
 		TurnStateMachine.AddPlayer(player);
+	}
+
+	private async Awaitable GenerateScenario()
+	{
+		// generate character sheets 
+
+		// who was murdered and who is killer
+
+		// generate clues 
+		
+
 	}
 
 	private async Awaitable SpawnAI()
@@ -130,8 +143,8 @@ public class AIInterface : MonoBehaviour
 			agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
 			TurnStateMachine.AddPlayer(agent);
 		}
-
-		GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
+		if(accessGameStateManager)
+			GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
 	}
 
 	private static bool FetchRandomAgentIndex(List<int> availableIndices, out int selectedIndex)
