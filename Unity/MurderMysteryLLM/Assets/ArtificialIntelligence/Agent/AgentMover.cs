@@ -11,9 +11,11 @@ public class AgentMover : MonoBehaviour
 	public static string LocationCount => Locations.Count.ToString();
 
 	private NavMeshAgent _navAgent;
+	private AIAgent _aiAgent;
 
 	public void Awake()
 	{
+		_aiAgent = GetComponent<AIAgent>();
 		_navAgent = GetComponent<NavMeshAgent>();
 		_navAgent.updateRotation = false;
 		_navAgent.updateUpAxis = false;
@@ -43,5 +45,6 @@ public class AgentMover : MonoBehaviour
 
 		// Move the agent to the target location
 		_navAgent.destination = targetPosition;
+		_aiAgent.PlayerInfo.CurrentLocation = targetLocation.name;
 	}
 }

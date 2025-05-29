@@ -19,6 +19,7 @@ public class AIInterface : MonoBehaviour
 	// Synchronize the server's StoryContext to the rest of the clients
 	public static StoryContext StoryContext { get; private set; }
 	public static OllamaApiClient ChatClient;
+	public static OllamaApiClient ReasonClient;
 	/// <summary>
 	/// List of references to the locations the player can move to via the door action.
 	/// </summary>
@@ -68,6 +69,9 @@ public class AIInterface : MonoBehaviour
 		var uri = new Uri("http://localhost:11434");
 		ChatClient = new OllamaApiClient(uri);
 		ChatClient.SelectedModel = "gemma3";
+		
+		ReasonClient = new OllamaApiClient(uri);
+		ReasonClient.SelectedModel = "deepseek-r1:latest";
 
 		// ChatClient = new ChatClient("gpt-4o-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
@@ -133,6 +137,7 @@ public class AIInterface : MonoBehaviour
 		foreach (var agent in Agents)
 		{
 			agent.ChatClient = ChatClient;
+			agent.ReasonClient = ReasonClient;
 
 			int selectedIndex;
 			bool flowControl = FetchRandomAgentIndex(availableIndices, out selectedIndex);

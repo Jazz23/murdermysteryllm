@@ -66,12 +66,12 @@ public class AgentObserver : MonoBehaviour
 	public string ConvertToContext()
 	{
 		string context = "";
-		string currentLocation = $"Current Location : '{this.Locations.First()}' ";
+		// string currentLocation = $"Current Location : '{this.Locations.First()}' ";
 		string searchableObjects = $"Searchable Objects : '{string.Join(", ", this.SearchableObject.Select(x => x.name))}' ";
 		string peersNearby = $"Peers Nearby : '{string.Join(", ", this.PeersNearby.Select(x => x.name))}' ";
 
 		string locations = $"Locations : '{string.Join(", ", this.Locations.Select(x => x.name))}' ";
-		context += currentLocation + "\n" + searchableObjects + "\n" + peersNearby + "\n" + locations + "\n";
+		context += /*currentLocation + "\n" + */ searchableObjects + "\n" + peersNearby + "\n" + locations + "\n";
 
 		return context;
 

@@ -1,1 +1,1 @@
-﻿Reply only with "Location", "Search", or "Talk" based on what {0} would do next.
+﻿What is {0} planning to do? Reply only with either "Search", "Talk", or "Location" and no other text.

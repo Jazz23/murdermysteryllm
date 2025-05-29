@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using OllamaSharp;
@@ -16,6 +17,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 {
 	public PlayerInfo PlayerInfo { get; set; }
 	public OllamaApiClient ChatClient { get; set; }
+	public OllamaApiClient ReasonClient { get; set; }
 
 	private AgentMover _agentMover;
 
@@ -44,10 +46,10 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
 
 	/// <summary>
-	/// Prepends the setup prompt and current game state/history to the prompt and sends it to OpenAI.
+	/// Prepends the setup prompt and current game state/history to the prompt and sends it to Ollama.
 	/// </summary>
 	/// <returns>The assistant reply from ChatGPT</returns>
-	private async Task<string> Ollama(string userPrompt, bool includeContext = true)
+	private async Task<string> Ollama(string userPrompt, bool reason = false, bool includeContext = true)
 	{
 		try
 		{
@@ -61,12 +63,17 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
 			await Awaitable.BackgroundThreadAsync();
 			var response = "";
-			await foreach (var stream in ChatClient.ChatAsync(new ChatRequest()
+			var chosenClient = reason ? ReasonClient : ChatClient;
+			if (reason)
+				Debug.Log("Thinking...");
+			await foreach (var stream in chosenClient.ChatAsync(new ChatRequest()
 			{
 				Messages = context
 			}))
 				response += stream.Message.Content;
 			await Awaitable.MainThreadAsync();
+			// Remove text between <think> and </think> tags, if any
+			response = System.Text.RegularExpressions.Regex.Replace(response, "<think>.*?</think>", "", System.Text.RegularExpressions.RegexOptions.Singleline);
 			return response.Replace("\n", "").Replace("\r", "").Trim();
 		}
 		catch (Exception e)
@@ -119,7 +126,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 			// });
 
 			var prompt = string.Format(Prompt.TurnStart, PlayerInfo.CharacterInformation.Name);
-			var response = (await Ollama(prompt)).ToLower();
+			var response = (await Ollama(prompt, true)).ToLower();
 			Debug.Log($"{PlayerInfo.CharacterInformation.Name} chooses {response}");
 
 			if (response.Contains("talk"))
@@ -172,9 +179,9 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 	private async Task LocationTask()
 	{
 		var prompt = string.Format(Prompt.LocationQuery, AgentMover.Locations.Count, AgentMover.LocationsAsString);
-		var response = await Ollama(prompt);
-		// Remove whitespace and newlines
-		var location = int.Parse(response);
+		var response = await Ollama(prompt, true);
+		// Extract the number from the text response.
+		var location = int.Parse(Regex.Match(response, @"\d+").Value);
 		_agentMover.GotoLocation(location);
 		AIInterface.TurnStateMachine.SetState(new PickPlayerState());
 	}
