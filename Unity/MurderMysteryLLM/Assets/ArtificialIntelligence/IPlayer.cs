@@ -28,7 +28,7 @@ public interface IPlayer
 	/// </summary>
 	public void StartTalking(TalkingAction action);
 
-	public void StopTalking();
+	public Task StopTalking();
 
 	// TODO: Add the rest of actions and their logic
 	// https://github.com/Jazz23/murdermysteryllm/issues/12

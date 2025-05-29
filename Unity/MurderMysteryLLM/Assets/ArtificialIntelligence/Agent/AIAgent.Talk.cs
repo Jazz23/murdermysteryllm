@@ -27,7 +27,6 @@ public partial class AIAgent
 	public void InjectTestConversation(List<Statement> conversation) => CurrentConversation = conversation;
 
 	private TalkingAction _talkingAction;
-	[CanBeNull] private TaskCompletionSource<bool> _summarizeCompletionSource;
 
 	/// <summary>
 	/// LLM summarized conversations.
@@ -76,9 +75,8 @@ public partial class AIAgent
 		
 		// If this is the first statement in the conversation, use the special prompt. Otherwise,
 		// simply use the last thing spoken (by the other party) as the prompt.
-		var prompt = CurrentConversation.Count == 0 ?
-			string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name) :
-			CurrentConversation.Last().Text;
+		var lastStatement = CurrentConversation.LastOrDefault()?.Text ?? "Say something to start the conversation.";
+		var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name, lastStatement);
 		
 		var completion = await Ollama(prompt);
 
@@ -122,7 +120,7 @@ public partial class AIAgent
 		// Conversation is over, don't invoke their OnTalkedAt
 		if (myResponse.Text == EndConvoKeyword)
 		{
-			_talkingAction.EndConversation();
+			await _talkingAction.EndConversation();
 		}
 		else
 		{
@@ -141,11 +139,10 @@ public partial class AIAgent
 		});
 	}
 
-	public void StopTalking()
+	public async Task StopTalking()
 	{
 		// Mark that we have begun summarizing. Agent does not take their turn until this is done.
-		_summarizeCompletionSource = new TaskCompletionSource<bool>();
-		_ = Task.Run(SummarizeConversation);
+		await SummarizeConversation();
 		_talkingAction = null;
 	}
 
@@ -160,9 +157,5 @@ public partial class AIAgent
 		Debug.Log($"Summary: {completion}");
 		_pastConversationSummaries.Add(completion);
 		CurrentConversation.Clear();
-
-		// Mark that we have finished summarizing the conversation
-		_summarizeCompletionSource.SetResult(true);
-		_summarizeCompletionSource = null;
 	}
 }

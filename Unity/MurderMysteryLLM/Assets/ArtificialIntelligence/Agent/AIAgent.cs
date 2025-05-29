@@ -111,10 +111,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 		{
 			await Awaitable.MainThreadAsync();
 
-			// Wait for any past summarizing tasks to finish before starting our turn
-			if (_summarizeCompletionSource != null)
-				_ = await _summarizeCompletionSource.Task;
-
 			// var agentToTalkTo = AIInterface.Agents.First(x => x != this);
 			// AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
 			// {
@@ -122,9 +118,9 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 			//     Player = this,
 			// });
 
-			var prompt = Prompt.TurnStart;
+			var prompt = string.Format(Prompt.TurnStart, PlayerInfo.CharacterInformation.Name);
 			var response = (await Ollama(prompt)).ToLower();
-			Debug.Log(response);
+			Debug.Log($"{PlayerInfo.CharacterInformation.Name} chooses {response}");
 
 			if (response.Contains("talk"))
 			{

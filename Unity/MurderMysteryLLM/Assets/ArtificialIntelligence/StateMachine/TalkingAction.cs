@@ -9,10 +9,10 @@ public class TalkingAction : ActionState
 		Player.StartTalking(this);
 	}
 
-	public void EndConversation()
+	public async Task EndConversation()
 	{
-		Other.StopTalking();
-		Player.StopTalking();
+		await Other.StopTalking();
+		await Player.StopTalking();
 
 		StateMachine.SetState(new PickPlayerState());
 	}

@@ -1,1 +1,2 @@
-﻿Given the information you have, say something to {0} that would help you solve the mystery.
+﻿Respond to this statement by {0} as your character. Do not talk in the third person or describe any actions.
+{1}

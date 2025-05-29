@@ -13,11 +13,11 @@ The full context of the story including location and character names are
 
 You are currently in the {3} // location
 
-The game functions in turns, iterating through each person. On your turn, you have the following  actions you can do (search, talk, door, or vote):
+The game functions in turns, iterating through each person. On your turn, you have the following  actions you can do (search, talk, location, or vote):
 
 If search is chosen, you have a chance of being informed of clues of the murder that was left in the room, if any. You have the option to reveal the information or keep it to yourself.
 If talk is chosen, you may discuss/continue discussing information with other characters in the room either privately or publicly or with anyone you’re already talking to.
-If door is chosen, you may move to an adjacent location. 
+If location is chosen, you may move to any location that would help you solve the mystery.
 If vote is chosen, you gather everyone for a vote on another character of your choosing. 
 Voting is conducted by cycling through each character and receiving their vote.
 If a simple majority is won, the character is killed, the game is over, and the results are revealed. If there is no majority, return everyone to their previous location. 
