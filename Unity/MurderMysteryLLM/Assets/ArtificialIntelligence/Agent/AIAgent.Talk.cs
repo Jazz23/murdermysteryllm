@@ -73,8 +73,13 @@ public partial class AIAgent
 	public async Task<Statement> SpeakTo(IPlayer agent)
 	{
 		// Speak to the agent and append the statement to the respective conversations
-		var prompt = string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name);
-		var endSignalTool = ChatTool.CreateFunctionTool("end_conversation");
+		
+		// If this is the first statement in the conversation, use the special prompt. Otherwise,
+		// simply use the last thing spoken (by the other party) as the prompt.
+		var prompt = CurrentConversation.Count == 0 ?
+			string.Format(Prompt.AgentTalk, agent.PlayerInfo.CharacterInformation.Name) :
+			CurrentConversation.Last().Text;
+		
 		var completion = await Ollama(prompt);
 
 		// The conversation continues, append the new goodies to our conversation history

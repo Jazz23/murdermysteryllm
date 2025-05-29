@@ -37,6 +37,7 @@ public class TextCommunication : MonoBehaviour
 	/// </summary>
 	public static void DisplayStorytellerText(string message)
 	{
+		if (!_instance) return; // Bandaid for some weird timing issue
 		_instance._storytellerText.text = message;
 	}
 }

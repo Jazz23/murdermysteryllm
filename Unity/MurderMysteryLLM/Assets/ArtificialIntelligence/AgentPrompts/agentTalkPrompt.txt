@@ -1,3 +1,1 @@
-﻿You are currently in a conversation. If the conversation has ended, invoke the "end_conversation" function.
-
-Otherwise, only reply with another statement (do not include your own name) to contribute to the conversation that would bring it closer to stopping. You are speaking to {0}.
+﻿Given the information you have, say something to {0} that would help you solve the mystery.
