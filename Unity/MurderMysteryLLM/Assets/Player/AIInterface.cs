@@ -26,7 +26,7 @@ public class AIInterface : MonoBehaviour
 	public static List<Transform> Locations;
 	public static List<AIAgent> Agents { get; } = new();
 	public static StateMachine TurnStateMachine { get; } = new();
-    public static bool accessGameStateManager { get; private set; }
+    public bool accessGameStateManager { get; private set; }
 
     public bool mockStoryContext = true;
 	public bool mockPlayerInfo = true;
@@ -148,8 +148,8 @@ public class AIInterface : MonoBehaviour
 			agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
 			TurnStateMachine.AddPlayer(agent);
 		}
-		if(accessGameStateManager)
-			GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
+		// if(accessGameStateManager)
+		// 	GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
 	}
 
 	private static bool FetchRandomAgentIndex(List<int> availableIndices, out int selectedIndex)

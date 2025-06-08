@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
 using ArtificialIntelligence.Agent;
 using ArtificialIntelligence.StateMachine;
 using OllamaSharp;
@@ -12,6 +13,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
+using System.IO;
 
 public partial class AIAgent : MonoBehaviour, IPlayer
 {
@@ -118,32 +122,47 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 		{
 			await Awaitable.MainThreadAsync();
 
-			// var agentToTalkTo = AIInterface.Agents.First(x => x != this);
-			// AIInterface.TurnStateMachine.QueueAction(new TalkingAction()
-			// {
-			//     Other = agentToTalkTo,
-			//     Player = this,
-			// });
+			var stopwatchTotal = Stopwatch.StartNew();
 
 			var prompt = string.Format(Prompt.TurnStart, PlayerInfo.CharacterInformation.Name);
+			var stopwatchResponse = Stopwatch.StartNew();
 			var response = (await Ollama(prompt, true)).ToLower();
-			Debug.Log($"{PlayerInfo.CharacterInformation.Name} chooses {response}");
+			stopwatchResponse.Stop();
+
+			long taskTime = 0;
 
 			if (response.Contains("talk"))
 			{
+				var stopwatchTask = Stopwatch.StartNew();
 				await TalkTask();
+				stopwatchTask.Stop();
+				taskTime = stopwatchTask.ElapsedMilliseconds;
 			}
 			else if (response.Contains("search"))
 			{
+				var stopwatchTask = Stopwatch.StartNew();
 				await SearchTask();
+				stopwatchTask.Stop();
+				taskTime = stopwatchTask.ElapsedMilliseconds;
 			}
 			else if (response.Contains("location"))
 			{
+				var stopwatchTask = Stopwatch.StartNew();
 				await LocationTask();
+				stopwatchTask.Stop();
+				taskTime = stopwatchTask.ElapsedMilliseconds;
 			}
+
+			stopwatchTotal.Stop();
+
+			string taskType = response.Contains("talk") ? "talk"
+							  : response.Contains("search") ? "search"
+							  : response.Contains("location") ? "location"
+							  : "unknown";
+
+			LogRuntimeToCSV(taskType, stopwatchTotal.ElapsedMilliseconds, stopwatchResponse.ElapsedMilliseconds, taskTime);
 		});
 	}
-
 	private async Task TalkTask()
 	{
 		var playerList = _agentObserver.PeersNearby.Select(x => x.GetComponent<IPlayer>()).ToList();
@@ -185,6 +204,22 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 		_agentMover.GotoLocation(location);
 		AIInterface.TurnStateMachine.SetState(new PickPlayerState());
 	}
+
+	private void LogRuntimeToCSV(string taskType, long totalTime, long responseTime, long taskTime)
+	{
+		string path = Path.Combine(Application.dataPath, "RuntimeLogs/runtime_log.csv");
+		bool fileExists = File.Exists(path);
+		using (StreamWriter writer = new StreamWriter(path, append: true))
+		{
+			if (!fileExists)
+			{
+				writer.WriteLine("TaskType,TotalTime(ms),ResponseTime(ms),TaskTime(ms)");
+			}
+			string logLine = $"{taskType},{totalTime},{responseTime},{taskTime}";
+			writer.WriteLine(logLine);
+		}
+	}
+
 
 	/// <summary>
 	/// When attached to a method, that method will be invoked during context generation before any chatGPT prompts are made. The return value
