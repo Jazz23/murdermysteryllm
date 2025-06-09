@@ -26,7 +26,7 @@ public class AIInterface : MonoBehaviour
 	public static List<Transform> Locations;
 	public static List<AIAgent> Agents { get; } = new();
 	public static StateMachine TurnStateMachine { get; } = new();
-    public bool accessGameStateManager { get; private set; }
+    public static bool accessGameStateManager { get; private set; }
 
     public bool mockStoryContext = true;
 	public bool mockPlayerInfo = true;
@@ -88,9 +88,9 @@ public class AIInterface : MonoBehaviour
 
 		_storyteller = new Storyteller();
 
-		if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
-		var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
-		TurnStateMachine.AddPlayer(player);
+		// if (!LocalPlayerController.LocalPlayer) return; // Bandaid for some weird bug with the editor
+		// var player = LocalPlayerController.LocalPlayer.GetComponent<IPlayer>();
+		// TurnStateMachine.AddPlayer(player);
 	}
 
 	private async Awaitable GenerateScenario()
@@ -148,8 +148,8 @@ public class AIInterface : MonoBehaviour
 			agent.SpriteRender.color = new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
 			TurnStateMachine.AddPlayer(agent);
 		}
-		// if(accessGameStateManager)
-		// 	GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
+
+		GameStateManager.Instance.RetrievePlayerAgents(Agents.Select(agent => agent.gameObject).ToList());
 	}
 
 	private static bool FetchRandomAgentIndex(List<int> availableIndices, out int selectedIndex)

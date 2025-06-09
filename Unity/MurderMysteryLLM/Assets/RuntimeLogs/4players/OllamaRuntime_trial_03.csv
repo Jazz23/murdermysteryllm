@@ -1,0 +1,16 @@
+Date,Task,ResponseTime(ms),CharacterCount,ModelUsed,IncludeContext
+6/8/2025 11:04:50 PM,Reasoning,26658,6,Deepseek R1,True
+6/8/2025 11:05:08 PM,Reasoning,17566,6,Deepseek R1,True
+6/8/2025 11:05:11 PM,Reasoning,3035,4,Deepseek R1,True
+6/8/2025 11:05:19 PM,Dialogue,8036,1,Gemma 3B,True
+6/8/2025 11:05:20 PM,Dialogue,568,103,Gemma 3B,True
+6/8/2025 11:05:21 PM,Dialogue,1172,237,Gemma 3B,True
+6/8/2025 11:05:22 PM,Dialogue,1538,299,Gemma 3B,True
+6/8/2025 11:05:24 PM,Dialogue,1436,261,Gemma 3B,True
+6/8/2025 11:05:26 PM,Dialogue,1845,394,Gemma 3B,True
+6/8/2025 11:05:27 PM,Dialogue,1773,404,Gemma 3B,True
+6/8/2025 11:05:29 PM,Dialogue,2019,478,Gemma 3B,True
+6/8/2025 11:05:31 PM,Dialogue,1568,312,Gemma 3B,True
+6/8/2025 11:05:33 PM,Dialogue,1845,400,Gemma 3B,True
+6/8/2025 11:05:44 PM,Reasoning,11032,6,Deepseek R1,True
+6/8/2025 11:05:50 PM,Reasoning,6420,8,Deepseek R1,True

@@ -35,6 +35,9 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 	[SerializeField]
 	public RawImage speechBubble = null;
 
+	[SerializeField]
+	private Animator _animator;
+
 
 	public void Start()
 	{
@@ -44,7 +47,6 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 		_spriteRender = GetComponent<SpriteRenderer>();
 		uiDescriptorText = GetComponentInChildren<TextMeshProUGUI>();
 		speechBubble = GetComponentInChildren<RawImage>();
-		speechBubble.enabled = false;
 
 	}
 
@@ -66,23 +68,43 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 			});
 
 			await Awaitable.BackgroundThreadAsync();
+
+			var stopwatch = Stopwatch.StartNew();
+
 			var response = "";
 			var chosenClient = reason ? ReasonClient : ChatClient;
-			if (reason)
-				Debug.Log("Thinking...");
+			var modelUsed = reason ? "Deepseek R1" : "Gemma 3B";
+
+			if (reason) Debug.Log("Thinking...");
+
 			await foreach (var stream in chosenClient.ChatAsync(new ChatRequest()
 			{
 				Messages = context
 			}))
+			{
 				response += stream.Message.Content;
+			}
+
+			stopwatch.Stop();
+
 			await Awaitable.MainThreadAsync();
-			// Remove text between <think> and </think> tags, if any
-			response = System.Text.RegularExpressions.Regex.Replace(response, "<think>.*?</think>", "", System.Text.RegularExpressions.RegexOptions.Singleline);
-			return response.Replace("\n", "").Replace("\r", "").Trim();
+
+			string cleanedResponse = Regex.Replace(response, "<think>.*?</think>", "", RegexOptions.Singleline)
+				.Replace("\n", "").Replace("\r", "").Trim();
+
+			LogOllamaRuntimeToCSV(
+				task: reason ? "Reasoning" : "Dialogue",
+				responseTimeMs: stopwatch.ElapsedMilliseconds,
+				characterCount: cleanedResponse.Length,
+				modelUsed: modelUsed,
+				includeContext: includeContext
+			);
+
+			return cleanedResponse;
 		}
 		catch (Exception e)
 		{
-			UnityEngine.Debug.LogError(e);
+			Debug.LogError(e);
 			throw;
 		}
 	}
@@ -134,6 +156,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 			if (response.Contains("talk"))
 			{
 				var stopwatchTask = Stopwatch.StartNew();
+				_animator.SetTrigger("Talking");
 				await TalkTask();
 				stopwatchTask.Stop();
 				taskTime = stopwatchTask.ElapsedMilliseconds;
@@ -205,17 +228,35 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 		AIInterface.TurnStateMachine.SetState(new PickPlayerState());
 	}
 
+
+	private void LogOllamaRuntimeToCSV(string task, long responseTimeMs, int characterCount, string modelUsed, bool includeContext)
+	{
+		string filePath = Path.Combine(Application.dataPath, "RuntimeLogs/OllamaRuntime.csv");
+		bool fileExists = File.Exists(filePath);
+
+		using (StreamWriter writer = new StreamWriter(filePath, append: true))
+		{
+			if (!fileExists)
+			{
+				writer.WriteLine("Date,Task,ResponseTime(ms),CharacterCount,ModelUsed,IncludeContext");
+			}
+
+			string logLine = $"{DateTime.Now},{task},{responseTimeMs},{characterCount},{modelUsed},{includeContext}";
+			writer.WriteLine(logLine);
+		}
+	}
+
 	private void LogRuntimeToCSV(string taskType, long totalTime, long responseTime, long taskTime)
 	{
-		string path = Path.Combine(Application.dataPath, "RuntimeLogs/runtime_log.csv");
+		string path = Path.Combine(Application.dataPath, "RuntimeLogs/task_response_time.csv");
 		bool fileExists = File.Exists(path);
 		using (StreamWriter writer = new StreamWriter(path, append: true))
 		{
 			if (!fileExists)
 			{
-				writer.WriteLine("TaskType,TotalTime(ms),ResponseTime(ms),TaskTime(ms)");
+				writer.WriteLine("Date, Character, TaskType,TotalTime(ms),ResponseTime(ms),TaskTime(ms)");
 			}
-			string logLine = $"{taskType},{totalTime},{responseTime},{taskTime}";
+			string logLine = $"{DateTime.Now},{PlayerInfo.CharacterInformation.Name},{taskType},{totalTime},{responseTime},{taskTime}";
 			writer.WriteLine(logLine);
 		}
 	}
