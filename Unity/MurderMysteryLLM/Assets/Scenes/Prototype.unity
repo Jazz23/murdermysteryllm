@@ -41045,11 +41045,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8125, y: 1.4375}
   m_EdgeRadius: 0
---- !u!4 &1395858931 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4646513457369278774, guid: be0441137bb52a64c91626131f4c3003, type: 3}
-  m_PrefabInstance: {fileID: 1347494282632780516}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1403277775
 GameObject:
   m_ObjectHideFlags: 0
@@ -46037,7 +46032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8102525427248871515, guid: be0441137bb52a64c91626131f4c3003, type: 3}
       propertyPath: agentSpawnLocations.Array.size
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8102525427248871515, guid: be0441137bb52a64c91626131f4c3003, type: 3}
       propertyPath: 'agentSpawnLocations.Array.data[0]'
@@ -46062,7 +46057,7 @@ PrefabInstance:
     - target: {fileID: 8102525427248871515, guid: be0441137bb52a64c91626131f4c3003, type: 3}
       propertyPath: 'agentSpawnLocations.Array.data[5]'
       value: 
-      objectReference: {fileID: 1395858931}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -46420,6 +46415,14 @@ PrefabInstance:
     - target: {fileID: 5765206358783782805, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6124836105100930367, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6124836105100930367, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
+      propertyPath: m_fontSize
+      value: 29.7
       objectReference: {fileID: 0}
     - target: {fileID: 6683839421248279518, guid: 90f4fbae651ce034f9398592635c0a36, type: 3}
       propertyPath: m_Pivot.x

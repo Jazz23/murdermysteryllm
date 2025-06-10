@@ -231,7 +231,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
 	private void LogOllamaRuntimeToCSV(string task, long responseTimeMs, int characterCount, string modelUsed, bool includeContext)
 	{
-		string filePath = Path.Combine(Application.dataPath, "RuntimeLogs/OllamaRuntime.csv");
+		string filePath = Path.Combine(Application.dataPath, "RuntimeLogs/ollama_runtime_trial.csv");
 		bool fileExists = File.Exists(filePath);
 
 		using (StreamWriter writer = new StreamWriter(filePath, append: true))
@@ -248,7 +248,7 @@ public partial class AIAgent : MonoBehaviour, IPlayer
 
 	private void LogRuntimeToCSV(string taskType, long totalTime, long responseTime, long taskTime)
 	{
-		string path = Path.Combine(Application.dataPath, "RuntimeLogs/task_response_time.csv");
+		string path = Path.Combine(Application.dataPath, "RuntimeLogs/task_response_time_trial.csv");
 		bool fileExists = File.Exists(path);
 		using (StreamWriter writer = new StreamWriter(path, append: true))
 		{

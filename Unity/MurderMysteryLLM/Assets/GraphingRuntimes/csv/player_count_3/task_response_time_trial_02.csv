@@ -1,0 +1,15 @@
+Date, Character, TaskType,TotalTime(ms),ResponseTime(ms),TaskTime(ms)
+6/9/2025 3:20:41 PM,Raul Alvaros,search,14739,14739,0
+6/9/2025 3:20:48 PM,Clarissa DuPont,search,7150,7150,0
+6/9/2025 3:20:55 PM,Sophia Martinez,search,6951,6951,0
+6/9/2025 3:21:02 PM,Raul Alvaros,search,7167,7167,0
+6/9/2025 3:21:17 PM,Clarissa DuPont,talk,14569,8034,6535
+6/9/2025 3:21:39 PM,Sophia Martinez,search,14718,14718,0
+6/9/2025 3:21:46 PM,Raul Alvaros,search,7918,7918,0
+6/9/2025 3:22:01 PM,Clarissa DuPont,search,14635,14635,0
+6/9/2025 3:22:11 PM,Sophia Martinez,search,9618,9618,0
+6/9/2025 3:22:22 PM,Raul Alvaros,talk,10768,6335,4433
+6/9/2025 3:22:43 PM,Clarissa DuPont,search,13451,13451,0
+6/9/2025 3:22:49 PM,Sophia Martinez,search,6217,6217,0
+6/9/2025 3:22:54 PM,Raul Alvaros,search,5251,5251,0
+6/9/2025 3:23:02 PM,Clarissa DuPont,search,8101,8101,0

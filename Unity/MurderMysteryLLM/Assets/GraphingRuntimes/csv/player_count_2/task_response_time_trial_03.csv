@@ -1,0 +1,8 @@
+Date, Character, TaskType,TotalTime(ms),ResponseTime(ms),TaskTime(ms)
+6/9/2025 3:04:47 PM,Clarissa DuPont,search,15220,15220,0
+6/9/2025 3:04:54 PM,Beatrice Langford,search,6351,6351,0
+6/9/2025 3:05:01 PM,Clarissa DuPont,search,7550,7550,0
+6/9/2025 3:05:13 PM,Beatrice Langford,talk,11971,5135,6835
+6/9/2025 3:06:14 PM,Clarissa DuPont,talk,45203,40771,4431
+6/9/2025 3:07:26 PM,Beatrice Langford,location,60672,24416,36256
+6/9/2025 3:08:18 PM,Clarissa DuPont,location,51710,17209,34500
